@@ -7,73 +7,119 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
 <style>
-varia {
-	--x: 0;
-	--y: 0;
-}
 </style>
 </head>
 
 <body>
 <div id="board">
+<div id="things"></div>
 <div><img id="character" src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"></div>
 </div>
 <script>
-var x = 0;
-var y = 0;
+// **SETUP CHARACTER**
+var character = {
+	x:0, //mult by 32
+	y:0, //mult by 32
+	going:false,
+	current:1
+};
 
+// **SETUP THINGS**
+function thing(name, x, y, solid, sprite) {
+	this.name = name;
+	this.x = x; //mult by 32
+	this.y = y; //mult by 32
+	this.solid = solid;
+	this.sprite = sprite;
+}
+
+// **CURRENT AREA STUFF**
+var things = [];
+switch (character.current) {
+	case 0:
+		break;
+	case 1:
+		var a = new thing("Rock", 0, 0, true, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaL2.png")
+		things.push(a);
+		var b = new thing("Rock", 8, 6, true, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaL2.png")
+		things.push(b);
+		break;
+}
+
+// **INIT CHARACTER, THINGS**
 function init() {
+	for (i = 0; i < things.length; i ++) {
+		var thisSprite = document.createElement("IMG");
+		thisSprite.setAttribute("src", things[i].sprite);
+		thisSprite.setAttribute("alt", things[i].name);
+		//thisSprite.setAttribute("src", things[i].getAttribute(sprite));
+		//thisSprite.setAttribute("alt", things[i].getAttribute(name));
+		document.body.appendChild(thisSprite);
+		thisSprite.style.position = 'relative';
+		thisSprite.style.left = (things[i].x * 32) + 'px';
+		thisSprite.style.top = (things[i].y * 32) + 'px';
+	}
+	
 	sprite = document.getElementById("character");
 	sprite.style.position = 'relative';
-	sprite.style.left = '0px';
-	sprite.style.top = '0px';
+	sprite.style.left = (character.x * 32) + 'px';
+	sprite.style.top = (character.y * 32) + 'px';
 }
 window.onload = init;
 
+// **CHARACTER ACTIONS**
 document.addEventListener('keydown', function(event) {
-	if(event.keyCode == 37) {
+	if(event.keyCode == 37 && !character.going) {
+		character.going = true;
+		character.x -= 1;
 		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL2.png"}, 0);
-		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 5 + 'px'}, 0);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL1.png"}, 200);
-		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 5 + 'px'}, 200);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL3.png"}, 400);
-		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 5 + 'px'}, 400);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL1.png"}, 600);
-		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 5 + 'px'}, 600);
-		x -= 20;
+		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 8 + 'px'}, 0);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL1.png"}, 125);
+		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 8 + 'px'}, 125);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL3.png"}, 250);
+		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 8 + 'px'}, 250);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL1.png"}, 375);
+		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 8 + 'px'}, 375);
+		setTimeout(function() {character.going = false}, 500);
 	}
-	else if(event.keyCode == 38) {
+	else if(event.keyCode == 38 && !character.going) {
+		character.going = true;
+		character.y -= 1;
 		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU2.png"}, 0);
-		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 5 + 'px'}, 0);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU1.png"}, 200);
-		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 5 + 'px'}, 200);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU3.png"}, 400);
-		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 5 + 'px'}, 400);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU1.png"}, 600);
-		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 5 + 'px'}, 600);
-		y -= 20;
+		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 8 + 'px'}, 0);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU1.png"}, 125);
+		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 8 + 'px'}, 125);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU3.png"}, 250);
+		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 8 + 'px'}, 250);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU1.png"}, 375);
+		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 8 + 'px'}, 375);
+		setTimeout(function() {character.going = false}, 500);
 	}
-	else if(event.keyCode == 39) {
+	else if(event.keyCode == 39 && !character.going) {
+		character.going = true;
+		character.x += 1;
 		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR2.png"}, 0);
-		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 5 + 'px'}, 0);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR1.png"}, 200);
-		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 5 + 'px'}, 200);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR3.png"}, 400);
-		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 5 + 'px'}, 400);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR1.png"}, 600);
-		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 5 + 'px'}, 600);
-		x += 20;
+		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 8 + 'px'}, 0);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR1.png"}, 125);
+		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 8 + 'px'}, 125);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR3.png"}, 250);
+		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 8 + 'px'}, 250);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR1.png"}, 375);
+		setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 8 + 'px'}, 375);
+		setTimeout(function() {character.going = false}, 500);
 	}
-	else if(event.keyCode == 40) {
+	else if(event.keyCode == 40 && !character.going) {
+		character.going = true;
+		character.y += 1;
 		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD2.png"}, 0);
-		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 5 + 'px'}, 0);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"}, 200);
-		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 5 + 'px'}, 200);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD3.png"}, 400);
-		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 5 + 'px'}, 400);
-		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"}, 600);
-		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 5 + 'px'}, 600);
-		y += 20;
+		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 8 + 'px'}, 0);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"}, 125);
+		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 8 + 'px'}, 125);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD3.png"}, 250);
+		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 8 + 'px'}, 250);
+		setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"}, 375);
+		setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 8 + 'px'}, 375);
+		setTimeout(function() {character.going = false}, 500);
 	}
 });
 </script>
