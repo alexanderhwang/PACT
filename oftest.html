@@ -12,7 +12,7 @@
 
 <body>
 <div id="board">
-<div><img id="character" class="characterStyle" src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"></div>
+<div><img id="character" class="characterStyle"></div>
 </div>
 <div class="container">
 <div class="inblock content noselect" id="menu">
@@ -20,16 +20,23 @@
 <p id="menu2">&nbsp Items</p>
 <p id="menu3">&nbsp Registry</p>
 <p id="menu4">&nbsp Save</p>
-<p id="menu5">&nbsp Quit</p>
+<p id="menu5">&nbsp Options</p>
+<p id="menu6">&nbsp Quit</p>
 </div>
+</div>
+<div id="textbox" class="textbox">
+
 </div>
 <script>
 // **SETUP CHARACTER**
 var character = {
+	name:"?",
+	month:"Februa",
 	x:1, //mult by 32
 	y:1, //mult by 32
 	going:false,
 	paused:false,
+	talk:0,
 	current:1,
 	direction:"down",
 	menu:1
@@ -46,11 +53,13 @@ var cm = {
 };
 
 // **SETUP THINGS**
-function thing(name, x, y, sprite) {
+function thing(name, x, y, sprite, action, misc) {
 	this.name = name;
 	this.x = x; //mult by 32
 	this.y = y; //mult by 32
 	this.sprite = sprite;
+	this.action = action; //0 = nothing, 1 = generic
+	this.misc = misc;
 }
 
 // **CURRENT AREA STUFF**
@@ -59,21 +68,29 @@ switch (character.current) {
 	case 0:
 		break;
 	case 1:
-		things.push(new thing("Rock", 0, 0, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"));
-		things.push(new thing("Rock", 0, 17, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"));
-		things.push(new thing("Rock", 17, 0, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"));
-		things.push(new thing("Rock", 17, 17, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"));
+		things.push(new thing(
+			"Cindy", 5, 4, 
+			["http://alexhwang.net/wp-content/uploads/2016/07/JuliaD1.png", 
+			"http://alexhwang.net/wp-content/uploads/2016/07/JuliaL1.png", 
+			"http://alexhwang.net/wp-content/uploads/2016/07/JuliaR1.png", 
+			"http://alexhwang.net/wp-content/uploads/2016/07/JuliaU1.png"], 
+			1, "Are you there?<br>Why?"
+		));
+		things.push(new thing("Rock", 0, 0, ["http://alexhwang.net/wp-content/uploads/2016/07/Rock1.png"], 0, ""));
+		things.push(new thing("Rock", 0, 17, ["http://alexhwang.net/wp-content/uploads/2016/07/Rock1.png"], 0, ""));
+		things.push(new thing("Rock", 17, 0, ["http://alexhwang.net/wp-content/uploads/2016/07/Rock1.png"], 0, ""));
+		things.push(new thing("Rock", 17, 17, ["http://alexhwang.net/wp-content/uploads/2016/07/Rock1.png"], 0, ""));
 		for (i = 1; i < 17; i++) {
-			things.push(new thing("Rock", 0, i, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"));
+			things.push(new thing("Rock", 0, i, ["http://alexhwang.net/wp-content/uploads/2016/07/Rock1.png"], 0, ""));
 		}
 		for (i = 1; i < 17; i++) {
-			things.push(new thing("Rock", 17, i, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"));
+			things.push(new thing("Rock", 17, i, ["http://alexhwang.net/wp-content/uploads/2016/07/Rock1.png"], 0, ""));
 		}
 		for (i = 1; i < 17; i++) {
-			things.push(new thing("Rock", i, 17, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"));
+			things.push(new thing("Rock", i, 17, ["http://alexhwang.net/wp-content/uploads/2016/07/Rock1.png"], 0, ""));
 		}
 		for (i = 1; i < 17; i++) {
-			things.push(new thing("Rock", i, 0, "http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"));
+			things.push(new thing("Rock", i, 0, ["http://alexhwang.net/wp-content/uploads/2016/07/Rock1.png"], 0, ""));
 		}
 		break;
 }
@@ -82,7 +99,8 @@ switch (character.current) {
 function init() {
 	for (i = 0; i < things.length; i++) {
 		var thisSprite = document.createElement("IMG");
-		thisSprite.setAttribute("src", things[i].sprite);
+		thisSprite.setAttribute("id", things[i].name + i);
+		thisSprite.setAttribute("src", things[i].sprite[0]);
 		thisSprite.setAttribute("alt", things[i].name);
 		document.body.appendChild(thisSprite);
 		thisSprite.style.position = 'absolute';
@@ -90,6 +108,7 @@ function init() {
 		thisSprite.style.top = (things[i].y * 32) + 'px';
 	}
 	sprite = document.getElementById("character");
+	sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "D1.png"
 	sprite.style.position = 'relative';
 	sprite.style.left = (character.x * 32) - 8 + 'px';
 	sprite.style.top = (character.y * 32) - 8 + 'px';
@@ -111,6 +130,8 @@ document.getElementById("menu1").addEventListener('click', function(event) {
 		document.getElementById("menu4").style.color="gray";
 		document.getElementById("menu5").style.fontWeight="normal";
 		document.getElementById("menu5").style.color="gray";
+		document.getElementById("menu6").style.fontWeight="normal";
+		document.getElementById("menu6").style.color="gray";
 		character.menu = 1;
 	}
 });
@@ -126,6 +147,8 @@ document.getElementById("menu2").addEventListener('click', function(event) {
 		document.getElementById("menu4").style.color="gray";
 		document.getElementById("menu5").style.fontWeight="normal";
 		document.getElementById("menu5").style.color="gray";
+		document.getElementById("menu6").style.fontWeight="normal";
+		document.getElementById("menu6").style.color="gray";
 		character.menu = 2;
 	}
 });
@@ -141,6 +164,8 @@ document.getElementById("menu3").addEventListener('click', function(event) {
 		document.getElementById("menu4").style.color="gray";
 		document.getElementById("menu5").style.fontWeight="normal";
 		document.getElementById("menu5").style.color="gray";
+		document.getElementById("menu6").style.fontWeight="normal";
+		document.getElementById("menu6").style.color="gray";
 		character.menu = 3;
 	}
 });
@@ -156,6 +181,8 @@ document.getElementById("menu4").addEventListener('click', function(event) {
 		document.getElementById("menu3").style.color="gray";
 		document.getElementById("menu5").style.fontWeight="normal";
 		document.getElementById("menu5").style.color="gray";
+		document.getElementById("menu6").style.fontWeight="normal";
+		document.getElementById("menu6").style.color="gray";
 		character.menu = 4;
 	}
 });
@@ -171,11 +198,30 @@ document.getElementById("menu5").addEventListener('click', function(event) {
 		document.getElementById("menu3").style.color="gray";
 		document.getElementById("menu4").style.fontWeight="normal";
 		document.getElementById("menu4").style.color="gray";
+		document.getElementById("menu6").style.fontWeight="normal";
+		document.getElementById("menu6").style.color="gray";
 		character.menu = 5;
 	}
 });
+document.getElementById("menu6").addEventListener('click', function(event) {
+	if (character.menu != 6) {
+		document.getElementById("menu6").style.fontWeight="bold";
+		document.getElementById("menu6").style.color="white";
+		document.getElementById("menu1").style.fontWeight="normal";
+		document.getElementById("menu1").style.color="gray";
+		document.getElementById("menu2").style.fontWeight="normal";
+		document.getElementById("menu2").style.color="gray";
+		document.getElementById("menu3").style.fontWeight="normal";
+		document.getElementById("menu3").style.color="gray";
+		document.getElementById("menu4").style.fontWeight="normal";
+		document.getElementById("menu4").style.color="gray";
+		document.getElementById("menu5").style.fontWeight="normal";
+		document.getElementById("menu5").style.color="gray";
+		character.menu = 6;
+	}
+});
 document.addEventListener('keydown', function(event) {
-	/*if(event.keyCode == 13 && !character.going && !character.paused) { //enter
+	/*if((event.keyCode == 13 || event.keyCode == 27) && !character.going && !character.paused) { //enter or escape
 		character.paused = true;
 	}
 	else if((event.keyCode == 13 || event.keyCode == 27) && character.paused) { //enter or escape
@@ -186,9 +232,9 @@ document.addEventListener('keydown', function(event) {
 			case 1:
 				document.getElementById("menu1").style.fontWeight="normal";
 				document.getElementById("menu1").style.color="gray";
-				document.getElementById("menu5").style.fontWeight="bold";
-				document.getElementById("menu5").style.color="white";
-				character.menu = 5;
+				document.getElementById("menu6").style.fontWeight="bold";
+				document.getElementById("menu6").style.color="white";
+				character.menu = 6;
 				break;
 			case 2:
 				document.getElementById("menu2").style.fontWeight="normal";
@@ -217,6 +263,13 @@ document.addEventListener('keydown', function(event) {
 				document.getElementById("menu4").style.fontWeight="bold";
 				document.getElementById("menu4").style.color="white";
 				character.menu = 4;
+				break;
+			case 6:
+				document.getElementById("menu6").style.fontWeight="normal";
+				document.getElementById("menu6").style.color="gray";
+				document.getElementById("menu5").style.fontWeight="bold";
+				document.getElementById("menu5").style.color="white";
+				character.menu = 5;
 				break;
 		}
 	}
@@ -253,6 +306,13 @@ document.addEventListener('keydown', function(event) {
 			case 5:
 				document.getElementById("menu5").style.fontWeight="normal";
 				document.getElementById("menu5").style.color="gray";
+				document.getElementById("menu6").style.fontWeight="bold";
+				document.getElementById("menu6").style.color="white";
+				character.menu = 6;
+				break;
+			case 6:
+				document.getElementById("menu6").style.fontWeight="normal";
+				document.getElementById("menu6").style.color="gray";
 				document.getElementById("menu1").style.fontWeight="bold";
 				document.getElementById("menu1").style.color="white";
 				character.menu = 1;
@@ -271,18 +331,18 @@ document.addEventListener('keydown', function(event) {
 			}
 		}
 		if (allowed) {
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL2.png"}, 0);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "L2.png"}, 0);
 			setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 8 + 'px'}, 0);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL1.png"}, 100);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "L1.png"}, 100);
 			setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 8 + 'px'}, 100);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL3.png"}, 200);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "L3.png"}, 200);
 			setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 8 + 'px'}, 200);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL1.png"}, 300);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "L1.png"}, 300);
 			setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) - 8 + 'px'}, 300);
 			setTimeout(function() {character.going = false}, 300);
 		}
 		else {
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaL1.png"}, 0);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "L1.png"}, 0);
 			setTimeout(function() {character.going = false}, 150);
 		}
 	}
@@ -298,18 +358,18 @@ document.addEventListener('keydown', function(event) {
 			}
 		}
 		if (allowed) {
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR2.png"}, 0);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "R2.png"}, 0);
 			setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 8 + 'px'}, 0);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR1.png"}, 100);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "R1.png"}, 100);
 			setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 8 + 'px'}, 100);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR3.png"}, 200);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "R3.png"}, 200);
 			setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 8 + 'px'}, 200);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR1.png"}, 300);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "R1.png"}, 300);
 			setTimeout(function() {sprite.style.left = parseInt(sprite.style.left) + 8 + 'px'}, 300);
 			setTimeout(function() {character.going = false}, 300);
 		}
 		else {
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaR1.png"}, 0);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "R1.png"}, 0);
 			setTimeout(function() {character.going = false}, 150);
 		}
 	}
@@ -325,18 +385,18 @@ document.addEventListener('keydown', function(event) {
 			}
 		}
 		if (allowed) {
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU2.png"}, 0);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "U2.png"}, 0);
 			setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 8 + 'px'}, 0);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU1.png"}, 100);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "U1.png"}, 100);
 			setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 8 + 'px'}, 100);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU3.png"}, 200);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "U3.png"}, 200);
 			setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 8 + 'px'}, 200);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU1.png"}, 300);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "U1.png"}, 300);
 			setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) - 8 + 'px'}, 300);
 			setTimeout(function() {character.going = false}, 300);
 		}
 		else {
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaU1.png"}, 0);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "U1.png"}, 0);
 			setTimeout(function() {character.going = false}, 150);
 		}
 	}
@@ -352,26 +412,64 @@ document.addEventListener('keydown', function(event) {
 			}
 		}
 		if (allowed) {
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD2.png"}, 0);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "D2.png"}, 0);
 			setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 8 + 'px'}, 0);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"}, 100);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "D1.png"}, 100);
 			setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 8 + 'px'}, 100);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD3.png"}, 200);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "D3.png"}, 200);
 			setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 8 + 'px'}, 200);
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"}, 300);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "D1.png"}, 300);
 			setTimeout(function() {sprite.style.top = parseInt(sprite.style.top) + 8 + 'px'}, 300);
 			setTimeout(function() {character.going = false}, 300);
 		}
 		else {
-			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/FebruaD1.png"}, 0);
+			setTimeout(function() {sprite.src="http://alexhwang.net/wp-content/uploads/2016/07/" + character.month + "D1.png"}, 0);
 			setTimeout(function() {character.going = false}, 150);
 		}
 	}
 	else if((event.keyCode == cm.ms1 || event.keyCode == cm.ms2 || event.keyCode == cm.ms3) && !character.going && !character.paused) { //enter or z
 		//MENU INTERACT
 	}
-	else if((event.keyCode == cm.ac1 || event.keyCode == cm.ac2 || event.keyCode == cm.ac3) && !character.going && !character.paused) { //space or q
-		//ACTION
+	else if((event.keyCode == cm.ac1 || event.keyCode == cm.ac2 || event.keyCode == cm.ac3) && !character.going) { //space or q
+		if(!character.paused && character.talk == 0) {
+			var actX = character.x;
+			var actY = character.y;
+			if (character.direction == "left") {actX -= 1;}
+			else if (character.direction == "right") {actX += 1;}
+			else if (character.direction == "up") {actY -= 1;}
+			else if (character.direction == "down") {actY += 1;}
+			for (i = 0; i < things.length; i++) {
+				var nowThing = things[i];
+				if (actX == nowThing.x && actY == nowThing.y) {
+					switch (nowThing.action) {
+						case 0:
+							break;
+						case 1:
+							character.paused = true;
+							if (character.direction == "down") {
+								document.getElementById(nowThing.name + i).setAttribute("src", nowThing.sprite[3])
+							}
+							else if (character.direction == "left") {
+								document.getElementById(nowThing.name + i).setAttribute("src", nowThing.sprite[2])
+							}
+							else if (character.direction == "right") {
+								document.getElementById(nowThing.name + i).setAttribute("src", nowThing.sprite[1])
+							}
+							else {
+								document.getElementById(nowThing.name + i).setAttribute("src", nowThing.sprite[0])
+							}
+							$('#textbox').append('<div id="textcontent" class="textcontent">' + nowThing.misc + '</div>');
+							character.talk = 1;
+							break;
+					}
+				}
+			}
+		}
+		else if (character.paused && character.talk == 1) {
+			$('#textcontent').remove();
+			character.talk = 0;
+			character.paused = false;
+		}
 	}
 });
 </script>
@@ -383,11 +481,29 @@ document.addEventListener('keydown', function(event) {
 .thingStyle {
 }
 
+.textbox {
+    white-space: nowrap;
+	text-align: center;
+	position: absolute;
+	top: 250px;
+	left: 600px;
+	display: block;
+}
+.textcontent {
+    background-color: rgb(255, 255, 255);
+    text-align: left;
+	border: thin solid #000000;
+    color: black;
+    height: 150px;
+    width: 200px;
+}
+
 .container {
     white-space: nowrap;
 	text-align: center;
 	position: absolute;
-	left: 640px;
+	top: 10px;
+	left: 600px;
 	display: block;
 }
 .inblock {
@@ -400,7 +516,7 @@ document.addEventListener('keydown', function(event) {
 .content {
     background-color: rgb(0, 0, 0);
     color: gray;
-    height: 200px;
+    height: 230px;
     width: 100px;
 }
 .noselect {
