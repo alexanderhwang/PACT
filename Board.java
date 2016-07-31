@@ -6,11 +6,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -19,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class Board extends JPanel implements KeyListener{
 	private JFrame frame = new JFrame("OrbFae");
@@ -32,11 +34,13 @@ public class Board extends JPanel implements KeyListener{
 	private JLabel menu6 = new JLabel("Quit");
 	private String icon = "Data\\Objects\\Rock1.png"; 
 	private Color background = new Color(255, 255, 255);
-	private Character character = new Character("?", "Februa", "Data\\Characters\\FebruaD1.png", 1, 1);
-	private JLabel characterSprite = new JLabel(character.getImageIcon());
+	private Character character = new Character("?", "Februa", "Data\\Characters\\FebruaD1.png", "DOWN", 32, 32, 1);
+	private JLabel characterSprite = new JLabel(character.imageIcon);
 	private Boolean going = false;
 	private Boolean paused = false;
+	private Timer timer;
 	
+	private int timerStep = 0;
 	private int menuButton = 1;
 
 	private int l1 = KeyEvent.VK_LEFT; private int l2 = KeyEvent.VK_A; private int l3 = KeyEvent.VK_NUMPAD4;
@@ -80,6 +84,50 @@ public class Board extends JPanel implements KeyListener{
     	menuPanel.add(menu4);
     	menuPanel.add(menu5);
     	menuPanel.add(menu6);
+    	
+		timer = new Timer(100, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				timerStep++;
+				switch (timerStep) {
+				case 1:
+					character.setStep(2);
+					break;
+				case 2:
+					character.setStep(1);
+					break;
+				case 3:
+					character.setStep(3);
+					break;
+				case 4:
+					character.setStep(1);
+					going = false;
+					timerStep = 0;
+					timer.stop();
+					break;
+				}
+				if (character.direction == "LEFT") {
+					character.setX(character.x - 8);
+				}
+				else if (character.direction == "RIGHT") {
+					character.setX(character.x + 8);
+				}
+				else if (character.direction == "UP") {
+					character.setY(character.y - 8);
+				}
+				else if (character.direction == "DOWN") {
+					character.setY(character.y + 8);
+				}
+				character.setImageIcon("Data\\Characters\\" + character.month + character.direction.substring(0,  1) + character.step + ".png");
+		    	mainPanel.remove(characterSprite);
+				characterSprite = new JLabel(character.imageIcon);
+		    	mainPanel.add(characterSprite);
+		    	characterSprite.setBounds(character.x, character.y, 32, 32);
+		    	mainPanel.revalidate();
+		    	mainPanel.repaint();
+			}
+		});
+    	
     	menu1.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
     			if (!paused) {
@@ -205,19 +253,57 @@ public class Board extends JPanel implements KeyListener{
     }
 
     public void loadGame() {
+    	//INIT
     	mainPanel.add(characterSprite);
     	characterSprite.setBounds(32,32,32,32);
     }
     
 	@Override
 	public void keyPressed(KeyEvent k) {
-		
 		//MENU
 		if ((k.getKeyCode() == mu1 || k.getKeyCode() == mu2 || k.getKeyCode() == mu3) && !paused) {
 			menuSelect("UP");
 		}
 		else if ((k.getKeyCode() == md1 || k.getKeyCode() == md2 || k.getKeyCode() == md3) && !paused) {
 			menuSelect("DOWN");
+		}
+		
+		//CHARACTER
+		else if ((k.getKeyCode() == l1 || k.getKeyCode() == l2 || k.getKeyCode() == l3) && !paused && !going) {
+			Boolean allowed = true;
+			going = true;
+			character.setDirection("LEFT");
+			//TODO check if allowed
+			if (allowed) {
+				timer.start();
+			}
+		}
+		else if ((k.getKeyCode() == r1 || k.getKeyCode() == r2 || k.getKeyCode() == r3) && !paused && !going) {
+			Boolean allowed = true;
+			going = true;
+			character.setDirection("RIGHT");
+			//TODO check if allowed
+			if (allowed) {
+				timer.start();
+			}
+		}
+		else if ((k.getKeyCode() == u1 || k.getKeyCode() == u2 || k.getKeyCode() == u3) && !paused && !going) {
+			Boolean allowed = true;
+			going = true;
+			character.setDirection("UP");
+			//TODO check if allowed
+			if (allowed) {
+				timer.start();
+			}
+		}
+		else if ((k.getKeyCode() == d1 || k.getKeyCode() == d2 || k.getKeyCode() == d3) && !paused && !going) {
+			Boolean allowed = true;
+			going = true;
+			character.setDirection("DOWN");
+			//TODO check if allowed
+			if (allowed) {
+				timer.start();
+			}
 		}
 	}
 
