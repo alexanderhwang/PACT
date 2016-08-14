@@ -69,6 +69,7 @@ public class Board extends JFrame implements KeyListener{
 	private Boolean going = false;
 	private Boolean paused = false;
 	private Boolean buttonPaused = false;
+	private Boolean keyPaused = false;
 	private Boolean superPaused = false;
 	private Boolean saved = false;
 	private Timer timer;
@@ -105,7 +106,7 @@ public class Board extends JFrame implements KeyListener{
 			mu1, mu2, mu3, md1, md2, md3, muu1, muu2, muu3, mdd1, mdd2, mdd3, ms1, ms2, ms3, mb1, mb2, mb3, su1, su2, su3));
 	
     public Board() {
-    	menuPanel.setPreferredSize(new Dimension(120, 400));
+    	menuPanel.setPreferredSize(new Dimension(160, 400));
     	menuPanel.setLayout(null);
     	menuPanel.setBackground(new Color(224, 224, 224));
     	menuPanel.setOpaque(true);
@@ -124,8 +125,9 @@ public class Board extends JFrame implements KeyListener{
 
     	menuArray0.addAll(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8));
     	menuArray6.addAll(Arrays.asList(menu60, menu61, menu62, menu63));
+    	menuArray7.addAll(Arrays.asList(menu70, menu71, menu72, menu73, menu74, menu75));
     	for (int i = 0; i < menuArray0.size(); i++) {
-    		menuArray0.get(i).setBounds(20, 20 + i * 30, 100, 25);
+    		menuArray0.get(i).setBounds(20, 20 + i * 30, 140, 25);
     		menuArray0.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
     		menuArray0.get(i).setForeground(Color.GRAY);
     		menuArray0.get(i).setVisible(true);
@@ -134,18 +136,33 @@ public class Board extends JFrame implements KeyListener{
     	}
     	for (int i = 0; i < menuArray6.size(); i++) {
     		if (i == 0) {
-    			menuArray6.get(i).setBounds(20, 20 + i * 30, 100, 25);
+    			menuArray6.get(i).setBounds(10, 20 + i * 30, 140, 25);
         		menuArray6.get(i).setFont(new Font("Arial", Font.BOLD, 15));
         		menuArray6.get(i).setForeground(Color.BLACK);
     		}
     		else {
-    			menuArray6.get(i).setBounds(40, 20 + i * 30, 100, 25);
+    			menuArray6.get(i).setBounds(20, 20 + i * 30, 140, 25);
         		menuArray6.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
         		menuArray6.get(i).setForeground(Color.GRAY);
     		}
     		menuArray6.get(i).setVisible(false);
     		menuPanel.setLayer(menuArray6.get(i), 2);
     		menuPanel.add(menuArray6.get(i));
+    	}
+    	for (int i = 0; i < menuArray7.size(); i++) {
+    		if (i == 0) {
+    			menuArray7.get(i).setBounds(10, 20 + i * 30, 140, 25);
+        		menuArray7.get(i).setFont(new Font("Arial", Font.BOLD, 15));
+        		menuArray7.get(i).setForeground(Color.BLACK);
+    		}
+    		else {
+    			menuArray7.get(i).setBounds(20, 20 + i * 30, 140, 25);
+        		menuArray7.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+        		menuArray7.get(i).setForeground(Color.GRAY);
+    		}
+    		menuArray7.get(i).setVisible(false);
+    		menuPanel.setLayer(menuArray7.get(i), 2);
+    		menuPanel.add(menuArray7.get(i));
     	}
     	menu1.setFont(new Font("Arial", Font.BOLD, 15));
     	menu1.setForeground(Color.BLACK);
@@ -196,7 +213,7 @@ public class Board extends JFrame implements KeyListener{
     	
     	menu1.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 1 && menuButton <= 8 && !superPaused) {
+    			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
 	    			menuButton = 1;
 	    			menuSet();
@@ -206,7 +223,7 @@ public class Board extends JFrame implements KeyListener{
     	
     	menu2.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 1 && menuButton <= 8 && !superPaused) {
+    			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
 	    			menuButton = 2;
 	    			menuSet();
@@ -216,7 +233,7 @@ public class Board extends JFrame implements KeyListener{
     	
     	menu3.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 1 && menuButton <= 8 && !superPaused) {
+    			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
 	    			menuButton = 3;
 	    			menuSet();
@@ -226,7 +243,7 @@ public class Board extends JFrame implements KeyListener{
     	
     	menu4.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 1 && menuButton <= 8 && !superPaused) {
+    			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
 	    			menuButton = 4;
 	    			menuSet();
@@ -236,7 +253,7 @@ public class Board extends JFrame implements KeyListener{
     	
     	menu5.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 1 && menuButton <= 8 && !superPaused) {
+    			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
 	    			menuButton = 5;
 	    			menuSet();
@@ -246,7 +263,7 @@ public class Board extends JFrame implements KeyListener{
     	
     	menu6.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 1 && menuButton <= 8 && !superPaused) {
+    			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				if (menuButton == 6) {
     					menuButton = 63;
     					for (JLabel menuLabel : menuArray0) {
@@ -266,9 +283,19 @@ public class Board extends JFrame implements KeyListener{
 
     	menu7.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 1 && menuButton <= 8 && !superPaused) {
-    				//SET DOUBLE CLICK
-	    			menuButton = 7;
+    			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
+    				if (menuButton == 7) {
+    					menuButton = 75;
+    					for (JLabel menuLabel : menuArray0) {
+    						menuLabel.setVisible(false);
+    					}
+    					for (JLabel menuLabel : menuArray7) {
+    						menuLabel.setVisible(true);
+    					}
+    				}
+    				else {
+    					menuButton = 7;
+    				}
 	    			menuSet();
     			}
     		}
@@ -276,7 +303,7 @@ public class Board extends JFrame implements KeyListener{
 
     	menu8.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 1 && menuButton <= 8 && !superPaused) {
+    			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				if (menuButton == 8) {
     					if (!saved) {
     						Object[] choice = {"Go back", "Quit anyway"};
@@ -299,7 +326,7 @@ public class Board extends JFrame implements KeyListener{
 
     	menu61.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 61 && menuButton <= 63 && !superPaused) {
+    			if (!paused && menuButton >= 61 && menuButton <= 63 && !keyPaused && !superPaused) {
     				if (menuButton == 61) {
     					saveGame();
     					menuButton = 6;
@@ -320,7 +347,7 @@ public class Board extends JFrame implements KeyListener{
 
     	menu62.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 61 && menuButton <= 63 && !superPaused) {
+    			if (!paused && menuButton >= 61 && menuButton <= 63 && !keyPaused && !superPaused) {
     				if (menuButton == 62) {
     					loadGame();
     					menuButton = 6;
@@ -341,7 +368,7 @@ public class Board extends JFrame implements KeyListener{
 
     	menu63.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
-    			if (!paused && menuButton >= 61 && menuButton <= 63 && !superPaused) {
+    			if (!paused && menuButton >= 61 && menuButton <= 63 && !keyPaused && !superPaused) {
     				if (menuButton == 63) {
     					menuButton = 6;
     					for (JLabel menuLabel : menuArray6) {
@@ -358,12 +385,74 @@ public class Board extends JFrame implements KeyListener{
     			}
     		}
     	});
+
+    	menu71.addMouseListener(new MouseAdapter() {
+    		public void mouseClicked(MouseEvent c) {
+    			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
+    				if (menuButton == 71) {
+    					setValueSkip();
+    					menuButton = 7;
+    					for (JLabel menuLabel : menuArray7) {
+    						menuLabel.setVisible(false);
+    					}
+    					for (JLabel menuLabel : menuArray0) {
+    						menuLabel.setVisible(true);
+    					}
+    				}
+    				else {
+    	    			menuButton = 71;
+    				}
+	    			menuSet();
+    			}
+    		}
+    	});
+
+    	menu72.addMouseListener(new MouseAdapter() {
+    		public void mouseClicked(MouseEvent c) {
+    			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
+    				if (menuButton == 72) {
+    					setControls();
+    					menuButton = 7;
+    					for (JLabel menuLabel : menuArray7) {
+    						menuLabel.setVisible(false);
+    					}
+    					for (JLabel menuLabel : menuArray0) {
+    						menuLabel.setVisible(true);
+    					}
+    				}
+    				else {
+    	    			menuButton = 72;
+    				}
+	    			menuSet();
+    			}
+    		}
+    	});
+    	
+    	menu75.addMouseListener(new MouseAdapter() {
+    		public void mouseClicked(MouseEvent c) {
+    			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
+    				if (menuButton == 75) {
+    					menuButton = 7;
+    					for (JLabel menuLabel : menuArray7) {
+    						menuLabel.setVisible(false);
+    					}
+    					for (JLabel menuLabel : menuArray0) {
+    						menuLabel.setVisible(true);
+    					}
+    				}
+    				else {
+    	    			menuButton = 75;
+    				}
+	    			menuSet();
+    			}
+    		}
+    	});
     	
     	frame.addKeyListener(this);
     	frame.add(mainPanel, BorderLayout.WEST);
     	frame.add(menuPanel, BorderLayout.EAST);
     	frame.setIconImage(new ImageIcon(icon).getImage());
-    	frame.setSize(800,920);
+    	frame.setSize(960,800);
     	frame.setLocation(0, 0);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setResizable(false);
@@ -435,6 +524,36 @@ public class Board extends JFrame implements KeyListener{
     			break;
         	}
     	}
+    	else if (menuButton >= 71 && menuButton <= 75) {
+    		for (JLabel menuLabel : menuArray7) {
+    			menuLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+    			menuLabel.setForeground(Color.GRAY);
+    		}
+			menu70.setFont(new Font("Arial", Font.BOLD, 15));
+			menu70.setForeground(Color.BLACK);
+        	switch (menuButton) {
+    		case 71: 
+    			menu71.setFont(new Font("Arial", Font.BOLD, 15));
+    			menu71.setForeground(Color.BLACK);
+    			break;
+    		case 72: 
+    			menu72.setFont(new Font("Arial", Font.BOLD, 15));
+    			menu72.setForeground(Color.BLACK);
+    			break;
+    		case 73: 
+    			menu73.setFont(new Font("Arial", Font.BOLD, 15));
+    			menu73.setForeground(Color.BLACK);
+    			break;
+    		case 74: 
+    			menu74.setFont(new Font("Arial", Font.BOLD, 15));
+    			menu74.setForeground(Color.BLACK);
+    			break;
+    		case 75: 
+    			menu75.setFont(new Font("Arial", Font.BOLD, 15));
+    			menu75.setForeground(Color.BLACK);
+    			break;
+        	}
+    	}
     }
     
     public void menuSelect(String direction)
@@ -452,6 +571,12 @@ public class Board extends JFrame implements KeyListener{
     		else if (menuButton == 61) {
     			menuButton = 63;
     		}
+    		else if (menuButton > 71 && menuButton <= 75) {
+    			menuButton--;
+    		}
+    		else if (menuButton == 71) {
+    			menuButton = 75;
+    		}
     	}
     	else {
     		if (menuButton < 8 && menuButton >= 1) {
@@ -465,6 +590,12 @@ public class Board extends JFrame implements KeyListener{
     		}
     		else if (menuButton == 63) {
     			menuButton = 61;
+    		}
+    		else if (menuButton < 75 && menuButton >= 71) {
+    			menuButton++;
+    		}
+    		else if (menuButton == 75) {
+    			menuButton = 71;
     		}
     	}
     	menuSet();
@@ -495,10 +626,21 @@ public class Board extends JFrame implements KeyListener{
     		else if (menuButton == 61) {
     			menuButton = 63;
     		}
+    		else if (menuButton > 71 && menuButton <= 75) {
+    			if (valueSkip >= (menuButton - 70)) {
+    				menuButton = 71;
+    			}
+    			else {
+    				menuButton -= valueSkip;
+    			}
+    		}
+    		else if (menuButton == 71) {
+    			menuButton = 75;
+    		}
     	}
     	else {
     		if (menuButton < 8 && menuButton >= 1) {
-    			if (valueSkip >= menuButton) {
+    			if (valueSkip >= 8 - menuButton) {
     				menuButton = 8;
     			}
     			else {
@@ -509,7 +651,7 @@ public class Board extends JFrame implements KeyListener{
     			menuButton = 1;
     		}
     		else if (menuButton < 63 && menuButton >= 61) {
-    			if (valueSkip >= (menuButton - 60)) {
+    			if (valueSkip >= (3 - menuButton - 60)) {
     				menuButton = 63;
     			}
     			else {
@@ -518,6 +660,17 @@ public class Board extends JFrame implements KeyListener{
     		}
     		else if (menuButton == 63) {
     			menuButton = 61;
+    		}
+    		else if (menuButton < 75 && menuButton >= 71) {
+    			if (valueSkip >= (5 - menuButton - 70)) {
+    				menuButton = 75;
+    			}
+    			else {
+    				menuButton += valueSkip;
+    			}
+    		}
+    		else if (menuButton == 75) {
+    			menuButton = 71;
     		}
     	}
     	menuSet();
@@ -546,7 +699,14 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 7: //Options
-			menuButton = 71;
+			menuButton = 75;
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray7) {
+				menuLabel.setVisible(true);
+			}
+			menuSet();
 			break;
 		case 8: //Quit
 			if (!saved) {
@@ -591,21 +751,43 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 71: //Options - Value Skip
+			setValueSkip();
+			for (JLabel menuLabel : menuArray7) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(true);
+			}
 			break;
 		case 72: //Options - Controls
+			setControls();
+			for (JLabel menuLabel : menuArray7) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(true);
+			}
 			break;
 		case 73: //Options - Battle Animations
 			break;
 		case 74: //Options - Background Color
 			break;
 		case 75: //Options - Back
+			menuButton = 7;
+			for (JLabel menuLabel : menuArray7) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(true);
+			}
+			menuSet();
 			break;
 		}
     }
     
 	@Override
 	public void keyPressed(KeyEvent k) {
-		if (!superPaused) {
+		if (!keyPaused && !superPaused) {
 			//MENU
 			if ((k.getKeyCode() == mu1 || k.getKeyCode() == mu2 || k.getKeyCode() == mu3) && !paused) {
 				menuSelect("UP");
@@ -643,6 +825,15 @@ public class Board extends JFrame implements KeyListener{
 				if (menuButton >= 61 && menuButton <= 63) {
 					menuButton = 6;
 					for (JLabel menuLabel : menuArray6) {
+						menuLabel.setVisible(false);
+					}
+					for (JLabel menuLabel : menuArray0) {
+						menuLabel.setVisible(true);
+					}
+				}
+				else if (menuButton >= 71 && menuButton <= 75) {
+					menuButton = 7;
+					for (JLabel menuLabel : menuArray7) {
 						menuLabel.setVisible(false);
 					}
 					for (JLabel menuLabel : menuArray0) {
@@ -877,6 +1068,9 @@ public class Board extends JFrame implements KeyListener{
 					}
 				}
 			}
+		}
+		else if (keyPaused) {
+			
 		}
 	}
 	
@@ -1118,6 +1312,18 @@ public class Board extends JFrame implements KeyListener{
     	mainPanel.repaint();
 	}
 
+	public void setValueSkip() {
+		Object input = JOptionPane.showInputDialog(frame, "Input integer for value skip:", "Value skip", JOptionPane.PLAIN_MESSAGE, null, null, valueSkip);
+
+		if (input.toString().matches("\\d+")) {
+			valueSkip = Integer.valueOf(input.toString());
+		}
+	}
+	
+	public void setControls() {
+		
+	}
+	
 	public void saveGame() {
 		superPaused = true;
 		
