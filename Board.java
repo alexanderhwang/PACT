@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,11 +26,14 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class Board extends JFrame implements KeyListener{
@@ -89,7 +93,7 @@ public class Board extends JFrame implements KeyListener{
 	private int talk = 0;
 	private int currentFile = 1;
 
-	private int l1 = KeyEvent.VK_LEFT; private int l2 = KeyEvent.VK_A; private int l3 = KeyEvent.VK_NUMPAD4;
+	/*private int l1 = KeyEvent.VK_LEFT; private int l2 = KeyEvent.VK_A; private int l3 = KeyEvent.VK_NUMPAD4;
 	private int r1 = KeyEvent.VK_RIGHT; private int r2 = KeyEvent.VK_D; private int r3 = KeyEvent.VK_NUMPAD6;
 	private int u1 = KeyEvent.VK_UP; private int u2 = KeyEvent.VK_W; private int u3 = KeyEvent.VK_NUMPAD8;
 	private int d1 = KeyEvent.VK_DOWN; private int d2 = KeyEvent.VK_S; private int d3 = KeyEvent.VK_NUMPAD2;
@@ -101,10 +105,15 @@ public class Board extends JFrame implements KeyListener{
 	private int mdd1 = KeyEvent.VK_END; private int mdd2 = KeyEvent.VK_SLASH; private int mdd3 = KeyEvent.VK_CLOSE_BRACKET;
 	private int ms1 = KeyEvent.VK_ENTER; private int ms2 = KeyEvent.VK_Z; private int ms3 = KeyEvent.VK_BACK_SLASH;
 	private int mb1 = KeyEvent.VK_ESCAPE; private int mb2 = KeyEvent.VK_BACK_SPACE; private int mb3 = KeyEvent.VK_DELETE;
-	private int su1 = KeyEvent.VK_CAPS_LOCK; private int su2 = KeyEvent.VK_NUM_LOCK; private int su3 = KeyEvent.VK_M;
-	private ArrayList<Integer> keyArray = new ArrayList<Integer>(Arrays.asList(l1, l2, l3, r1, r2, r3, u1, u2, u3, d1, d2, d3, ac1, ac2, ac3, p1, p2, p3,
-			mu1, mu2, mu3, md1, md2, md3, muu1, muu2, muu3, mdd1, mdd2, mdd3, ms1, ms2, ms3, mb1, mb2, mb3, su1, su2, su3));
-	
+	private int su1 = KeyEvent.VK_CAPS_LOCK; private int su2 = KeyEvent.VK_NUM_LOCK; private int su3 = KeyEvent.VK_M;*/
+	private ArrayList<Integer> keyArray = new ArrayList<Integer>(Arrays.asList(KeyEvent.VK_LEFT, KeyEvent.VK_A, KeyEvent.VK_NUMPAD4,
+			KeyEvent.VK_RIGHT, KeyEvent.VK_D, KeyEvent.VK_NUMPAD6, KeyEvent.VK_UP, KeyEvent.VK_W, KeyEvent.VK_NUMPAD8,
+			KeyEvent.VK_DOWN, KeyEvent.VK_S, KeyEvent.VK_NUMPAD2, KeyEvent.VK_SPACE, KeyEvent.VK_Q, KeyEvent.VK_NUMPAD0,
+			KeyEvent.VK_V, KeyEvent.VK_P, KeyEvent.VK_0, KeyEvent.VK_PAGE_UP, KeyEvent.VK_SHIFT, KeyEvent.VK_MINUS,
+			KeyEvent.VK_PAGE_DOWN, KeyEvent.VK_CONTROL, KeyEvent.VK_EQUALS, KeyEvent.VK_HOME, KeyEvent.VK_PERIOD, KeyEvent.VK_OPEN_BRACKET,
+			KeyEvent.VK_END, KeyEvent.VK_SLASH, KeyEvent.VK_CLOSE_BRACKET, KeyEvent.VK_ENTER, KeyEvent.VK_Z, KeyEvent.VK_BACK_SLASH,
+			KeyEvent.VK_ESCAPE, KeyEvent.VK_BACK_SPACE, KeyEvent.VK_DELETE, KeyEvent.VK_CAPS_LOCK, KeyEvent.VK_NUM_LOCK, KeyEvent.VK_M));
+
     public Board() {
     	menuPanel.setPreferredSize(new Dimension(160, 400));
     	menuPanel.setLayout(null);
@@ -448,13 +457,29 @@ public class Board extends JFrame implements KeyListener{
     		}
     	});
     	
+    	frame.addWindowListener(new java.awt.event.WindowAdapter() {
+    	    @Override
+    	    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				if (!saved) {
+					Object[] choice = {"Go back", "Quit anyway"};
+					int n = JOptionPane.showOptionDialog(frame, "File has not been saved.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
+					if (n == JOptionPane.NO_OPTION) {
+						System.exit(1);
+					}
+				}
+				else {
+					System.exit(1);
+				}
+    	    }
+    	});
+    	
     	frame.addKeyListener(this);
     	frame.add(mainPanel, BorderLayout.WEST);
     	frame.add(menuPanel, BorderLayout.EAST);
     	frame.setIconImage(new ImageIcon(icon).getImage());
     	frame.setSize(960,800);
     	frame.setLocation(0, 0);
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     	frame.setResizable(false);
     	frame.pack();
     	frame.setVisible(true);
@@ -789,16 +814,16 @@ public class Board extends JFrame implements KeyListener{
 	public void keyPressed(KeyEvent k) {
 		if (!keyPaused && !superPaused) {
 			//MENU
-			if ((k.getKeyCode() == mu1 || k.getKeyCode() == mu2 || k.getKeyCode() == mu3) && !paused) {
+			if ((k.getKeyCode() == keyArray.get(18) || k.getKeyCode() == keyArray.get(19) || k.getKeyCode() == keyArray.get(20)) && !paused) {
 				menuSelect("UP");
 			}
-			else if ((k.getKeyCode() == md1 || k.getKeyCode() == md2 || k.getKeyCode() == md3) && !paused) {
+			else if ((k.getKeyCode() == keyArray.get(21) || k.getKeyCode() == keyArray.get(22) || k.getKeyCode() == keyArray.get(23)) && !paused) {
 				menuSelect("DOWN");
 			}
-			else if ((k.getKeyCode() == muu1 || k.getKeyCode() == muu2 || k.getKeyCode() == muu3) && !paused) {
+			else if ((k.getKeyCode() == keyArray.get(24) || k.getKeyCode() == keyArray.get(25) || k.getKeyCode() == keyArray.get(26)) && !paused) {
 				menuJump("UP");
 			}
-			else if ((k.getKeyCode() == mdd1 || k.getKeyCode() == mdd2 || k.getKeyCode() == mdd3) && !paused) {
+			else if ((k.getKeyCode() == keyArray.get(27) || k.getKeyCode() == keyArray.get(28) || k.getKeyCode() == keyArray.get(29)) && !paused) {
 				menuJump("DOWN");
 			}
 			else if ((k.getKeyCode() >= KeyEvent.VK_0 && k.getKeyCode() <= KeyEvent.VK_9) && !paused) {
@@ -820,7 +845,7 @@ public class Board extends JFrame implements KeyListener{
 				}
 				menuSet();
 			}
-			else if ((k.getKeyCode() == mb1 || k.getKeyCode() == mb2 || k.getKeyCode() == mb3) && !paused) {
+			else if ((k.getKeyCode() == keyArray.get(33) || k.getKeyCode() == keyArray.get(34) || k.getKeyCode() == keyArray.get(35)) && !paused) {
 				
 				if (menuButton >= 61 && menuButton <= 63) {
 					menuButton = 6;
@@ -842,12 +867,12 @@ public class Board extends JFrame implements KeyListener{
 				}
 				menuSet();
 			}
-			else if ((k.getKeyCode() == ms1 || k.getKeyCode() == ms2 || k.getKeyCode() == ms3) && !paused) {
+			else if ((k.getKeyCode() == keyArray.get(30) || k.getKeyCode() == keyArray.get(31) || k.getKeyCode() == keyArray.get(32)) && !paused) {
 				menuPress();
 			}
 			
 			//CHARACTER
-			else if ((k.getKeyCode() == l1 || k.getKeyCode() == l2 || k.getKeyCode() == l3) && !paused && !going) {
+			else if ((k.getKeyCode() == keyArray.get(0) || k.getKeyCode() == keyArray.get(1) || k.getKeyCode() == keyArray.get(2)) && !paused && !going) {
 				if (buttonPaused) {
 					menuJump("UP");
 				}
@@ -876,7 +901,7 @@ public class Board extends JFrame implements KeyListener{
 					}
 				}
 			}
-			else if ((k.getKeyCode() == r1 || k.getKeyCode() == r2 || k.getKeyCode() == r3) && !paused && !going) {
+			else if ((k.getKeyCode() == keyArray.get(3) || k.getKeyCode() == keyArray.get(4) || k.getKeyCode() == keyArray.get(5)) && !paused && !going) {
 				if (buttonPaused) {
 					menuJump("DOWN");
 				}
@@ -905,7 +930,7 @@ public class Board extends JFrame implements KeyListener{
 					}
 				}
 			}
-			else if ((k.getKeyCode() == u1 || k.getKeyCode() == u2 || k.getKeyCode() == u3) && !paused && !going) {
+			else if ((k.getKeyCode() == keyArray.get(6) || k.getKeyCode() == keyArray.get(7) || k.getKeyCode() == keyArray.get(8)) && !paused && !going) {
 				if (buttonPaused) {
 					menuSelect("UP");
 				}
@@ -934,7 +959,7 @@ public class Board extends JFrame implements KeyListener{
 					}
 				}
 			}
-			else if ((k.getKeyCode() == d1 || k.getKeyCode() == d2 || k.getKeyCode() == d3) && !paused && !going) {
+			else if ((k.getKeyCode() == keyArray.get(9) || k.getKeyCode() == keyArray.get(10) || k.getKeyCode() == keyArray.get(11)) && !paused && !going) {
 				if (buttonPaused) {
 					menuSelect("DOWN");
 				}
@@ -963,7 +988,7 @@ public class Board extends JFrame implements KeyListener{
 					}
 				}
 			}
-			else if ((k.getKeyCode() == su1 || k.getKeyCode() == su2 || k.getKeyCode() == su3)) {
+			else if ((k.getKeyCode() == keyArray.get(36) || k.getKeyCode() == keyArray.get(37) || k.getKeyCode() == keyArray.get(38))) {
 				saved = false;
 				if (timerRun == 80) {
 					timerRun = 20;
@@ -973,7 +998,7 @@ public class Board extends JFrame implements KeyListener{
 				}
 				timer.setDelay(timerRun);
 			}
-			else if ((k.getKeyCode() == p1 || k.getKeyCode() == p2 || k.getKeyCode() == p3) && !going && !paused) {
+			else if ((k.getKeyCode() == keyArray.get(15) || k.getKeyCode() == keyArray.get(16) || k.getKeyCode() == keyArray.get(17)) && !going && !paused) {
 				if (buttonPaused) {
 			    	menuPanel.setBackground(new Color(224, 224, 224));
 			    	mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -989,7 +1014,7 @@ public class Board extends JFrame implements KeyListener{
 					buttonPaused = true;
 				}
 			}
-			else if ((k.getKeyCode() == ac1 || k.getKeyCode() == ac2 || k.getKeyCode() == ac3) && !going) {
+			else if ((k.getKeyCode() == keyArray.get(12) || k.getKeyCode() == keyArray.get(13) || k.getKeyCode() == keyArray.get(14)) && !going) {
 				if (buttonPaused) {
 					menuPress();
 				}
@@ -1315,13 +1340,19 @@ public class Board extends JFrame implements KeyListener{
 	public void setValueSkip() {
 		Object input = JOptionPane.showInputDialog(frame, "Input integer for value skip:", "Value skip", JOptionPane.PLAIN_MESSAGE, null, null, valueSkip);
 
-		if (input.toString().matches("\\d+")) {
+		if (input != null && input.toString().matches("\\d+")) {
 			valueSkip = Integer.valueOf(input.toString());
 		}
+		saved = false;
 	}
 	
 	public void setControls() {
-		
+		ArrayList<Integer> keyArrayClone = new ArrayList<Integer>(keyArray);
+		ButtonsPane buttonsPane = new ButtonsPane(keyArrayClone);
+		if (buttonsPane.confirmation) {
+			keyArray = new ArrayList<Integer>(buttonsPane.keyArray);
+		}
+		saved = false;
 	}
 	
 	public void saveGame() {
@@ -1466,13 +1497,16 @@ public class Board extends JFrame implements KeyListener{
 		List<String> lines = Arrays.asList(
 			//Name 0
 			currentFileName,
-			//Bindings 2 - 40
+			//Bindings 2 - 41
 			"\tde3vwbc3nodest\t",
-			""+l1, ""+l2, ""+l3, ""+r1, ""+r2, ""+r3, ""+u1, ""+u2, ""+u3, ""+d1, ""+d2, ""+d3, 
-			""+ac1, ""+ac2, ""+ac3, ""+p1, ""+p2, ""+p3, ""+mu1, ""+mu2, ""+mu3, ""+md1, ""+md2, ""+md3, 
-			""+muu1, ""+muu2, ""+muu3, ""+mdd1, ""+mdd2, ""+mdd3, ""+ms1, ""+ms2, ""+ms3, ""+mb1, ""+mb2, ""+mb3, 
-			""+su1, ""+su2, ""+su3,
-			//Misc 42 - 47
+			""+keyArray.get(0), ""+keyArray.get(1), ""+keyArray.get(2), ""+keyArray.get(3), ""+keyArray.get(4), ""+keyArray.get(5), 
+			""+keyArray.get(6), ""+keyArray.get(7), ""+keyArray.get(8), ""+keyArray.get(9), ""+keyArray.get(10), ""+keyArray.get(11), 
+			""+keyArray.get(12), ""+keyArray.get(13), ""+keyArray.get(14), ""+keyArray.get(15), ""+keyArray.get(16), ""+keyArray.get(17), 
+			""+keyArray.get(18), ""+keyArray.get(19), ""+keyArray.get(20), ""+keyArray.get(21), ""+keyArray.get(22), ""+keyArray.get(23), 
+			""+keyArray.get(24), ""+keyArray.get(25), ""+keyArray.get(26), ""+keyArray.get(27), ""+keyArray.get(28), ""+keyArray.get(29), 
+			""+keyArray.get(30), ""+keyArray.get(31), ""+keyArray.get(32), ""+keyArray.get(33), ""+keyArray.get(34), ""+keyArray.get(35), 
+			""+keyArray.get(36), ""+keyArray.get(37), ""+keyArray.get(38),
+			//Misc 43 - 48
 			"\tde3vwmn3stcd\t",
 			""+valueSkip, ""+background.getRed(), ""+background.getGreen(), ""+background.getBlue(), ""+animation, ""+currentFile, 
 			//Character
@@ -1640,6 +1674,7 @@ public class Board extends JFrame implements KeyListener{
 	}
 
 	public void readFile(String currentFileId) {
+		ArrayList<Integer> newKeyArray = new ArrayList<Integer>();
 		String line;
     	try (BufferedReader bufferedReader = new BufferedReader(new FileReader(currentFileId))) {
     		line = bufferedReader.readLine();
@@ -1690,7 +1725,7 @@ public class Board extends JFrame implements KeyListener{
     				progress = 0;
     			}
     			else if (overallProgress == 2) {
-    				keyArray.set(progress, Integer.getInteger(line));
+    				newKeyArray.add(Integer.parseInt(line));
     				progress++;
     			}
     			else if (overallProgress == 3) {
@@ -1749,6 +1784,7 @@ public class Board extends JFrame implements KeyListener{
     			}
     			line = bufferedReader.readLine();
     		}
+    		keyArray = newKeyArray;
 			bufferedReader.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
