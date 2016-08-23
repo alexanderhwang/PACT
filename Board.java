@@ -437,6 +437,49 @@ public class Board extends JFrame implements KeyListener{
     		}
     	});
     	
+    	menu73.addMouseListener(new MouseAdapter() {
+    		public void mouseClicked(MouseEvent c) {
+    			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
+    				if (menuButton == 73) {
+    					setBattleAnimations();
+    					menuButton = 7;
+    					for (JLabel menuLabel : menuArray7) {
+    						menuLabel.setVisible(false);
+    					}
+    					for (JLabel menuLabel : menuArray0) {
+    						menuLabel.setVisible(true);
+    					}
+    				}
+    				else {
+    	    			menuButton = 73;
+    				}
+	    			menuSet();
+    			}
+    		}
+    	});
+    	
+
+    	menu74.addMouseListener(new MouseAdapter() {
+    		public void mouseClicked(MouseEvent c) {
+    			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
+    				if (menuButton == 74) {
+    					setBackgroundColor();
+    					menuButton = 7;
+    					for (JLabel menuLabel : menuArray7) {
+    						menuLabel.setVisible(false);
+    					}
+    					for (JLabel menuLabel : menuArray0) {
+    						menuLabel.setVisible(true);
+    					}
+    				}
+    				else {
+    	    			menuButton = 74;
+    				}
+	    			menuSet();
+    			}
+    		}
+    	});
+    	
     	menu75.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
@@ -754,6 +797,7 @@ public class Board extends JFrame implements KeyListener{
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(true);
 			}
+			menuSet();
 			break;
 		case 62: //File - Load
 			loadGame();
@@ -764,6 +808,7 @@ public class Board extends JFrame implements KeyListener{
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(true);
 			}
+			menuSet();
 			break;
 		case 63: //File - Back
 			menuButton = 6;
@@ -776,6 +821,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 71: //Options - Value Skip
+			menuButton = 7;
 			setValueSkip();
 			for (JLabel menuLabel : menuArray7) {
 				menuLabel.setVisible(false);
@@ -783,8 +829,10 @@ public class Board extends JFrame implements KeyListener{
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(true);
 			}
+			menuSet();
 			break;
 		case 72: //Options - Controls
+			menuButton = 7;
 			setControls();
 			for (JLabel menuLabel : menuArray7) {
 				menuLabel.setVisible(false);
@@ -792,10 +840,29 @@ public class Board extends JFrame implements KeyListener{
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(true);
 			}
+			menuSet();
 			break;
 		case 73: //Options - Battle Animations
+			menuButton = 7;
+			setBattleAnimations();
+			for (JLabel menuLabel : menuArray7) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(true);
+			}
+			menuSet();
 			break;
 		case 74: //Options - Background Color
+			menuButton = 7;
+			setBackgroundColor();
+			for (JLabel menuLabel : menuArray7) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(true);
+			}
+			menuSet();
 			break;
 		case 75: //Options - Back
 			menuButton = 7;
@@ -1338,21 +1405,39 @@ public class Board extends JFrame implements KeyListener{
 	}
 
 	public void setValueSkip() {
-		Object input = JOptionPane.showInputDialog(frame, "Input integer for value skip:", "Value skip", JOptionPane.PLAIN_MESSAGE, null, null, valueSkip);
+		superPaused = true;
+		Object input = JOptionPane.showInputDialog(frame, "Input integer for value skip (max: 999):", "Value skip", JOptionPane.PLAIN_MESSAGE, null, null, valueSkip);
 
-		if (input != null && input.toString().matches("\\d+")) {
+		if (input != null && input.toString().matches("\\d?\\d?\\d")) {
 			valueSkip = Integer.valueOf(input.toString());
 		}
 		saved = false;
+		superPaused = false;
 	}
 	
 	public void setControls() {
+		superPaused = true;
 		ArrayList<Integer> keyArrayClone = new ArrayList<Integer>(keyArray);
 		ButtonsPane buttonsPane = new ButtonsPane(keyArrayClone);
 		if (buttonsPane.confirmation) {
 			keyArray = new ArrayList<Integer>(buttonsPane.keyArray);
 		}
 		saved = false;
+		superPaused = false;
+	}
+
+	public void setBattleAnimations() {
+		superPaused = true;
+		
+		saved = false;
+		superPaused = false;
+	}
+	
+	public void setBackgroundColor() {
+		superPaused = true;
+		
+		saved = false;
+		superPaused = false;
 	}
 	
 	public void saveGame() {
