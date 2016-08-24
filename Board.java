@@ -61,7 +61,7 @@ public class Board extends JFrame implements KeyListener{
 	private JLabel menu71 = new JLabel("Value Skip");
 	private JLabel menu72 = new JLabel("Controls");
 	private JLabel menu73 = new JLabel("Battle Animations");
-	private JLabel menu74 = new JLabel("Background Color");
+	private JLabel menu74 = new JLabel("Autosave");
 	private JLabel menu75 = new JLabel("Back");
 	private JPanel foregroundPanel = new JPanel();
 	private String icon = "Data\\Objects\\Rock1.png"; 
@@ -85,6 +85,8 @@ public class Board extends JFrame implements KeyListener{
 	
 	private Color background = new Color(255, 255, 255);
 	private Boolean animation = true;
+	private Boolean autosave = false;
+	private String currentFileName = "";
 	
 	private int valueSkip = 10;
 	private int timerRun = 80;
@@ -314,15 +316,26 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				if (menuButton == 8) {
-    					if (!saved) {
+    					if (autosave && !going && !paused && !superPaused) {
+    	    				saveGame();
+    	    				System.exit(0);
+    	    			}
+    	    			else if (autosave) {
+    						Object[] choice = {"Go back", "Quit anyway"};
+    						int n = JOptionPane.showOptionDialog(frame, "File has not been saved. \nAutosave requires no running threads.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
+    						if (n == JOptionPane.NO_OPTION) {
+    							System.exit(0);
+    						}
+    	    			}
+    	    			else if (!saved) {
     						Object[] choice = {"Go back", "Quit anyway"};
     						int n = JOptionPane.showOptionDialog(frame, "File has not been saved.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
     						if (n == JOptionPane.NO_OPTION) {
-    							System.exit(1);
+    							System.exit(0);
     						}
     					}
     					else {
-    						System.exit(1);
+    						System.exit(0);
     					}
     				}
     				else {
@@ -463,7 +476,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
     				if (menuButton == 74) {
-    					setBackgroundColor();
+    					setAutosave();
     					menuButton = 7;
     					for (JLabel menuLabel : menuArray7) {
     						menuLabel.setVisible(false);
@@ -503,15 +516,26 @@ public class Board extends JFrame implements KeyListener{
     	frame.addWindowListener(new java.awt.event.WindowAdapter() {
     	    @Override
     	    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-				if (!saved) {
+    			if (autosave && !going && !paused && !superPaused) {
+    				saveGame();
+    				System.exit(0);
+    			}
+    			else if (autosave) {
+					Object[] choice = {"Go back", "Quit anyway"};
+					int n = JOptionPane.showOptionDialog(frame, "File has not been saved. \nAutosave requires no running threads.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
+					if (n == JOptionPane.NO_OPTION) {
+						System.exit(0);
+					}
+    			}
+    			else if (!saved) {
 					Object[] choice = {"Go back", "Quit anyway"};
 					int n = JOptionPane.showOptionDialog(frame, "File has not been saved.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
 					if (n == JOptionPane.NO_OPTION) {
-						System.exit(1);
+						System.exit(0);
 					}
 				}
 				else {
-					System.exit(1);
+					System.exit(0);
 				}
     	    }
     	});
@@ -777,15 +801,26 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 8: //Quit
-			if (!saved) {
+			if (autosave && !going && !paused && !superPaused) {
+				saveGame();
+				System.exit(0);
+			}
+			else if (autosave) {
+				Object[] choice = {"Go back", "Quit anyway"};
+				int n = JOptionPane.showOptionDialog(frame, "File has not been saved. \nAutosave requires no running threads.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
+				if (n == JOptionPane.NO_OPTION) {
+					System.exit(0);
+				}
+			}
+			else if (!saved) {
 				Object[] choice = {"Go back", "Quit anyway"};
 				int n = JOptionPane.showOptionDialog(frame, "File has not been saved.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
 				if (n == JOptionPane.NO_OPTION) {
-					System.exit(1);
+					System.exit(0);
 				}
 			}
 			else {
-				System.exit(1);
+				System.exit(0);
 			}
 			break;
 		case 61: //File - Save
@@ -853,9 +888,9 @@ public class Board extends JFrame implements KeyListener{
 			}
 			menuSet();
 			break;
-		case 74: //Options - Background Color
+		case 74: //Options - Autosave
 			menuButton = 7;
-			setBackgroundColor();
+			setAutosave();
 			for (JLabel menuLabel : menuArray7) {
 				menuLabel.setVisible(false);
 			}
@@ -1074,7 +1109,7 @@ public class Board extends JFrame implements KeyListener{
 					buttonPaused = false;
 				}
 				else {
-			    	menuPanel.setBackground(new Color(212, 212, 212));
+			    	menuPanel.setBackground(new Color(196, 196, 196));
 			    	mainPanel.setBorder(BorderFactory.createLineBorder(new Color(127, 0, 63), 1));
 			    	foregroundPanel.setBackground(new Color(127, 127, 127, 63));
 			    	foregroundPanel.setOpaque(true);
@@ -1428,156 +1463,239 @@ public class Board extends JFrame implements KeyListener{
 
 	public void setBattleAnimations() {
 		superPaused = true;
-		
+		Object[] choices = {"On", "Off"};
+		Object defaultChoice;
+		if (animation) {
+			defaultChoice = choices[0];
+		}
+		else {
+			defaultChoice = choices[1];
+		}
+		int choice = JOptionPane.showOptionDialog(frame, "Enable animations in battle:", "Battle animations", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, defaultChoice);
+		if (choice == JOptionPane.YES_OPTION) {
+			animation = true;
+		}
+		else if (choice == JOptionPane.NO_OPTION) {
+			animation = false;
+		}
 		saved = false;
 		superPaused = false;
 	}
 	
-	public void setBackgroundColor() {
+	public void setAutosave() {
 		superPaused = true;
-		
+		Object[] choices = {"On", "Off"};
+		Object defaultChoice;
+		if (autosave) {
+			defaultChoice = choices[0];
+		}
+		else {
+			defaultChoice = choices[1];
+		}
+		int choice = JOptionPane.showOptionDialog(frame, "Quick-save and automatically save when quitting:", "Autosave", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, defaultChoice);
+		if (choice == JOptionPane.YES_OPTION) {
+			File autoFile = new File("File\\Save" + currentFile + ".jsmn");
+	        if (autoFile.exists()) {
+	        	String autoFileName = "New file\t";
+	        	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save" + currentFile + ".jsmn"))) {
+	        		autoFileName = bufferedReader.readLine();
+	    			bufferedReader.close();
+	    		} catch (FileNotFoundException e) {
+	    			e.printStackTrace();
+	    		} catch (IOException e1) {
+	    			e1.printStackTrace();
+	    		}
+	        	if (!autoFileName.equals("New file\t")) {
+		        	autosave = true;
+	        	}
+	        	else {
+	        		JOptionPane.showMessageDialog(frame, "Autosave requires a saved file.", "Autosave", JOptionPane.ERROR_MESSAGE);
+	        	}
+	        }
+	        else {
+	        	JOptionPane.showMessageDialog(frame, "Autosave requires a saved file.", "Autosave", JOptionPane.ERROR_MESSAGE);
+	        }
+		}
+		else if (choice == JOptionPane.NO_OPTION) {
+			autosave = false;
+		}
 		saved = false;
 		superPaused = false;
 	}
 	
 	public void saveGame() {
 		superPaused = true;
-		
-		File file1 = new File("File\\Save1.jsmn");
-		File file2 = new File("File\\Save2.jsmn");
-		File file3 = new File("File\\Save3.jsmn");
-		File file4 = new File("File\\Save4.jsmn");
-		String file1Name = ""; 
-		String file2Name = ""; 
-		String file3Name = ""; 
-		String file4Name = "";
-		String currentFileName = "";
-        if (!file1.exists()) {
-        	try {
-				file1.createNewFile();
-				FileWriter fileWriter = new FileWriter("File\\Save1.jsmn");
-				fileWriter.write("New file\t");
-				fileWriter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }
-        if (!file2.exists()) {
-        	try {
-				file2.createNewFile();
-				FileWriter fileWriter = new FileWriter("File\\Save2.jsmn");
-				fileWriter.write("New file\t");
-				fileWriter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }
-        if (!file3.exists()) {
-        	try {
-				file3.createNewFile();
-				FileWriter fileWriter = new FileWriter("File\\Save3.jsmn");
-				fileWriter.write("New file\t");
-				fileWriter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }
-        if (!file4.exists()) {
-        	try {
-				file4.createNewFile();
-				FileWriter fileWriter = new FileWriter("File\\Save4.jsmn");
-				fileWriter.write("New file\t");
-				fileWriter.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-        }
-    	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save1.jsmn"))) {
-    		file1Name = bufferedReader.readLine();
-			bufferedReader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-    	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save2.jsmn"))) {
-    		file2Name = bufferedReader.readLine();
-			bufferedReader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-    	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save3.jsmn"))) {
-    		file3Name = bufferedReader.readLine();
-			bufferedReader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-    	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save4.jsmn"))) {
-    		file4Name = bufferedReader.readLine();
-			bufferedReader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-    	
-		Object[] saveFiles = {"1: " + file1Name, "2: " + file2Name, "3: " + file3Name, "4: " + file4Name};
-		Object choiceObject = JOptionPane.showInputDialog(frame, "Choose a file:", "Save", JOptionPane.PLAIN_MESSAGE, null, saveFiles, saveFiles[currentFile - 1]);
-		
-		if (choiceObject == null) {
-			superPaused = false;
+		if (autosave) {
+			File autoFile = new File("File\\Save" + currentFile + ".jsmn");
+	        if (autoFile.exists()) {
+	        	String autoFileName = "New file\t";
+	        	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save" + currentFile + ".jsmn"))) {
+	        		autoFileName = bufferedReader.readLine();
+	    			bufferedReader.close();
+	    		} catch (FileNotFoundException e) {
+	    			e.printStackTrace();
+	    		} catch (IOException e1) {
+	    			e1.printStackTrace();
+	    		}
+	        	if (!autoFileName.equals("New file\t")) {
+	        		currentFileName = autoFileName;
+					writeFile();
+					saved = true;
+	        	}
+	        	else {
+	        		JOptionPane.showMessageDialog(frame, "Autosave was thwarted by outside forces.", "Save", JOptionPane.ERROR_MESSAGE);
+	        		autosave = false;
+	        		saveGame();
+	        	}
+	        }
+	        else {
+	        	JOptionPane.showMessageDialog(frame, "Autosave was thwarted by outside forces.", "Save", JOptionPane.ERROR_MESSAGE);
+	        	autosave = false;
+        		saveGame();
+	        }
 		}
 		else {
-			String choice = (String) choiceObject;			
+			File file1 = new File("File\\Save1.jsmn");
+			File file2 = new File("File\\Save2.jsmn");
+			File file3 = new File("File\\Save3.jsmn");
+			File file4 = new File("File\\Save4.jsmn");
+			String file1Name = ""; 
+			String file2Name = ""; 
+			String file3Name = ""; 
+			String file4Name = "";
+			String newCurrentFileName = "";
+	        if (!file1.exists()) {
+	        	try {
+					file1.createNewFile();
+					FileWriter fileWriter = new FileWriter("File\\Save1.jsmn");
+					fileWriter.write("New file\t");
+					fileWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }
+	        if (!file2.exists()) {
+	        	try {
+					file2.createNewFile();
+					FileWriter fileWriter = new FileWriter("File\\Save2.jsmn");
+					fileWriter.write("New file\t");
+					fileWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }
+	        if (!file3.exists()) {
+	        	try {
+					file3.createNewFile();
+					FileWriter fileWriter = new FileWriter("File\\Save3.jsmn");
+					fileWriter.write("New file\t");
+					fileWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }
+	        if (!file4.exists()) {
+	        	try {
+					file4.createNewFile();
+					FileWriter fileWriter = new FileWriter("File\\Save4.jsmn");
+					fileWriter.write("New file\t");
+					fileWriter.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }
+	    	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save1.jsmn"))) {
+	    		file1Name = bufferedReader.readLine();
+				bufferedReader.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	    	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save2.jsmn"))) {
+	    		file2Name = bufferedReader.readLine();
+				bufferedReader.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	    	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save3.jsmn"))) {
+	    		file3Name = bufferedReader.readLine();
+				bufferedReader.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	    	try (BufferedReader bufferedReader = new BufferedReader(new FileReader("File\\Save4.jsmn"))) {
+	    		file4Name = bufferedReader.readLine();
+				bufferedReader.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+	    	
+			Object[] saveFiles = {"1: " + file1Name, "2: " + file2Name, "3: " + file3Name, "4: " + file4Name};
+			Object choiceObject = JOptionPane.showInputDialog(frame, "Choose a file:", "Save", JOptionPane.PLAIN_MESSAGE, null, saveFiles, saveFiles[currentFile - 1]);
 			
-			if (choice.equals("4: " + file4Name)) {
-				currentFile = 4;
-				currentFileName = file4Name;
-			}
-			else if (choice.equals("3: " + file3Name)) {
-				currentFile = 3;
-				currentFileName = file3Name;
-			}
-			else if (choice.equals("2: " + file2Name)) {
-				currentFile = 2;
-				currentFileName = file2Name;
-			}
-			else if (choice.equals("1: " + file1Name)) {
-				currentFile = 1;
-				currentFileName = file1Name;
-			}
-
-			if (currentFileName.equals("New file\t")) {
-				Object currentFileNameObject = JOptionPane.showInputDialog(frame, "Input file name:", "Save file " + currentFile, JOptionPane.PLAIN_MESSAGE, null, null, character.name);
-				
-				if (currentFileNameObject == null) {
-				}
-				else {
-					currentFileName = (String) currentFileNameObject;
-					writeFile(currentFileName);
-					saved = true;
-				}
+			if (choiceObject == null) {
+				superPaused = false;
 			}
 			else {
-				Object[] choice2 = {"Yes", "No"};
-				Object choice2Object = JOptionPane.showOptionDialog(frame, "Overwrite this file?", "Save file " + currentFile, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, choice2, choice2[0]);
+				String choice = (String) choiceObject;
+				int currentFileCopy = currentFile;
 				
-				if ((int) choice2Object != JOptionPane.YES_OPTION) {
+				if (choice.equals("4: " + file4Name)) {
+					currentFileCopy = 4;
+					newCurrentFileName = file4Name;
+				}
+				else if (choice.equals("3: " + file3Name)) {
+					currentFileCopy = 3;
+					newCurrentFileName = file3Name;
+				}
+				else if (choice.equals("2: " + file2Name)) {
+					currentFileCopy = 2;
+					newCurrentFileName = file2Name;
+				}
+				else if (choice.equals("1: " + file1Name)) {
+					currentFileCopy = 1;
+					newCurrentFileName = file1Name;
+				}
+	
+				if (newCurrentFileName.equals("New file\t")) {
+					Object currentFileNameObject = JOptionPane.showInputDialog(frame, "Input file name:", "Save file " + currentFileCopy, JOptionPane.PLAIN_MESSAGE, null, null, character.name);
+					
+					if (currentFileNameObject == null) {
+					}
+					else {
+						newCurrentFileName = (String) currentFileNameObject;
+						currentFileName = newCurrentFileName;
+						currentFile = currentFileCopy;
+						writeFile();
+						saved = true;
+					}
 				}
 				else {
-					writeFile(currentFileName);
-					saved = true;
+					Object[] choice2 = {"Yes", "No"};
+					Object choice2Object = JOptionPane.showOptionDialog(frame, "Overwrite this file?", "Save file " + currentFileCopy, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, choice2, choice2[0]);
+					
+					if ((int) choice2Object != JOptionPane.YES_OPTION) {
+					}
+					else {
+						currentFileName = newCurrentFileName;
+						currentFile = currentFileCopy;
+						writeFile();
+						saved = true;
+					}
 				}
 			}
-			superPaused = false;
 		}
+		superPaused = false;
 	}
 	
-	public void writeFile(String currentFileName) {
+	public void writeFile() {
 		Charset utf8 = StandardCharsets.UTF_8;
 		List<String> lines = Arrays.asList(
 			//Name 0
@@ -1591,9 +1709,9 @@ public class Board extends JFrame implements KeyListener{
 			""+keyArray.get(24), ""+keyArray.get(25), ""+keyArray.get(26), ""+keyArray.get(27), ""+keyArray.get(28), ""+keyArray.get(29), 
 			""+keyArray.get(30), ""+keyArray.get(31), ""+keyArray.get(32), ""+keyArray.get(33), ""+keyArray.get(34), ""+keyArray.get(35), 
 			""+keyArray.get(36), ""+keyArray.get(37), ""+keyArray.get(38),
-			//Misc 43 - 48
+			//Misc 43 - 46
 			"\tde3vwmn3stcd\t",
-			""+valueSkip, ""+background.getRed(), ""+background.getGreen(), ""+background.getBlue(), ""+animation, ""+currentFile, 
+			""+valueSkip, ""+autosave, ""+animation, ""+currentFile, 
 			//Character
 			"\tde3vwcdhi1rs\t",
 			character.name, character.month, character.direction, ""+character.x, ""+character.y, ""+character.step,
@@ -1714,36 +1832,38 @@ public class Board extends JFrame implements KeyListener{
 			superPaused = false;
 		}
 		else {
-			String choice = (String) choiceObject;			
+			String choice = (String) choiceObject;
+			int currentFileCopy = currentFile;
 			
 			if (choice.equals("4: " + file4Name)) {
-				currentFile = 4;
+				currentFileCopy = 4;
 				currentFileName = file4Name;
 			}
 			else if (choice.equals("3: " + file3Name)) {
-				currentFile = 3;
+				currentFileCopy = 3;
 				currentFileName = file3Name;
 			}
 			else if (choice.equals("2: " + file2Name)) {
-				currentFile = 2;
+				currentFileCopy = 2;
 				currentFileName = file2Name;
 			}
 			else if (choice.equals("1: " + file1Name)) {
-				currentFile = 1;
+				currentFileCopy = 1;
 				currentFileName = file1Name;
 			}
 
 			if (currentFileName.equals("New file\t")) {
-				JOptionPane.showMessageDialog(frame, "Cannot load a new file.", "Load file", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Cannot load a new file.", "Load file", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
 				Object[] choice2 = {"Yes", "No"};
-				Object choice2Object = JOptionPane.showOptionDialog(frame, "Load this file?", "Load file " + currentFile, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, choice2, choice2[0]);
+				Object choice2Object = JOptionPane.showOptionDialog(frame, "Load this file?", "Load file " + currentFileCopy, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, choice2, choice2[0]);
 				
 				if ((int) choice2Object != JOptionPane.YES_OPTION) {
 				}
 				else {
-					readFile("File\\Save" + currentFile + ".jsmn");
+					readFile("File\\Save" + currentFileCopy + ".jsmn");
+					currentFile = currentFileCopy;
 					saved = true;
 				}
 			}
@@ -1765,9 +1885,6 @@ public class Board extends JFrame implements KeyListener{
     		line = bufferedReader.readLine();
     		int progress = 0;
     		int overallProgress = 0;
-    		int bRed = 255;
-    		int bGreen = 255;
-    		int bBlue = 255;
     		while (!line.equals("\t2node\t")) {
     			if (overallProgress == 0 && line.equals("\tde3vwbc3nodest\t")) {
     				overallProgress = 2;
@@ -1819,19 +1936,12 @@ public class Board extends JFrame implements KeyListener{
     					valueSkip = Integer.parseInt(line);
     					break;
     				case 1:
-    					bRed = Integer.parseInt(line);
+    					autosave = Boolean.parseBoolean(line);
     					break;
     				case 2:
-    					bGreen = Integer.parseInt(line);
-    					break;
-    				case 3:
-    					bBlue = Integer.parseInt(line);
-    					background = new Color(bRed, bGreen, bBlue);
-    					break;
-    				case 4:
     					animation = Boolean.parseBoolean(line);
     					break;
-    				case 5:
+    				case 3:
     					currentFile = Integer.parseInt(line);
     					break;
     				}
