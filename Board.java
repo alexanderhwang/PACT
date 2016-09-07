@@ -44,8 +44,8 @@ public class Board extends JFrame implements KeyListener{
 	private JLayeredPane menuPanel = new JLayeredPane();
 	private ArrayList<JLabel> menuArray0 = new ArrayList<JLabel>();
 	private JLabel menu1 = new JLabel("Party");
-	private JLabel menu2 = new JLabel("Spells");
-	private JLabel menu3 = new JLabel("Items");
+	private JLabel menu2 = new JLabel("Inventory");
+	private JLabel menu3 = new JLabel("Equipment");
 	private JLabel menu4 = new JLabel("Pacts");
 	private JLabel menu5 = new JLabel("Registry");
 	private JLabel menu6 = new JLabel("File");
@@ -63,7 +63,8 @@ public class Board extends JFrame implements KeyListener{
 	private JLabel menu73 = new JLabel("Battle Animations");
 	private JLabel menu74 = new JLabel("Autosave");
 	private JLabel menu75 = new JLabel("Back");
-	private JPanel foregroundPanel = new JPanel();
+	//private JPanel foregroundPanel = new JPanel();
+	private JPanel pausePanel = new JPanel();
 	private String icon = "Data\\Objects\\Rock1.png"; 
 	private Character character = new Character("?", "Februa", "DOWN", ML*1, ML*1, 1);
 	private JLabel characterSprite = new JLabel(character.imageIcon);
@@ -78,12 +79,13 @@ public class Board extends JFrame implements KeyListener{
 	private Boolean saved = false;
 	private Timer timer;
 	private ArrayList<Thing> thingArray = new ArrayList<Thing>();
+	private ArrayList<FalseThing> falseThingArray = new ArrayList<FalseThing>();
 	private ArrayList<JLabel> thingSpriteArray = new ArrayList<JLabel>();
+	private ArrayList<JLabel> falseThingSpriteArray = new ArrayList<JLabel>();
 	private Thing savedThing;
 	private ArrayList<Zone> zoneArray = new ArrayList<Zone>();
 	private Zone currentZone;
 	
-	private Color background = new Color(255, 255, 255);
 	private Boolean animation = true;
 	private Boolean autosave = false;
 	private String currentFileName = "";
@@ -93,7 +95,7 @@ public class Board extends JFrame implements KeyListener{
 	private int timerStep = 0;
 	private int menuButton = 1;
 	private int talk = 0;
-	private int currentFile = 1;
+	private int currentFile = 0;
 
 	/*private int l1 = KeyEvent.VK_LEFT; private int l2 = KeyEvent.VK_A; private int l3 = KeyEvent.VK_NUMPAD4;
 	private int r1 = KeyEvent.VK_RIGHT; private int r2 = KeyEvent.VK_D; private int r3 = KeyEvent.VK_NUMPAD6;
@@ -125,15 +127,21 @@ public class Board extends JFrame implements KeyListener{
     	mainPanel.setPreferredSize(new Dimension(800, 800));
     	mainPanel.setLayout(null);
     	mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-    	mainPanel.setBackground(background);
+    	mainPanel.setBackground(new Color(255, 255, 255));
     	mainPanel.setOpaque(true);
 
-    	foregroundPanel.setBounds(1, 1, 798, 798);
+    	/*foregroundPanel.setBounds(1, 1, 798, 798);
     	foregroundPanel.setLayout(null);
-    	foregroundPanel.setBackground(new Color(255, 255, 255, 0));
-    	foregroundPanel.setOpaque(false);
-    	mainPanel.add(foregroundPanel);
-
+    	foregroundPanel.setBackground(new Color(255, 127, 255, 31));
+    	mainPanel.setLayer(foregroundPanel, 0);
+    	mainPanel.add(foregroundPanel);*/
+		
+    	pausePanel.setBounds(1, 1, 798, 798);
+    	pausePanel.setLayout(null);
+    	pausePanel.setBackground(new Color(127, 127, 127, 63));
+    	//pausePanel.setOpaque(false);
+    	//mainPanel.add(pausePanel);
+    	
     	menuArray0.addAll(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8));
     	menuArray6.addAll(Arrays.asList(menu60, menu61, menu62, menu63));
     	menuArray7.addAll(Arrays.asList(menu70, menu71, menu72, menu73, menu74, menu75));
@@ -214,8 +222,26 @@ public class Board extends JFrame implements KeyListener{
 				character.setImageIcon("Data\\Characters\\" + character.month + character.direction.substring(0,  1) + character.step + ".png");
 		    	mainPanel.remove(characterSprite);
 				characterSprite = new JLabel(character.imageIcon);
+		    	mainPanel.setLayer(characterSprite, 1);
 		    	mainPanel.add(characterSprite);
 		    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
+		    	//FALSE THING
+		    	for (int i = 0; i < falseThingArray.size(); i++) {
+		    		FalseThing nowFalseThing = falseThingArray.get(i);
+		    		if (character.x == nowFalseThing.x && character.y == nowFalseThing.y) {
+		    			switch(nowFalseThing.action) {
+		    			case 1:
+		    				pauseMusic();
+		    	        	character.setX(ML*Integer.parseInt(nowFalseThing.misc.get(1)));
+		    	        	character.setY(ML*Integer.parseInt(nowFalseThing.misc.get(2)));
+		    				setZone(Integer.parseInt(nowFalseThing.misc.get(0)));
+		    				loadArea();
+		    				break;
+		    			default:
+		    				break;
+		    			}
+		    		}
+		    	}
 		    	mainPanel.revalidate();
 		    	mainPanel.repaint();
 			}
@@ -226,6 +252,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
+					playSound("Data\\Sounds\\MenuMove.wav");
 	    			menuButton = 1;
 	    			menuSet();
     			}
@@ -236,6 +263,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
+					playSound("Data\\Sounds\\MenuMove.wav");
 	    			menuButton = 2;
 	    			menuSet();
     			}
@@ -246,6 +274,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
+					playSound("Data\\Sounds\\MenuMove.wav");
 	    			menuButton = 3;
 	    			menuSet();
     			}
@@ -256,6 +285,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
+					playSound("Data\\Sounds\\MenuMove.wav");
 	    			menuButton = 4;
 	    			menuSet();
     			}
@@ -266,6 +296,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				//SET DOUBLE CLICK
+					playSound("Data\\Sounds\\MenuMove.wav");
 	    			menuButton = 5;
 	    			menuSet();
     			}
@@ -276,6 +307,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				if (menuButton == 6) {
+    					playSound("Data\\Sounds\\MenuSelect.wav");
     					menuButton = 63;
     					for (JLabel menuLabel : menuArray0) {
     						menuLabel.setVisible(false);
@@ -285,6 +317,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     					menuButton = 6;
     				}
 	    			menuSet();
@@ -296,6 +329,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				if (menuButton == 7) {
+    					playSound("Data\\Sounds\\MenuSelect.wav");
     					menuButton = 75;
     					for (JLabel menuLabel : menuArray0) {
     						menuLabel.setVisible(false);
@@ -305,6 +339,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     					menuButton = 7;
     				}
 	    			menuSet();
@@ -316,15 +351,22 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
     				if (menuButton == 8) {
+    					if (!autosave) {
+        					playSound("Data\\Sounds\\MenuSelect.wav");
+    					}
     					if (autosave && !going && !paused && !superPaused) {
     	    				saveGame();
     	    				System.exit(0);
     	    			}
     	    			else if (autosave) {
+        					playSound("Data\\Sounds\\MenuSelect.wav");
     						Object[] choice = {"Go back", "Quit anyway"};
     						int n = JOptionPane.showOptionDialog(frame, "File has not been saved. \nAutosave requires no running threads.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
     						if (n == JOptionPane.NO_OPTION) {
     							System.exit(0);
+    						}
+    						else {
+    	    					playSound("Data\\Sounds\\MenuBack.wav");
     						}
     	    			}
     	    			else if (!saved) {
@@ -333,12 +375,16 @@ public class Board extends JFrame implements KeyListener{
     						if (n == JOptionPane.NO_OPTION) {
     							System.exit(0);
     						}
+    						else {
+    	    					playSound("Data\\Sounds\\MenuBack.wav");
+    						}
     					}
     					else {
     						System.exit(0);
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     					menuButton = 8;
     				}
 	    			menuSet();
@@ -350,6 +396,9 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 61 && menuButton <= 63 && !keyPaused && !superPaused) {
     				if (menuButton == 61) {
+    					if (!autosave) {
+        					playSound("Data\\Sounds\\MenuSelect.wav");
+    					}
     					saveGame();
     					menuButton = 6;
     					for (JLabel menuLabel : menuArray6) {
@@ -360,6 +409,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     	    			menuButton = 61;
     				}
 	    			menuSet();
@@ -371,6 +421,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 61 && menuButton <= 63 && !keyPaused && !superPaused) {
     				if (menuButton == 62) {
+    					playSound("Data\\Sounds\\MenuSelect.wav");
     					loadGame();
     					menuButton = 6;
     					for (JLabel menuLabel : menuArray6) {
@@ -381,6 +432,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     	    			menuButton = 62;
     				}
 	    			menuSet();
@@ -392,6 +444,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 61 && menuButton <= 63 && !keyPaused && !superPaused) {
     				if (menuButton == 63) {
+    					playSound("Data\\Sounds\\MenuBack.wav");
     					menuButton = 6;
     					for (JLabel menuLabel : menuArray6) {
     						menuLabel.setVisible(false);
@@ -401,6 +454,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     	    			menuButton = 63;
     				}
 	    			menuSet();
@@ -412,6 +466,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
     				if (menuButton == 71) {
+    					playSound("Data\\Sounds\\MenuSelect.wav");
     					setValueSkip();
     					menuButton = 7;
     					for (JLabel menuLabel : menuArray7) {
@@ -422,6 +477,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     	    			menuButton = 71;
     				}
 	    			menuSet();
@@ -433,6 +489,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
     				if (menuButton == 72) {
+    					playSound("Data\\Sounds\\MenuSelect.wav");
     					setControls();
     					menuButton = 7;
     					for (JLabel menuLabel : menuArray7) {
@@ -443,6 +500,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     	    			menuButton = 72;
     				}
 	    			menuSet();
@@ -454,6 +512,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
     				if (menuButton == 73) {
+    					playSound("Data\\Sounds\\MenuSelect.wav");
     					setBattleAnimations();
     					menuButton = 7;
     					for (JLabel menuLabel : menuArray7) {
@@ -464,6 +523,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     	    			menuButton = 73;
     				}
 	    			menuSet();
@@ -476,6 +536,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
     				if (menuButton == 74) {
+    					playSound("Data\\Sounds\\MenuSelect.wav");
     					setAutosave();
     					menuButton = 7;
     					for (JLabel menuLabel : menuArray7) {
@@ -486,6 +547,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     	    			menuButton = 74;
     				}
 	    			menuSet();
@@ -497,6 +559,7 @@ public class Board extends JFrame implements KeyListener{
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 71 && menuButton <= 75 && !keyPaused && !superPaused) {
     				if (menuButton == 75) {
+    					playSound("Data\\Sounds\\MenuBack.wav");
     					menuButton = 7;
     					for (JLabel menuLabel : menuArray7) {
     						menuLabel.setVisible(false);
@@ -506,6 +569,7 @@ public class Board extends JFrame implements KeyListener{
     					}
     				}
     				else {
+    					playSound("Data\\Sounds\\MenuMove.wav");
     	    			menuButton = 75;
     				}
 	    			menuSet();
@@ -526,12 +590,18 @@ public class Board extends JFrame implements KeyListener{
 					if (n == JOptionPane.NO_OPTION) {
 						System.exit(0);
 					}
+					else {
+    					playSound("Data\\Sounds\\MenuBack.wav");
+					}
     			}
     			else if (!saved) {
 					Object[] choice = {"Go back", "Quit anyway"};
 					int n = JOptionPane.showOptionDialog(frame, "File has not been saved.", "Exit warning", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, choice, choice[0]);
 					if (n == JOptionPane.NO_OPTION) {
 						System.exit(0);
+					}
+					else {
+    					playSound("Data\\Sounds\\MenuBack.wav");
 					}
 				}
 				else {
@@ -650,6 +720,7 @@ public class Board extends JFrame implements KeyListener{
     
     public void menuSelect(String direction)
     {
+		playSound("Data\\Sounds\\MenuMove.wav");
     	if (direction.equals("UP")) {
     		if (menuButton > 1 && menuButton <= 8) {
     			menuButton--;
@@ -695,6 +766,7 @@ public class Board extends JFrame implements KeyListener{
 
     public void menuJump(String direction)
     {
+		playSound("Data\\Sounds\\MenuMove.wav");
     	if (direction.equals("UP")) {
     		if (menuButton > 1 && menuButton <= 8) {
     			if (valueSkip >= menuButton) {
@@ -771,16 +843,22 @@ public class Board extends JFrame implements KeyListener{
     public void menuPress() {
     	switch (menuButton) {
 		case 1: //Party
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			break;
-		case 2: //Spells
+		case 2: //Inventory
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			break;
-		case 3: //Items
+		case 3: //Equipment
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			break;
 		case 4: //Pacts
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			break;
 		case 5: //Registry
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			break;
 		case 6: //File
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			menuButton = 63;
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(false);
@@ -791,6 +869,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 7: //Options
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			menuButton = 75;
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(false);
@@ -801,6 +880,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 8: //Quit
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			if (autosave && !going && !paused && !superPaused) {
 				saveGame();
 				System.exit(0);
@@ -824,6 +904,9 @@ public class Board extends JFrame implements KeyListener{
 			}
 			break;
 		case 61: //File - Save
+			if (!autosave) {
+				playSound("Data\\Sounds\\MenuSelect.wav");
+			}
 			saveGame();
 			menuButton = 6;
 			for (JLabel menuLabel : menuArray6) {
@@ -835,6 +918,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 62: //File - Load
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			loadGame();
 			menuButton = 6;
 			for (JLabel menuLabel : menuArray6) {
@@ -846,6 +930,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 63: //File - Back
+			playSound("Data\\Sounds\\MenuBack.wav");
 			menuButton = 6;
 			for (JLabel menuLabel : menuArray6) {
 				menuLabel.setVisible(false);
@@ -856,6 +941,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 71: //Options - Value Skip
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			menuButton = 7;
 			setValueSkip();
 			for (JLabel menuLabel : menuArray7) {
@@ -867,6 +953,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 72: //Options - Controls
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			menuButton = 7;
 			setControls();
 			for (JLabel menuLabel : menuArray7) {
@@ -878,6 +965,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 73: //Options - Battle Animations
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			menuButton = 7;
 			setBattleAnimations();
 			for (JLabel menuLabel : menuArray7) {
@@ -889,6 +977,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 74: //Options - Autosave
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			menuButton = 7;
 			setAutosave();
 			for (JLabel menuLabel : menuArray7) {
@@ -900,6 +989,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		case 75: //Options - Back
+			playSound("Data\\Sounds\\MenuBack.wav");
 			menuButton = 7;
 			for (JLabel menuLabel : menuArray7) {
 				menuLabel.setVisible(false);
@@ -929,6 +1019,7 @@ public class Board extends JFrame implements KeyListener{
 				menuJump("DOWN");
 			}
 			else if ((k.getKeyCode() >= KeyEvent.VK_0 && k.getKeyCode() <= KeyEvent.VK_9) && !paused) {
+				playSound("Data\\Sounds\\MenuMove.wav");
 				if (menuButton >= 1 && menuButton <= 8) {
 					if (k.getKeyCode() >= KeyEvent.VK_1 && k.getKeyCode() <= KeyEvent.VK_8) {
 						menuButton = k.getKeyCode() - KeyEvent.VK_0;
@@ -950,6 +1041,7 @@ public class Board extends JFrame implements KeyListener{
 			else if ((k.getKeyCode() == keyArray.get(33) || k.getKeyCode() == keyArray.get(34) || k.getKeyCode() == keyArray.get(35)) && !paused) {
 				
 				if (menuButton >= 61 && menuButton <= 63) {
+					playSound("Data\\Sounds\\MenuBack.wav");
 					menuButton = 6;
 					for (JLabel menuLabel : menuArray6) {
 						menuLabel.setVisible(false);
@@ -957,8 +1049,10 @@ public class Board extends JFrame implements KeyListener{
 					for (JLabel menuLabel : menuArray0) {
 						menuLabel.setVisible(true);
 					}
+					menuSet();
 				}
 				else if (menuButton >= 71 && menuButton <= 75) {
+					playSound("Data\\Sounds\\MenuBack.wav");
 					menuButton = 7;
 					for (JLabel menuLabel : menuArray7) {
 						menuLabel.setVisible(false);
@@ -966,8 +1060,8 @@ public class Board extends JFrame implements KeyListener{
 					for (JLabel menuLabel : menuArray0) {
 						menuLabel.setVisible(true);
 					}
+					menuSet();
 				}
-				menuSet();
 			}
 			else if ((k.getKeyCode() == keyArray.get(30) || k.getKeyCode() == keyArray.get(31) || k.getKeyCode() == keyArray.get(32)) && !paused) {
 				menuPress();
@@ -995,6 +1089,7 @@ public class Board extends JFrame implements KeyListener{
 						character.setImageIcon("Data\\Characters\\" + character.month + character.direction.substring(0,  1) + character.step + ".png");
 				    	mainPanel.remove(characterSprite);
 						characterSprite = new JLabel(character.imageIcon);
+				    	mainPanel.setLayer(characterSprite, 1);
 				    	mainPanel.add(characterSprite);
 				    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
 				    	mainPanel.revalidate();
@@ -1024,6 +1119,7 @@ public class Board extends JFrame implements KeyListener{
 						character.setImageIcon("Data\\Characters\\" + character.month + character.direction.substring(0,  1) + character.step + ".png");
 				    	mainPanel.remove(characterSprite);
 						characterSprite = new JLabel(character.imageIcon);
+				    	mainPanel.setLayer(characterSprite, 1);
 				    	mainPanel.add(characterSprite);
 				    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
 				    	mainPanel.revalidate();
@@ -1053,6 +1149,7 @@ public class Board extends JFrame implements KeyListener{
 						character.setImageIcon("Data\\Characters\\" + character.month + character.direction.substring(0,  1) + character.step + ".png");
 				    	mainPanel.remove(characterSprite);
 						characterSprite = new JLabel(character.imageIcon);
+				    	mainPanel.setLayer(characterSprite, 1);
 				    	mainPanel.add(characterSprite);
 				    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
 				    	mainPanel.revalidate();
@@ -1082,6 +1179,7 @@ public class Board extends JFrame implements KeyListener{
 						character.setImageIcon("Data\\Characters\\" + character.month + character.direction.substring(0,  1) + character.step + ".png");
 				    	mainPanel.remove(characterSprite);
 						characterSprite = new JLabel(character.imageIcon);
+				    	mainPanel.setLayer(characterSprite, 1);
 				    	mainPanel.add(characterSprite);
 				    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
 				    	mainPanel.revalidate();
@@ -1100,22 +1198,29 @@ public class Board extends JFrame implements KeyListener{
 				}
 				timer.setDelay(timerRun);
 			}
+			//PAUSE
 			else if ((k.getKeyCode() == keyArray.get(15) || k.getKeyCode() == keyArray.get(16) || k.getKeyCode() == keyArray.get(17)) && !going && !paused) {
 				if (buttonPaused) {
-			    	menuPanel.setBackground(new Color(224, 224, 224));
+					resumeMusic();
+			    	menuPanel.setBackground(currentZone.getMenuColor());
 			    	mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-			    	foregroundPanel.setBackground(new Color(255, 255, 255, 0));
-			    	foregroundPanel.setOpaque(false);
+			    	mainPanel.remove(pausePanel);
 					buttonPaused = false;
+					repaint();
 				}
 				else {
-			    	menuPanel.setBackground(new Color(196, 196, 196));
+					pauseMusic();
+			    	menuPanel.setBackground(new Color(
+			    			(int) (currentZone.getMenuColor().getRed()/1.2), 
+			    			(int) (currentZone.getMenuColor().getGreen()/1.2), 
+			    			(int) (currentZone.getMenuColor().getBlue()/1.2)));
 			    	mainPanel.setBorder(BorderFactory.createLineBorder(new Color(127, 0, 63), 1));
-			    	foregroundPanel.setBackground(new Color(127, 127, 127, 63));
-			    	foregroundPanel.setOpaque(true);
+			    	mainPanel.add(pausePanel);
 					buttonPaused = true;
+					repaint();
 				}
 			}
+			//ACTION
 			else if ((k.getKeyCode() == keyArray.get(12) || k.getKeyCode() == keyArray.get(13) || k.getKeyCode() == keyArray.get(14)) && !going) {
 				if (buttonPaused) {
 					menuPress();
@@ -1322,121 +1427,13 @@ public class Board extends JFrame implements KeyListener{
     			speechBox.setBounds(nowThing.x - ML*6, nowThing.y - ML/4 + (-speechLines+2)*4, ML*7, ML*2+speechLines*4);
 			}
 		}
-		/*if (nowThing.x <= ML*19 && nowThing.y >= ML*3) {
-			speech.setBounds(nowThing.x + ML + ML/8, nowThing.y - ML*3, ML*5 - ML/4, ML*3);
-			if (nowThing.action == 1) {
-				path.moveTo(0, 0);
-				path.lineTo(ML*5, 0);
-				path.lineTo(ML*5, ML*3);
-				path.lineTo(0, ML*3);
-				path.lineTo(0, 0);
-				speechBox = new SpeechBox(path);
-    			speechBox.setBounds(nowThing.x + ML, nowThing.y - ML*3, ML*5, ML*4);
-			}
-			else {
-				path.moveTo(ML + 6, 0);
-				path.lineTo(ML*6 - 6, 0);
-				path.curveTo(ML*6 - 6, 0, ML*6 - 3, 3, ML*6, 6);
-				path.lineTo(ML*6, ML*3 - 6);
-				path.curveTo(ML*6, ML*3 - 6, ML*6 - 3, ML*3 - 3, ML*6 - 6, ML*3);
-				path.lineTo(ML + 3, ML*3);
-				path.lineTo(ML - 6, ML*3 + 6);
-				path.lineTo(ML, ML*3 - 3);
-				path.lineTo(ML, 6);
-				path.curveTo(ML, 6, ML + 3, 3, ML + 6, 0);
-				path.lineTo(ML + 6, 0);
-				speechBox = new SpeechBox(path);
-    			speechBox.setBounds(nowThing.x, nowThing.y - ML*3, ML*6, ML*4);
-			}
-		}
-		else if (nowThing.x <= ML*19 && nowThing.y < ML*3) {
-			speech.setBounds(nowThing.x + ML + ML/8, nowThing.y + ML, ML*5 - ML/4, ML*3);
-			if (nowThing.action == 1) {
-				path.moveTo(0, ML);
-				path.lineTo(ML*5, ML);
-				path.lineTo(ML*5, ML*4);
-				path.lineTo(0, ML*4);
-				path.lineTo(0, ML);
-				speechBox = new SpeechBox(path);
-    			speechBox.setBounds(nowThing.x + ML, nowThing.y, ML*5, ML*4);
-			}
-			else {
-				path.moveTo(ML + 6, ML);
-				path.lineTo(ML*6 - 6, ML);
-				path.curveTo(ML*6 - 6, ML, ML*6 - 3, ML + 3, ML*6, ML + 6);
-				path.lineTo(ML*6, ML*4 - 6);
-				path.curveTo(ML*6, ML*4 - 6, ML*6 - 3, ML*4 - 3, ML*6 - 6, ML*4);
-				path.lineTo(ML + 3, ML*4);
-				path.curveTo(ML + 6, ML*4, ML + 3, ML*4 - 3, ML, ML*4 - 6);
-				path.lineTo(ML, ML + 3);
-				path.lineTo(ML - 6, ML - 6);
-				path.lineTo(ML + 3, ML);
-				path.lineTo(ML + 6, ML);
-				speechBox = new SpeechBox(path);
-    			speechBox.setBounds(nowThing.x, nowThing.y, ML*6, ML*4);
-			}
-		}
-		else if (nowThing.x > ML*19 && nowThing.y < ML*3) {
-			speech.setBounds(nowThing.x - ML*5 + ML/8, nowThing.y + ML, ML*5 - ML/4, ML*3);
-			if (nowThing.action == 1) {
-				path.moveTo(0, ML);
-				path.lineTo(ML*5, ML);
-				path.lineTo(ML*5, ML*4);
-				path.lineTo(0, ML*4);
-				path.lineTo(0, ML);
-				speechBox = new SpeechBox(path);
-    			speechBox.setBounds(nowThing.x - ML*5, nowThing.y, ML*5, ML*4);
-			}
-			else {
-				path.moveTo(6, ML);
-				path.lineTo(ML*5 - 3, ML);
-				path.lineTo(ML*5 + 6, ML - 6);
-				path.lineTo(ML*5, ML + 3);
-				path.lineTo(ML*5, ML*4 - 6);
-				path.curveTo(ML*5, ML*4 - 6, ML*5 - 3, ML*4 - 3, ML*5 - 6, ML*4);
-				path.lineTo(3, ML*4);
-				path.curveTo(6, ML*4, 3, ML*4 - 3, 0, ML*4 - 6);
-				path.lineTo(0, ML + 6);
-				path.curveTo(0, ML + 6, 3, ML + 3, 6, ML);
-				path.lineTo(6, ML);
-				speechBox = new SpeechBox(path);
-    			speechBox.setBounds(nowThing.x - ML*5, nowThing.y, ML*6, ML*4);
-			}
-		}
-		else if (nowThing.x > ML*19 && nowThing.y >= ML*3) {
-			speech.setBounds(nowThing.x - ML*5 + ML/8, nowThing.y - ML*3, ML*5 - ML/4, ML*3);
-			if (nowThing.action == 1) {
-				path.moveTo(0, 0);
-				path.lineTo(ML*5, 0);
-				path.lineTo(ML*5, ML*3);
-				path.lineTo(0, ML*3);
-				path.lineTo(0, 0);
-				speechBox = new SpeechBox(path);
-    			speechBox.setBounds(nowThing.x - ML*5, nowThing.y - ML*3, ML*5, ML*4);
-			}
-			else {
-				path.moveTo(6, 0);
-				path.lineTo(ML*5 - 6, 0);
-				path.curveTo(ML*5 - 6, 0, ML*5 - 3, 3, ML*5, 6);
-				path.lineTo(ML*5, ML*3 - 3);
-				path.lineTo(ML*5 + 6, ML*3 + 6);
-				path.lineTo(ML*5 - 3, ML*3);
-				path.lineTo(3, ML*3);
-				path.curveTo(6, ML*3, 3, ML*3 - 3, 0, ML*3 - 6);
-				path.lineTo(0, 6);
-				path.curveTo(0, 6, 3, 3, 6, 0);
-				path.lineTo(6, 0);
-				speechBox = new SpeechBox(path);
-    			speechBox.setBounds(nowThing.x - ML*5, nowThing.y - ML*3, ML*6, ML*4);
-			}
-		}*/
     	speech.setVerticalAlignment(JLabel.TOP);
     	mainPanel.setLayer(speechBox, 2);
     	mainPanel.setLayer(speech, 3);
 		mainPanel.add(speechBox);
 		mainPanel.add(speech);
-    	mainPanel.revalidate();
-    	mainPanel.repaint();
+    	//mainPanel.revalidate();
+    	//mainPanel.repaint();
 	}
 
 	public void setValueSkip() {
@@ -1444,9 +1441,13 @@ public class Board extends JFrame implements KeyListener{
 		Object input = JOptionPane.showInputDialog(frame, "Input integer for value skip (max: 999):", "Value skip", JOptionPane.PLAIN_MESSAGE, null, null, valueSkip);
 
 		if (input != null && input.toString().matches("\\d?\\d?\\d")) {
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			valueSkip = Integer.valueOf(input.toString());
+			saved = false;
 		}
-		saved = false;
+		else {
+			playSound("Data\\Sounds\\MenuBack.wav");
+		}
 		superPaused = false;
 	}
 	
@@ -1455,9 +1456,13 @@ public class Board extends JFrame implements KeyListener{
 		ArrayList<Integer> keyArrayClone = new ArrayList<Integer>(keyArray);
 		ButtonsPane buttonsPane = new ButtonsPane(keyArrayClone);
 		if (buttonsPane.confirmation) {
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			keyArray = new ArrayList<Integer>(buttonsPane.keyArray);
+			saved = false;
 		}
-		saved = false;
+		else {
+			playSound("Data\\Sounds\\MenuBack.wav");
+		}
 		superPaused = false;
 	}
 
@@ -1473,12 +1478,18 @@ public class Board extends JFrame implements KeyListener{
 		}
 		int choice = JOptionPane.showOptionDialog(frame, "Enable animations in battle:", "Battle animations", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, choices, defaultChoice);
 		if (choice == JOptionPane.YES_OPTION) {
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			animation = true;
+			saved = false;
 		}
 		else if (choice == JOptionPane.NO_OPTION) {
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			animation = false;
+			saved = false;
 		}
-		saved = false;
+		else {
+			playSound("Data\\Sounds\\MenuBack.wav");
+		}
 		superPaused = false;
 	}
 	
@@ -1506,25 +1517,77 @@ public class Board extends JFrame implements KeyListener{
 	    			e1.printStackTrace();
 	    		}
 	        	if (!autoFileName.equals("New file\t")) {
+	    			playSound("Data\\Sounds\\MenuSelect.wav");
 		        	autosave = true;
 	        	}
 	        	else {
+	    			playSound("Data\\Sounds\\Error.wav");
 	        		JOptionPane.showMessageDialog(frame, "Autosave requires a saved file.", "Autosave", JOptionPane.ERROR_MESSAGE);
 	        	}
 	        }
 	        else {
+    			playSound("Data\\Sounds\\Error.wav");
 	        	JOptionPane.showMessageDialog(frame, "Autosave requires a saved file.", "Autosave", JOptionPane.ERROR_MESSAGE);
 	        }
+			saved = false;
 		}
 		else if (choice == JOptionPane.NO_OPTION) {
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			autosave = false;
+			saved = false;
 		}
-		saved = false;
+		else {
+			playSound("Data\\Sounds\\MenuBack.wav");
+		}
 		superPaused = false;
+	}
+	
+	public void playSound(String filepath) {
+		try {
+			SoundEffect.play(filepath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void playMusic(String filepath) {
+		try {
+			Music.play(filepath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void pauseMusic() {
+		try {
+			Music.pause();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void resumeMusic() {
+		try {
+			Music.resume();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void musicVolume(float value) {
+		try {
+			Music.changeVolume(value);;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void saveGame() {
 		superPaused = true;
+		
+		if (currentFile == 0) {
+			currentFile = 1;
+		}
 		if (autosave) {
 			File autoFile = new File("File\\Save" + currentFile + ".jsmn");
 	        if (autoFile.exists()) {
@@ -1543,12 +1606,14 @@ public class Board extends JFrame implements KeyListener{
 					saved = true;
 	        	}
 	        	else {
+	    			playSound("Data\\Sounds\\Error.wav");
 	        		JOptionPane.showMessageDialog(frame, "Autosave was thwarted by outside forces.", "Save", JOptionPane.ERROR_MESSAGE);
 	        		autosave = false;
 	        		saveGame();
 	        	}
 	        }
 	        else {
+    			playSound("Data\\Sounds\\Error.wav");
 	        	JOptionPane.showMessageDialog(frame, "Autosave was thwarted by outside forces.", "Save", JOptionPane.ERROR_MESSAGE);
 	        	autosave = false;
         		saveGame();
@@ -1641,12 +1706,13 @@ public class Board extends JFrame implements KeyListener{
 			Object choiceObject = JOptionPane.showInputDialog(frame, "Choose a file:", "Save", JOptionPane.PLAIN_MESSAGE, null, saveFiles, saveFiles[currentFile - 1]);
 			
 			if (choiceObject == null) {
-				superPaused = false;
+				playSound("Data\\Sounds\\MenuBack.wav");
 			}
 			else {
 				String choice = (String) choiceObject;
 				int currentFileCopy = currentFile;
-				
+
+				playSound("Data\\Sounds\\MenuSelect.wav");
 				if (choice.equals("4: " + file4Name)) {
 					currentFileCopy = 4;
 					newCurrentFileName = file4Name;
@@ -1668,6 +1734,7 @@ public class Board extends JFrame implements KeyListener{
 					Object currentFileNameObject = JOptionPane.showInputDialog(frame, "Input file name:", "Save file " + currentFileCopy, JOptionPane.PLAIN_MESSAGE, null, null, character.name);
 					
 					if (currentFileNameObject == null) {
+						playSound("Data\\Sounds\\MenuBack.wav");
 					}
 					else {
 						newCurrentFileName = (String) currentFileNameObject;
@@ -1682,6 +1749,7 @@ public class Board extends JFrame implements KeyListener{
 					Object choice2Object = JOptionPane.showOptionDialog(frame, "Overwrite this file?", "Save file " + currentFileCopy, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, choice2, choice2[0]);
 					
 					if ((int) choice2Object != JOptionPane.YES_OPTION) {
+						playSound("Data\\Sounds\\MenuBack.wav");
 					}
 					else {
 						currentFileName = newCurrentFileName;
@@ -1720,12 +1788,14 @@ public class Board extends JFrame implements KeyListener{
 			""+currentZone.id, 
 			//Party
 			"\tde3vwpq1rstuyz\t",
-			//Spells
-			"\tde3vwstpq3lmlmst\t",
-			//Pacts
-			"\tde3vwpq1cdtust\t",
+			//Inventory
+			"\tde3vw3novw2notu4rsyz\t",
+			//Equipment
+			"\tde3vw2qr53pqmn2notu\t",
 			//Items
 			"\tde3vw3tu2mnst\t",
+			//Pacts
+			"\tde3vwpq1cdtust\t",
 			//Zone Data
 			"\tde3vwza4no2st\t",
 			//Fae Registry
@@ -1733,6 +1803,7 @@ public class Board extends JFrame implements KeyListener{
 			//End
 			"\t2node\t"
 			);
+		playSound("Data\\Sounds\\Save.wav");
 		try {
 		    Files.write(Paths.get("File\\Save" + currentFile + ".jsmn"), lines, utf8);
 		} catch (IOException e) {
@@ -1752,6 +1823,10 @@ public class Board extends JFrame implements KeyListener{
 		String file3Name = ""; 
 		String file4Name = "";
 		String currentFileName = "";
+
+		if (currentFile == 0) {
+			currentFile = 1;
+		}
         if (!file1.exists()) {
         	try {
 				file1.createNewFile();
@@ -1829,12 +1904,13 @@ public class Board extends JFrame implements KeyListener{
 		Object choiceObject = JOptionPane.showInputDialog(frame, "Choose a file:", "Load", JOptionPane.PLAIN_MESSAGE, null, loadFiles, loadFiles[currentFile - 1]);
 		
 		if (choiceObject == null) {
-			superPaused = false;
+			playSound("Data\\Sounds\\MenuBack.wav");
 		}
 		else {
 			String choice = (String) choiceObject;
 			int currentFileCopy = currentFile;
-			
+
+			playSound("Data\\Sounds\\MenuSelect.wav");
 			if (choice.equals("4: " + file4Name)) {
 				currentFileCopy = 4;
 				currentFileName = file4Name;
@@ -1853,6 +1929,7 @@ public class Board extends JFrame implements KeyListener{
 			}
 
 			if (currentFileName.equals("New file\t")) {
+				playSound("Data\\Sounds\\Error.wav");
 				JOptionPane.showMessageDialog(frame, "Cannot load a new file.", "Load file", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
@@ -1860,22 +1937,28 @@ public class Board extends JFrame implements KeyListener{
 				Object choice2Object = JOptionPane.showOptionDialog(frame, "Load this file?", "Load file " + currentFileCopy, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, choice2, choice2[0]);
 				
 				if ((int) choice2Object != JOptionPane.YES_OPTION) {
+					playSound("Data\\Sounds\\MenuBack.wav");
 				}
 				else {
+					playSound("Data\\Sounds\\Load.wav");
+					pauseMusic();
 					readFile("File\\Save" + currentFileCopy + ".jsmn");
 					currentFile = currentFileCopy;
+					populateZones(); //TODO: MODIFY
+					setZone(currentZone.id);
+					loadArea();
 					saved = true;
+					character.setImageIcon("Data\\Characters\\" + character.month + character.direction.substring(0,  1) + character.step + ".png");
+			    	mainPanel.remove(characterSprite);
+					characterSprite = new JLabel(character.imageIcon);
+			    	mainPanel.add(characterSprite);
+			    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
+			    	mainPanel.revalidate();
+			    	mainPanel.repaint();
 				}
 			}
-			character.setImageIcon("Data\\Characters\\" + character.month + character.direction.substring(0,  1) + character.step + ".png");
-	    	mainPanel.remove(characterSprite);
-			characterSprite = new JLabel(character.imageIcon);
-	    	mainPanel.add(characterSprite);
-	    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
-	    	mainPanel.revalidate();
-	    	mainPanel.repaint();
-			superPaused = false;
 		}
+		superPaused = false;
 	}
 
 	public void readFile(String currentFileId) {
@@ -1886,42 +1969,52 @@ public class Board extends JFrame implements KeyListener{
     		int progress = 0;
     		int overallProgress = 0;
     		while (!line.equals("\t2node\t")) {
+    			//Bindings
     			if (overallProgress == 0 && line.equals("\tde3vwbc3nodest\t")) {
     				overallProgress = 2;
     				progress = 0;
     			}
+    			//Misc
     			else if (overallProgress == 2 && line.equals("\tde3vwmn3stcd\t")) {
     				overallProgress = 3;
     				progress = 0;
     			}
+    			//Character
     			else if (overallProgress == 3 && line.equals("\tde3vwcdhi1rs\t")) {
     				overallProgress = 4;
     				progress = 0;
     			}
+    			//Current Zone
     			else if (overallProgress == 4 && line.equals("\tde3vwcd5rsrs2notu\t")) {
     				overallProgress = 5;
     				progress = 0;
     			}
+    			//Party
     			else if (overallProgress == 5 && line.equals("\tde3vwpq1rstuyz\t")) {
     				overallProgress = 6;
     				progress = 0;
     			}
-    			else if (overallProgress == 6 && line.equals("\tde3vwstpq3lmlmst\t")) {
+    			//Equipment
+    			else if (overallProgress == 6 && line.equals("\tde3vw2qr53pqmn2notu\t")) {
     				overallProgress = 7;
     				progress = 0;
     			}
-    			else if (overallProgress == 7 && line.equals("\tde3vwpq1cdtust\t")) {
+    			//Items
+    			else if (overallProgress == 8 && line.equals("\tde3vw3tu2mnst\t")) {
     				overallProgress = 8;
     				progress = 0;
     			}
-    			else if (overallProgress == 8 && line.equals("\tde3vw3tu2mnst\t")) {
+    			//Pacts
+    			else if (overallProgress == 7 && line.equals("\tde3vwpq1cdtust\t")) {
     				overallProgress = 9;
     				progress = 0;
     			}
+    			//Zone Data
     			else if (overallProgress == 9 && line.equals("\tde3vwza4no2st\t")) {
     				overallProgress = 10;
     				progress = 0;
     			}
+    			//Fae Registry
     			else if (overallProgress == 10 && line.equals("\tde3vwfg13\t")) {
     				overallProgress = 11;
     				progress = 0;
@@ -2002,20 +2095,34 @@ public class Board extends JFrame implements KeyListener{
 	}
 	
     public void loadArea() {
+    	mainPanel.removeAll();
+    	
+    	menuPanel.setBackground(currentZone.getMenuColor());
+    	mainPanel.setBackground(currentZone.getFieldColor());
+
+    	thingArray = currentZone.thingArray;
+    	falseThingArray = currentZone.falseThingArray;
+		playMusic(currentZone.getAreaMusic());
     	switch (currentZone.id) {
     	case 0:
     		mainPanel.add(characterSprite);
-        	character.setX(ML*12);
-        	character.setY(ML*1);
         	characterSprite.setBounds(character.x,character.y,ML*1,ML*1);
-        	
-        	thingArray = currentZone.thingArray;
+        	break;
+    	default:
+    		mainPanel.add(characterSprite);
+        	characterSprite.setBounds(character.x,character.y,ML*1,ML*1);
+        	break;
     	}
-    	
     	for (int i = 0; i < thingArray.size(); i++) {
     		thingSpriteArray.add(new JLabel(thingArray.get(i).imageIcon));
     		mainPanel.add(thingSpriteArray.get(i));
     		thingSpriteArray.get(i).setBounds(thingArray.get(i).x,thingArray.get(i).y,ML*1,ML*1);
+    	}
+    	for (int i = 0; i < falseThingArray.size(); i++) {
+    		falseThingSpriteArray.add(new JLabel(falseThingArray.get(i).imageIcon));
+    		mainPanel.setLayer(falseThingSpriteArray.get(i), 0);
+    		mainPanel.add(falseThingSpriteArray.get(i));
+    		falseThingSpriteArray.get(i).setBounds(falseThingArray.get(i).x,falseThingArray.get(i).y,ML*1,ML*1);
     	}
     }
 }
