@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -63,10 +64,36 @@ public class Board extends JFrame implements KeyListener{
 	private JLabel menu73 = new JLabel("Battle Animations");
 	private JLabel menu74 = new JLabel("Autosave");
 	private JLabel menu75 = new JLabel("Back");
+	private ArrayList<JLabel> menuArray100 = new ArrayList<JLabel>();
+	private JLabel menu100 = new JLabel("Character Select");
+	private JLabel menu101 = new JLabel("Marx");
+	private JLabel menu102 = new JLabel("April");
+	private JLabel menu103 = new JLabel("Maia");
+	private JLabel menu104 = new JLabel("Juno");
+	private JLabel menu105 = new JLabel("Julia");
+	private JLabel menu106 = new JLabel("Augustus");
+	private JLabel menu107 = new JLabel("Septembra");
+	private JLabel menu108 = new JLabel("Octobelle");
+	private JLabel menu109 = new JLabel("November");
+	private JLabel menu110 = new JLabel("Decembus");
+	private JLabel menu111 = new JLabel("Janus");
+	private JLabel menu112 = new JLabel("Februa");
+	
 	//private JPanel foregroundPanel = new JPanel();
 	private JPanel pausePanel = new JPanel();
+	private JPanel dataPanel = new JPanel();
+	private JLabel portraitData = new JLabel();
+	private JLabel nameData = new JLabel();
+	private ArrayList<JLabel> nameDataArray0 = new ArrayList<JLabel>();
+	private JLabel nameDataName = new JLabel("<html><font color='gray'><b>Marx</b></font><br></html>");
+	private JLabel nameDataSpecies = new JLabel("<html>One of us</html>");
+	private JLabel nameDataClass = new JLabel("<html>Soldier</html>");
+	private ArrayList<JLabel> nameDataArray1 = new ArrayList<JLabel>();
+	private JLabel descriptionData = new JLabel("<html></html>");
+	private ArrayList<JLabel> descriptionDataArray = new ArrayList<JLabel>();
+	
 	private String icon = "Data\\Objects\\Rock1.png"; 
-	private Character character = new Character("?", "Februa", "DOWN", ML*1, ML*1, 1);
+	private Character character = new Character("?", "Marx", "DOWN", ML*1, ML*1, 1);
 	private JLabel characterSprite = new JLabel(character.imageIcon);
 	private SpeechBox speechBox;
 	private GeneralPath path;
@@ -85,6 +112,9 @@ public class Board extends JFrame implements KeyListener{
 	private Thing savedThing;
 	private ArrayList<Zone> zoneArray = new ArrayList<Zone>();
 	private Zone currentZone;
+	
+	private ArrayList<Fae> faeRegistryArray; //TODO save these things
+	private ArrayList<Member> partyMemberArray;
 	
 	private Boolean animation = true;
 	private Boolean autosave = false;
@@ -141,10 +171,41 @@ public class Board extends JFrame implements KeyListener{
     	pausePanel.setBackground(new Color(127, 127, 127, 63));
     	//pausePanel.setOpaque(false);
     	//mainPanel.add(pausePanel);
+
+    	dataPanel.setBounds(1, 1, 798, 798);
+    	dataPanel.setLayout(new BorderLayout());
+    	dataPanel.setBackground(new Color(24, 24, 24, 255));
+    	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\MarxF.png"));
+    	portraitData.setHorizontalAlignment(SwingConstants.CENTER);
+    	portraitData.setPreferredSize(new Dimension(400, 250));
+    	dataPanel.add(portraitData, BorderLayout.NORTH);
+    	nameDataArray0.add(new JLabel("<html>Name: </html>"));
+    	nameDataArray0.add(new JLabel("<html>Species: </html>"));
+    	nameDataArray0.add(new JLabel("<html>Class: </html>"));
+    	nameDataArray1.add(nameDataName);
+    	nameDataArray1.add(nameDataSpecies);
+    	nameDataArray1.add(nameDataClass);
+    	nameData.setLayout(null);
+    	for (int i = 0; i < nameDataArray0.size(); i++) {
+    		nameDataArray0.get(i).setBounds(340, 15 + i * 25, 140, 20);
+    		nameDataArray0.get(i).setFont(new Font("Arial", Font.PLAIN, 16));
+    		nameDataArray0.get(i).setForeground(new Color(212, 212, 212));
+    		nameData.add(nameDataArray0.get(i));
+    	}
+    	for (int i = 0; i < nameDataArray1.size(); i++) {
+    		nameDataArray1.get(i).setBounds(415, 15 + i * 25, 140, 20);
+    		nameDataArray1.get(i).setFont(new Font("Arial", Font.PLAIN, 16));
+    		nameDataArray1.get(i).setForeground(Color.WHITE);
+    		nameData.add(nameDataArray1.get(i));
+    	}
+    	nameData.setVerticalAlignment(SwingConstants.TOP);
+    	dataPanel.add(nameData, BorderLayout.CENTER);
+    	dataPanel.add(descriptionData, BorderLayout.EAST);
     	
     	menuArray0.addAll(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8));
     	menuArray6.addAll(Arrays.asList(menu60, menu61, menu62, menu63));
     	menuArray7.addAll(Arrays.asList(menu70, menu71, menu72, menu73, menu74, menu75));
+    	menuArray100.addAll(Arrays.asList(menu100, menu101, menu102, menu103, menu104, menu105, menu106, menu107, menu108, menu109, menu110, menu111, menu112));
     	for (int i = 0; i < menuArray0.size(); i++) {
     		menuArray0.get(i).setBounds(20, 20 + i * 30, 140, 25);
     		menuArray0.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
@@ -182,6 +243,22 @@ public class Board extends JFrame implements KeyListener{
     		menuArray7.get(i).setVisible(false);
     		menuPanel.setLayer(menuArray7.get(i), 2);
     		menuPanel.add(menuArray7.get(i));
+    	}
+    	for (int i = 0; i < menuArray100.size(); i++) {
+    		if (i == 0) {
+    			menuArray100.get(i).setBounds(10, 20 + i * 30, 140, 25);
+    			menuArray100.get(i).setFont(new Font("Arial", Font.BOLD, 15));
+    			menuArray100.get(i).setForeground(Color.WHITE);
+    		}
+    		else
+    		{
+        		menuArray100.get(i).setBounds(20, 20 + i * 30, 140, 25);
+        		menuArray100.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+        		menuArray100.get(i).setForeground(Color.GRAY);
+        		menuArray100.get(i).setVisible(true);
+    		}
+    		menuPanel.setLayer(menuArray100.get(i), 2);
+    		menuPanel.add(menuArray100.get(i));
     	}
     	menu1.setFont(new Font("Arial", Font.BOLD, 15));
     	menu1.setForeground(Color.BLACK);
@@ -306,7 +383,7 @@ public class Board extends JFrame implements KeyListener{
     	menu6.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
-    				if (menuButton == 6) {
+    				if (menuButton == 6) {//TODO make all these menuPress
     					playSound("Data\\Sounds\\MenuSelect.wav");
     					menuButton = 63;
     					for (JLabel menuLabel : menuArray0) {
@@ -577,6 +654,25 @@ public class Board extends JFrame implements KeyListener{
     		}
     	});
     	
+    	for (int i = 1; i < menuArray100.size(); i++) {
+    	    menuArray100.get(i).addMouseListener(new MegaMouseAdapter(100 + i) {
+    	    	public void mouseClicked(MouseEvent c) {
+    	    		int buttonIndex = getSavedValue();
+    	    		if (!paused && menuButton >= 101 && menuButton <= 112 && !keyPaused) {
+    	    			if (menuButton == buttonIndex) {
+    	    				playSound("Data\\Sounds\\MenuSelect.wav");
+    	    				chooseMonth();
+    	    			}
+    	    			else {
+    	    				playSound("Data\\Sounds\\MenuMove.wav");
+    	        			menuButton = buttonIndex;
+    	    			}
+    		   			menuSet();
+    	    		}
+    	    	}
+    	    });
+    	}
+    	
     	frame.addWindowListener(new java.awt.event.WindowAdapter() {
     	    @Override
     	    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -668,7 +764,7 @@ public class Board extends JFrame implements KeyListener{
     		for (JLabel menuLabel : menuArray6) {
     			menuLabel.setFont(new Font("Arial", Font.PLAIN, 15));
     			menuLabel.setForeground(Color.GRAY);
-    		}
+    		} //TODO make this and previous consistent with next one
 			menu60.setFont(new Font("Arial", Font.BOLD, 15));
 			menu60.setForeground(Color.BLACK);
         	switch (menuButton) {
@@ -687,34 +783,109 @@ public class Board extends JFrame implements KeyListener{
         	}
     	}
     	else if (menuButton >= 71 && menuButton <= 75) {
-    		for (JLabel menuLabel : menuArray7) {
-    			menuLabel.setFont(new Font("Arial", Font.PLAIN, 15));
-    			menuLabel.setForeground(Color.GRAY);
+    		for (int i = 0; i < menuArray7.size(); i++) {
+    			if (i == menuButton - 70) {
+        			menuArray7.get(i).setFont(new Font("Arial", Font.BOLD, 15));
+        			menuArray7.get(i).setForeground(Color.BLACK);
+    			}
+    			else {
+        			menuArray7.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+        			menuArray7.get(i).setForeground(Color.GRAY);
+    			}
     		}
 			menu70.setFont(new Font("Arial", Font.BOLD, 15));
 			menu70.setForeground(Color.BLACK);
-        	switch (menuButton) {
-    		case 71: 
-    			menu71.setFont(new Font("Arial", Font.BOLD, 15));
-    			menu71.setForeground(Color.BLACK);
-    			break;
-    		case 72: 
-    			menu72.setFont(new Font("Arial", Font.BOLD, 15));
-    			menu72.setForeground(Color.BLACK);
-    			break;
-    		case 73: 
-    			menu73.setFont(new Font("Arial", Font.BOLD, 15));
-    			menu73.setForeground(Color.BLACK);
-    			break;
-    		case 74: 
-    			menu74.setFont(new Font("Arial", Font.BOLD, 15));
-    			menu74.setForeground(Color.BLACK);
-    			break;
-    		case 75: 
-    			menu75.setFont(new Font("Arial", Font.BOLD, 15));
-    			menu75.setForeground(Color.BLACK);
-    			break;
+    	}
+    	else if (menuButton >= 101 && menuButton <= 112) {
+        	for (int i = 0; i < menuArray100.size(); i++) {
+        		if (i == 0) {
+        			menuArray100.get(i).setBounds(10, 20 + i * 30, 140, 25);
+        			menuArray100.get(i).setFont(new Font("Arial", Font.BOLD, 15));
+        			menuArray100.get(i).setForeground(Color.WHITE);
+        		}
+        		else
+        		{
+            		menuArray100.get(i).setBounds(20, 20 + i * 30, 140, 25);
+        			if (i == menuButton - 100) {
+        				menuArray100.get(i).setFont(new Font("Arial", Font.BOLD, 15));
+        				menuArray100.get(i).setForeground(Color.WHITE);
+        			}
+        			else {
+                		menuArray100.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+                		menuArray100.get(i).setForeground(Color.GRAY);
+        			}
+        		}
         	}
+    		dataPanel.remove(portraitData);
+        	switch (menuButton) {
+        	case 101:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\MarxF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Marx</b></font><br></html>");
+            	nameDataClass.setText("<html>Soldier</html>");
+        		break;
+        	case 102:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\AprilF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>April</b></font><br></html>");
+            	nameDataClass.setText("<html>Revealer</html>");
+        		break;
+        	case 103:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\MaiaF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Maia</b></font><br></html>");
+            	nameDataClass.setText("<html>Harvester</html>");
+        		break;
+        	case 104:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\JunoF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Juno</b></font><br></html>");
+            	nameDataClass.setText("<html>Guardian</html>");
+        		break;
+        	case 105:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\JuliaF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Julia</b></font><br></html>");
+            	nameDataClass.setText("<html>Patron</html>");
+        		break;
+        	case 106:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\AugustusF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Augustus</b></font><br></html>");
+            	nameDataClass.setText("<html>Architect</html>");
+        		break;
+        	case 107:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\SeptembraF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Septembra</b></font><br></html>");
+            	nameDataClass.setText("<html>Teacher</html>");
+        		break;
+        	case 108:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\OctobelleF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Octobelle</b></font><br></html>");
+            	nameDataClass.setText("<html>Judge</html>");
+        		break;
+        	case 109:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\NovemberF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>November</b></font><br></html>");
+            	nameDataClass.setText("<html>Monk</html>");
+        		break;
+        	case 110:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\DecembusF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Decembus</b></font><br></html>");
+            	nameDataClass.setText("<html>Director</html>");
+        		break;
+        	case 111:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\JanusF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Janus</b></font><br></html>");
+            	nameDataClass.setText("<html>Gatekeeper</html>");
+        		break;
+        	case 112:
+            	portraitData.setIcon(new ImageIcon("Data\\BattleSprites\\FebruaF.png"));
+            	nameDataName.setText("<html><font color='gray'><b>Februa</b></font><br></html>");
+            	nameDataClass.setText("<html>Purifier</html>");
+        		break;
+        	}
+        	portraitData.setHorizontalAlignment(SwingConstants.CENTER);
+        	portraitData.setPreferredSize(new Dimension(400, 250));
+        	dataPanel.add(portraitData, BorderLayout.NORTH);
+        	nameData.setVerticalAlignment(SwingConstants.TOP);
+        	dataPanel.add(nameData, BorderLayout.CENTER);
+        	dataPanel.add(descriptionData, BorderLayout.EAST);
+        	dataPanel.repaint();
     	}
     }
     
@@ -740,6 +911,12 @@ public class Board extends JFrame implements KeyListener{
     		else if (menuButton == 71) {
     			menuButton = 75;
     		}
+    		else if (menuButton > 101 && menuButton <= 112) {
+    			menuButton--;
+    		}
+    		else if (menuButton == 101) {
+    			menuButton = 112;
+    		}
     	}
     	else {
     		if (menuButton < 8 && menuButton >= 1) {
@@ -759,6 +936,12 @@ public class Board extends JFrame implements KeyListener{
     		}
     		else if (menuButton == 75) {
     			menuButton = 71;
+    		}
+    		else if (menuButton < 112 && menuButton >= 101) {
+    			menuButton++;
+    		}
+    		else if (menuButton == 112) {
+    			menuButton = 101;
     		}
     	}
     	menuSet();
@@ -801,8 +984,19 @@ public class Board extends JFrame implements KeyListener{
     		else if (menuButton == 71) {
     			menuButton = 75;
     		}
-    	}
-    	else {
+    		else if (menuButton > 101 && menuButton <= 112) {
+    			if (valueSkip >= (menuButton - 100)) {
+    				menuButton = 101;
+    			}
+    			else {
+    				menuButton -= valueSkip;
+    			}
+    		}
+    		else if (menuButton == 101) {
+    			menuButton = 112;
+        	}
+		}
+    	else { //"DOWN"
     		if (menuButton < 8 && menuButton >= 1) {
     			if (valueSkip >= 8 - menuButton) {
     				menuButton = 8;
@@ -815,7 +1009,7 @@ public class Board extends JFrame implements KeyListener{
     			menuButton = 1;
     		}
     		else if (menuButton < 63 && menuButton >= 61) {
-    			if (valueSkip >= (3 - menuButton - 60)) {
+    			if (valueSkip >= (3 - (menuButton - 60))) {
     				menuButton = 63;
     			}
     			else {
@@ -826,7 +1020,7 @@ public class Board extends JFrame implements KeyListener{
     			menuButton = 61;
     		}
     		else if (menuButton < 75 && menuButton >= 71) {
-    			if (valueSkip >= (5 - menuButton - 70)) {
+    			if (valueSkip >= (5 - (menuButton - 70))) {
     				menuButton = 75;
     			}
     			else {
@@ -835,6 +1029,17 @@ public class Board extends JFrame implements KeyListener{
     		}
     		else if (menuButton == 75) {
     			menuButton = 71;
+    		}
+    		else if (menuButton < 112 && menuButton >= 101) {
+    			if (valueSkip >= (12 - (menuButton - 100))) {
+    				menuButton = 112;
+    			}
+    			else {
+    				menuButton += valueSkip;
+    			}
+    		}
+    		else if (menuButton == 112) {
+    			menuButton = 101;
     		}
     	}
     	menuSet();
@@ -1000,11 +1205,47 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		}
+    	//TODO 101+
     }
     
 	@Override
 	public void keyPressed(KeyEvent k) {
-		if (!keyPaused && !superPaused) {
+		if (superPaused && menuButton >= 101 && menuButton <= 112) {
+			//INIT
+			if (k.getKeyCode() == keyArray.get(6) || k.getKeyCode() == keyArray.get(7) || k.getKeyCode() == keyArray.get(8)
+					|| k.getKeyCode() == keyArray.get(18) || k.getKeyCode() == keyArray.get(19) || k.getKeyCode() == keyArray.get(20)) {
+				menuSelect("UP"); 
+			}
+			else if (k.getKeyCode() == keyArray.get(9) || k.getKeyCode() == keyArray.get(10) || k.getKeyCode() == keyArray.get(11)
+					|| k.getKeyCode() == keyArray.get(21) || k.getKeyCode() == keyArray.get(22) || k.getKeyCode() == keyArray.get(23)) {
+				menuSelect("DOWN");
+			}
+			else if (k.getKeyCode() == keyArray.get(0) || k.getKeyCode() == keyArray.get(1) || k.getKeyCode() == keyArray.get(2)
+					|| k.getKeyCode() == keyArray.get(24) || k.getKeyCode() == keyArray.get(25) || k.getKeyCode() == keyArray.get(26)) {
+				menuJump("UP");
+			}
+			else if (k.getKeyCode() == keyArray.get(3) || k.getKeyCode() == keyArray.get(4) || k.getKeyCode() == keyArray.get(5)
+					|| k.getKeyCode() == keyArray.get(27) || k.getKeyCode() == keyArray.get(28) || k.getKeyCode() == keyArray.get(29)) {
+				menuJump("DOWN");
+			}
+			else if (k.getKeyCode() >= KeyEvent.VK_0 && k.getKeyCode() <= KeyEvent.VK_9) {
+				playSound("Data\\Sounds\\MenuMove.wav");
+				if (menuButton >= 101 && menuButton <= 112) {
+					if (k.getKeyCode() >= KeyEvent.VK_1 && k.getKeyCode() <= KeyEvent.VK_9) {
+						menuButton = 100 + k.getKeyCode() - KeyEvent.VK_0;
+					}
+					else {
+						menuButton = 110;
+					}
+				}
+				menuSet();
+			}
+			else if (k.getKeyCode() == keyArray.get(12) || k.getKeyCode() == keyArray.get(13) || k.getKeyCode() == keyArray.get(14)
+					|| k.getKeyCode() == keyArray.get(30) || k.getKeyCode() == keyArray.get(31) || k.getKeyCode() == keyArray.get(32)) {
+				menuPress();
+			}
+		}
+		else if (!keyPaused && !superPaused) {
 			//MENU
 			if ((k.getKeyCode() == keyArray.get(18) || k.getKeyCode() == keyArray.get(19) || k.getKeyCode() == keyArray.get(20)) && !paused) {
 				menuSelect("UP");
@@ -1034,6 +1275,14 @@ public class Board extends JFrame implements KeyListener{
 					}
 					else {
 						menuButton = 63;
+					}
+				}
+				else if (menuButton >= 71 && menuButton <= 75) {
+					if (k.getKeyCode() >= KeyEvent.VK_1 && k.getKeyCode() <= KeyEvent.VK_5) {
+						menuButton = 70 + k.getKeyCode() - KeyEvent.VK_0;
+					}
+					else {
+						menuButton = 75;
 					}
 				}
 				menuSet();
@@ -1582,6 +1831,62 @@ public class Board extends JFrame implements KeyListener{
 		}
 	}
 	
+	public void chooseMonth() {
+		String monthChoice;
+		switch(menuButton) {
+		default:
+			monthChoice = "Marx";
+			break;
+		case (102):
+			monthChoice = "April";
+			break;
+		case (103):
+			monthChoice = "Maia";
+			break;
+		case (104):
+			monthChoice = "Juno";
+			break;
+		case (105):
+			monthChoice = "Julia";
+			break;
+		case (106):
+			monthChoice = "Augustus";
+			break;
+		case (107):
+			monthChoice = "Septembra";
+			break;
+		case (108):
+			monthChoice = "Octobelle";
+			break;
+		case (109):
+			monthChoice = "November";
+			break;
+		case (110):
+			monthChoice = "Decembus";
+			break;
+		case (111):
+			monthChoice = "Janus";
+			break;
+		case (112):
+			monthChoice = "Februa";
+			break;
+		}
+		Object nameInput = JOptionPane.showInputDialog(frame, "Input a name:", "Character", JOptionPane.PLAIN_MESSAGE, null, null, monthChoice);
+		
+		if (nameInput == null) {
+			playSound("Data\\Sounds\\MenuBack.wav");
+		}
+		else {
+			String nameString = (String) nameInput;
+			character = new Character(nameString, monthChoice, "DOWN", ML*1, ML*1, 1);
+			characterSprite = new JLabel(character.imageIcon);
+			playSound("Data\\Sounds\\MenuSelect.wav");
+        	nameDataName.setText("<html><font color='white'><b>" + nameString + "</b></font><br></html>");
+        	repaint();
+        	//TODO complete
+		}
+	}
+	
 	public void saveGame() {
 		superPaused = true;
 		
@@ -1944,7 +2249,7 @@ public class Board extends JFrame implements KeyListener{
 					pauseMusic();
 					readFile("File\\Save" + currentFileCopy + ".jsmn");
 					currentFile = currentFileCopy;
-					populateZones(); //TODO: MODIFY
+					populateZones(); //TODO modify this segment
 					setZone(currentZone.id);
 					loadArea();
 					saved = true;
@@ -2105,8 +2410,13 @@ public class Board extends JFrame implements KeyListener{
 		playMusic(currentZone.getAreaMusic());
     	switch (currentZone.id) {
     	case 0:
-    		mainPanel.add(characterSprite);
-        	characterSprite.setBounds(character.x,character.y,ML*1,ML*1);
+    		superPaused = true;
+			menuButton = 101;
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(false);
+			}
+			mainPanel.add(dataPanel);
+			menuSet();
         	break;
     	default:
     		mainPanel.add(characterSprite);
