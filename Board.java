@@ -78,6 +78,10 @@ public class Board extends JFrame implements KeyListener{
 	private JLabel menu110 = new JLabel("Decembus");
 	private JLabel menu111 = new JLabel("Janus");
 	private JLabel menu112 = new JLabel("Februa");
+	private ArrayList<JLabel> menuArray120 = new ArrayList<JLabel>();
+	private JLabel menu121 = new JLabel("New Game");
+	private JLabel menu122 = new JLabel("Load Game");
+	private JLabel menu123 = new JLabel("Quit");
 	
 	//private JPanel foregroundPanel = new JPanel();
 	private JPanel pausePanel = new JPanel();
@@ -260,8 +264,6 @@ public class Board extends JFrame implements KeyListener{
     		menuPanel.setLayer(menuArray100.get(i), 2);
     		menuPanel.add(menuArray100.get(i));
     	}
-    	menu1.setFont(new Font("Arial", Font.BOLD, 15));
-    	menu1.setForeground(Color.BLACK);
     	
 		timer = new Timer(timerRun, new ActionListener() {
 			@Override
@@ -379,19 +381,12 @@ public class Board extends JFrame implements KeyListener{
     			}
     		}
     	});
-    	
+
     	menu6.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
-    				if (menuButton == 6) {//TODO make all these menuPress
-    					playSound("Data\\Sounds\\MenuSelect.wav");
-    					menuButton = 63;
-    					for (JLabel menuLabel : menuArray0) {
-    						menuLabel.setVisible(false);
-    					}
-    					for (JLabel menuLabel : menuArray6) {
-    						menuLabel.setVisible(true);
-    					}
+    				if (menuButton == 6) {
+    					menuPress();
     				}
     				else {
     					playSound("Data\\Sounds\\MenuMove.wav");
@@ -402,6 +397,7 @@ public class Board extends JFrame implements KeyListener{
     		}
     	});
 
+    	//TODO make all these menuPress?
     	menu7.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 1 && menuButton <= 8 && !keyPaused && !superPaused) {
@@ -468,7 +464,7 @@ public class Board extends JFrame implements KeyListener{
     			}
     		}
     	});
-
+    	
     	menu61.addMouseListener(new MouseAdapter() {
     		public void mouseClicked(MouseEvent c) {
     			if (!paused && menuButton >= 61 && menuButton <= 63 && !keyPaused && !superPaused) {
@@ -1205,7 +1201,7 @@ public class Board extends JFrame implements KeyListener{
 			menuSet();
 			break;
 		}
-    	//TODO 101+
+    	//TODO 101+ ?
     }
     
 	@Override
@@ -1881,9 +1877,20 @@ public class Board extends JFrame implements KeyListener{
 			character = new Character(nameString, monthChoice, "DOWN", ML*1, ML*1, 1);
 			characterSprite = new JLabel(character.imageIcon);
 			playSound("Data\\Sounds\\MenuSelect.wav");
-        	nameDataName.setText("<html><font color='white'><b>" + nameString + "</b></font><br></html>");
-        	repaint();
-        	//TODO complete
+        	mainPanel.remove(dataPanel);
+        	mainPanel.repaint(); 
+			for (JLabel menuLabel : menuArray100) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(true);
+			}
+			menuButton = 1;
+        	character.setX(ML*12);
+        	character.setY(ML*12);
+			setZone(1);
+			loadArea();
+			superPaused = false;
 		}
 	}
 	
@@ -2409,6 +2416,14 @@ public class Board extends JFrame implements KeyListener{
     	falseThingArray = currentZone.falseThingArray;
 		playMusic(currentZone.getAreaMusic());
     	switch (currentZone.id) {
+    	case -1:
+    		superPaused = true;
+    		menuButton = 121;
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(false);
+			}
+    		
+    		break;
     	case 0:
     		superPaused = true;
 			menuButton = 101;
