@@ -79,6 +79,7 @@ public class Board extends JFrame implements KeyListener{
 	private JLabel menu111 = new JLabel("Janus");
 	private JLabel menu112 = new JLabel("Februa");
 	private ArrayList<JLabel> menuArray120 = new ArrayList<JLabel>();
+	private JLabel menu120 = new JLabel("PACT");
 	private JLabel menu121 = new JLabel("New Game");
 	private JLabel menu122 = new JLabel("Load Game");
 	private JLabel menu123 = new JLabel("Quit");
@@ -210,6 +211,7 @@ public class Board extends JFrame implements KeyListener{
     	menuArray6.addAll(Arrays.asList(menu60, menu61, menu62, menu63));
     	menuArray7.addAll(Arrays.asList(menu70, menu71, menu72, menu73, menu74, menu75));
     	menuArray100.addAll(Arrays.asList(menu100, menu101, menu102, menu103, menu104, menu105, menu106, menu107, menu108, menu109, menu110, menu111, menu112));
+    	menuArray120.addAll(Arrays.asList(menu120, menu121, menu122, menu123));
     	for (int i = 0; i < menuArray0.size(); i++) {
     		menuArray0.get(i).setBounds(20, 20 + i * 30, 140, 25);
     		menuArray0.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
@@ -259,10 +261,24 @@ public class Board extends JFrame implements KeyListener{
         		menuArray100.get(i).setBounds(20, 20 + i * 30, 140, 25);
         		menuArray100.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
         		menuArray100.get(i).setForeground(Color.GRAY);
-        		menuArray100.get(i).setVisible(true);
     		}
     		menuPanel.setLayer(menuArray100.get(i), 2);
     		menuPanel.add(menuArray100.get(i));
+    	}
+    	for (int i = 0; i < menuArray120.size(); i++) {
+    		if (i == 0) {
+    			menuArray120.get(i).setBounds(0, 20 + i * 40, 140, 25);
+    			menuArray120.get(i).setFont(new Font("Arial", Font.BOLD, 25));
+    			menuArray120.get(i).setForeground(Color.WHITE);
+    		}
+    		else
+    		{
+    			menuArray120.get(i).setBounds(15, 60 + i * 40, 140, 25);
+    			menuArray120.get(i).setFont(new Font("Arial", Font.PLAIN, 18));
+    			menuArray120.get(i).setForeground(Color.GRAY);
+    		}
+    		menuPanel.setLayer(menuArray120.get(i), 2);
+    		menuPanel.add(menuArray120.get(i));
     	}
     	
 		timer = new Timer(timerRun, new ActionListener() {
@@ -2416,19 +2432,27 @@ public class Board extends JFrame implements KeyListener{
     	falseThingArray = currentZone.falseThingArray;
 		playMusic(currentZone.getAreaMusic());
     	switch (currentZone.id) {
-    	case -1:
+    	case 0:
     		superPaused = true;
     		menuButton = 121;
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(false);
 			}
-    		
+			for (JLabel menuLabel : menuArray100) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray120) {
+				menuLabel.setVisible(true);
+			} //TODO determine necessity of these
     		break;
-    	case 0:
+    	case 1:
     		superPaused = true;
 			menuButton = 101;
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray100) {
+				menuLabel.setVisible(true);
 			}
 			mainPanel.add(dataPanel);
 			menuSet();
