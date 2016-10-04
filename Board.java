@@ -1680,6 +1680,8 @@ public class Board extends JFrame implements KeyListener{
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(true);
 			}
+			//TODO add party member
+			Fae test = new Fae(menuButton); //DELETE?
 			menuButton = 1;
         	character.setX(ML*12);
         	character.setY(ML*12);
