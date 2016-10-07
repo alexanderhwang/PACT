@@ -15,15 +15,15 @@ public class Fae {
 	String name;
 	String faeClass;
 	ArrayList<String> givenNameArray;
-	ArrayList<String> varietyArray; //manifest as sex and type (when applicable) separately, check for bracketed values to add to flags
-	ArrayList<String> rankArray;
+	ArrayList<String> varietyArray; //manifest as sex+type (when applicable) separately, check for bracketed values to add to flags
+	ArrayList<String> possibleRankArray; //rank+condition
 	ArrayList<String> flagArray;
 	ArrayList<Integer> initialAttributeArray; //vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck
 	ArrayList<Integer> initialBasicAttributeArray; //health, energy, attack, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
-	ArrayList<PossibleAspect> possibleAspectArray; //Aspect, condition -- maybe none?
-	ArrayList<PossibleSkill> possibleSkillArray; //Aspect, condition -- maybe none?
-	ArrayList<Transformation> transformationArray; //Fae, conditions
-	LevelClass levelClass;
+	ArrayList<String> possibleAspectArray;
+	ArrayList<String> possibleSkillArray; //Aspect+condition -- maybe none?
+	ArrayList<String> possibleTransformationArray; //Fae, conditions
+	String levelClass;
 	int typeImpact;
 	int typeCutting;
 	int typePiercing;
@@ -65,7 +65,7 @@ public class Fae {
 	int ailmentConfusion;
 	int ailmentSilence;
 	int ailmentSleep;
-	int manaStorage;
+	int spirit;
 	int experienceMultiplier;
 	ArrayList<String> spriteBaseArray;
 	
@@ -121,7 +121,7 @@ public class Fae {
     					varietyArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				case 4:
-    					rankArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					possibleRankArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				case 5:
     					flagArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
@@ -139,6 +139,9 @@ public class Fae {
     					for (String element : tempArray2) {
     						initialBasicAttributeArray.add((int) Integer.parseInt(element));
     					}
+    					break;
+    				case 8:
+    					possibleAspectArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     					//TODO finish
     				}
