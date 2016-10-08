@@ -12,7 +12,7 @@ import org.junit.Test;
 public class SampleTest {
 
     @Test
-    public static void testSomething() {
+    public void testSomething() {
         assertEquals("thisString", "thisString");
         assertNotEquals("oneString", "twoString");
     }
