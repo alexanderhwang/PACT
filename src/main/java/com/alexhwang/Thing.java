@@ -17,7 +17,8 @@ public class Thing{
 
 	int flag; //set per interaction
 
-	public Thing(String name, String type, String direction, int x, int y, int step, int action, ArrayList<String> misc) {
+	public Thing(final String name, final String type, final String direction, final int x, final int y,
+                 final int step, final int action, final ArrayList<String> misc) {
 		this.name = name;
 		this.type = type;
 		this.direction = direction;
@@ -26,7 +27,7 @@ public class Thing{
 		this.step = step;
 		this.action = action;
 		this.misc = misc;
-		if (direction != "") {
+		if (!direction.equals("")) {
 			this.imageIcon = new ImageIcon("Data\\" + type + "\\" + name + direction.substring(0,  1) + step + ".png");
 		}
 		else {
@@ -34,27 +35,27 @@ public class Thing{
 		}
 	}
 
-	public void setDirection(String direction) {
+	public void setDirection(final String direction) {
 		this.direction = direction;
 	}
 	
-	public void setX(int x) {
+	public void setX(final int x) {
 		this.x = x;
 	}
 	
-	public void setY(int y) {
+	public void setY(final int y) {
 		this.y = y;
 	}
 	
-	public void setStep(int step) {
+	public void setStep(final int step) {
 		this.step = step;
 	}
 	
-	public void setImageIcon(String iconString) {
+	public void setImageIcon(final String iconString) {
 		this.imageIcon = new ImageIcon(iconString);
 	}
 
-	public void setFlag(int flag) {
+	public void setFlag(final int flag) {
 		this.flag = flag;
 	}
 }

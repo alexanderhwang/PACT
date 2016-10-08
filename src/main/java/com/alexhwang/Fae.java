@@ -79,17 +79,17 @@ public class Fae {
 	ImageIcon frontSprite;
 	ImageIcon backSprite;
 	
-	public Fae(String id) { //Basic fae creation
+	public Fae(final String id) { //Basic fae creation
 		readFae(id);
 	}
 
-	public Fae(int menuButton) { //Months only
-		String id = "000" + ("" + menuButton).substring(1, 3);
+	public Fae(final int menuButton) { //Months only
+		final String id = "000" + ("" + menuButton).substring(1, 3);
 		readFae(id);
 	}
 	
-	public void readFae(String id) {
-		File faeData = new File("Data\\InnerData\\Fae.kg");
+	public void readFae(final String id) {
+		final File faeData = new File("Data\\InnerData\\Fae.kg");
 		String idCheck = "00000";
 		String line;
 		String dataString;
@@ -134,21 +134,21 @@ public class Fae {
     					flagArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				case 6:
-    					ArrayList<String> tempArray1 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						final ArrayList<String> tempArray1 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					initialPreferenceArray = new ArrayList<Integer>();
     					for (String element : tempArray1) {
     						initialPreferenceArray.add((int) Integer.parseInt(element));
     					}
     					break;
     				case 7:
-    					ArrayList<String> tempArray2 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						final ArrayList<String> tempArray2 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					initialAttributeArray = new ArrayList<Integer>();
     					for (String element : tempArray2) {
     						initialAttributeArray.add((int) Integer.parseInt(element));
     					}
     					break;
     				case 8:
-    					ArrayList<String> tempArray3 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						final ArrayList<String> tempArray3 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					initialBasicAttributeArray = new ArrayList<Integer>();
     					for (String element : tempArray3) {
     						initialBasicAttributeArray.add((int) Integer.parseInt(element));
@@ -170,24 +170,24 @@ public class Fae {
     					rankOffset = Integer.parseInt(dataString);
     					break;
     				case 14:
-    					ArrayList<String> tempArray4 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						final ArrayList<String> tempArray4 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					typeArray = new ArrayList<Integer>();
     					for (String element : tempArray4) {
     						typeArray.add((int) Integer.parseInt(element));
     					}
     					break;
     				case 15:
-    					ArrayList<String> tempArray5 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						final ArrayList<String> tempArray5 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					elementArray = new ArrayList<Integer>();
     					for (String element : tempArray5) {
     						elementArray.add((int) Integer.parseInt(element));
     					}
     					break;
     				case 16:
-    					ArrayList<String> tempArray6 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						final ArrayList<String> tempArray6 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					ailmentArray = new ArrayList<Integer>();
     					for (String element : tempArray6) {
-    						ailmentArray.add((int) Integer.parseInt(element));
+    						ailmentArray.add(Integer.parseInt(element));
     					}
     					break;
     				case 17:
@@ -197,7 +197,7 @@ public class Fae {
     					experienceMultiplier = Integer.parseInt(dataString);
     					break;
     				case 19:
-    					spriteBaseArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					spriteBaseArray = new ArrayList<>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				}
     				line = line.substring(dataString.length() + 2, line.length());
@@ -207,10 +207,8 @@ public class Fae {
     		}
     		
 			bufferedReader.close();
-		} catch (FileNotFoundException e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
 		}
 	}
 	

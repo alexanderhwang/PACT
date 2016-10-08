@@ -7,7 +7,7 @@ import java.util.Arrays;
 import com.alexhwang.util.Colors;
 
 public class Zone {
-	static final int ML = 32;
+	private static final int ML = 32;
 	int id;
 	ArrayList<Thing> thingArray = new ArrayList<Thing>();
 	ArrayList<FalseThing> falseThingArray = new ArrayList<FalseThing>();
@@ -16,19 +16,19 @@ public class Zone {
 	private Color menuColor;
 	private String areaMusic;
 
-	public Zone(int id) {
+	public Zone(final int id) {
 		this.id = id;
 		populate(id);
 	}
-	public Zone(int id, ArrayList<Thing> thingArray, ArrayList<FalseThing> falseThingArray) {
+	public Zone(final int id, final ArrayList<Thing> thingArray, final ArrayList<FalseThing> falseThingArray) {
 		this.id = id;
-		for (Thing nowThing : thingArray) {
-			ArrayList<String> nowThingMiscClone = new ArrayList<String>();
+		for (final Thing nowThing : thingArray) {
+            final ArrayList<String> nowThingMiscClone = new ArrayList<String>();
     		nowThingMiscClone.addAll(nowThing.misc);
 			this.thingArray.add(new Thing(nowThing.name, nowThing.type, nowThing.direction, nowThing.x, nowThing.y, nowThing.step, nowThing.action, nowThingMiscClone));
 		}
-		for (FalseThing nowFalseThing : falseThingArray) {
-			ArrayList<String> nowFalseThingMiscClone = new ArrayList<String>();
+		for (final FalseThing nowFalseThing : falseThingArray) {
+            final ArrayList<String> nowFalseThingMiscClone = new ArrayList<String>();
 			nowFalseThingMiscClone.addAll(nowFalseThing.misc);
 			this.falseThingArray.add(new FalseThing(nowFalseThing.name, nowFalseThing.type, nowFalseThing.direction, nowFalseThing.x, 
 					nowFalseThing.y, nowFalseThing.step, nowFalseThing.action, nowFalseThingMiscClone));
@@ -51,15 +51,15 @@ public class Zone {
 		return areaMusic;
 	}
 	
-	public void changeAreaMusic(String areaMusic) {
+	public void changeAreaMusicfinal (String areaMusic) {
 		this.areaMusic = areaMusic;
 	}
 	
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 	
-	public void populate(int setupId) {
+	public void populate(final int setupId) {
 		switch (setupId) {
 		case 0:
 			areaMusic = "Data\\Music\\Silence.wav";
