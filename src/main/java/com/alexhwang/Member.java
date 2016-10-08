@@ -1,6 +1,7 @@
+package com.alexhwang;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-
 
 public class Member {
 	Fae fae;

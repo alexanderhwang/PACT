@@ -1,8 +1,10 @@
+package com.alexhwang;
+
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
-public class FalseThing{
+public class Thing{
 	String name;
 	String type;
 	String direction;
@@ -10,12 +12,12 @@ public class FalseThing{
 	int y;
 	int step; //Used for sprite
 	ImageIcon imageIcon;
-	int action; //0 = nothing, 1 = zone change (zone, x, y)
+	int action; //0 = nothing, 1 = generic thing, 2 = generic person
 	ArrayList<String> misc;
 
 	int flag; //set per interaction
 
-	public FalseThing(String name, String type, String direction, int x, int y, int step, int action, ArrayList<String> misc) {
+	public Thing(String name, String type, String direction, int x, int y, int step, int action, ArrayList<String> misc) {
 		this.name = name;
 		this.type = type;
 		this.direction = direction;

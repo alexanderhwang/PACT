@@ -1,3 +1,5 @@
+package com.alexhwang;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -5,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.GeneralPath;
 
 import javax.swing.JLabel;
-
 
 public class SpeechBox extends JLabel{
 	private GeneralPath path;

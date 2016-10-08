@@ -1,3 +1,5 @@
+package com.alexhwang;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Window;
@@ -14,7 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
-
 
 public class ButtonsPane extends JOptionPane{
 	ArrayList<JButton> buttonButtons = new ArrayList<JButton>();

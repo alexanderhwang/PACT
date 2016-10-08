@@ -1,3 +1,5 @@
+package com.alexhwang;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-
 
 public class Fae {
 	//int id

@@ -1,3 +1,5 @@
+package com.alexhwang;
+
 import javax.swing.ImageIcon;
 
 public class Character{

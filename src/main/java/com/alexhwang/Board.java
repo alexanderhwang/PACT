@@ -1,7 +1,9 @@
+package com.alexhwang;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -31,6 +33,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
+
+import com.alexhwang.util.Colors;
 
 public class Board extends JFrame implements KeyListener{
 	static final int ML = 32;
@@ -157,7 +161,7 @@ public class Board extends JFrame implements KeyListener{
     	mainPanel.setPreferredSize(new Dimension(800, 800));
     	mainPanel.setLayout(null);
     	mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-    	mainPanel.setBackground(new Color(255, 255, 255));
+    	mainPanel.setBackground(Colors.WHITE);
     	mainPanel.setOpaque(true);
 
     	/*foregroundPanel.setBounds(1, 1, 798, 798);
