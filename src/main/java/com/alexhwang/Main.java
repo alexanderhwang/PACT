@@ -1,8 +1,8 @@
 package com.alexhwang;
 
 public class Main {
-	public static void main(String args[]) {
-		Board board = new Board();
+	public static void main(final String args[]) {
+		final Board board = new Board();
 		board.populateZones();
 		board.setZone(0);
 		board.loadArea();
