@@ -1,5 +1,6 @@
-import java.awt.event.MouseAdapter;
+package com.alexhwang;
 
+import java.awt.event.MouseAdapter;
 
 public class MegaMouseAdapter extends MouseAdapter{
 	private int savedValue;

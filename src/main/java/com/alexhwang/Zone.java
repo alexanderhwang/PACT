@@ -1,6 +1,10 @@
+package com.alexhwang;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import com.alexhwang.util.Colors;
 
 public class Zone {
 	static final int ML = 32;
@@ -59,8 +63,8 @@ public class Zone {
 		switch (setupId) {
 		case 0:
 			areaMusic = "Data\\Music\\Silence.wav";
-			fieldColor = new Color(0, 0, 0);
-			menuColor = new Color(0, 0, 0);
+			fieldColor = Colors.BLACK;
+			menuColor = Colors.BLACK;
 
 			/*falseThingArray.add(
 					new FalseThing("Rock", "Objects", "", ML*5, ML*2, 1, 1, 
@@ -69,7 +73,7 @@ public class Zone {
 			break;
 		case 1:
 			areaMusic = "Data\\Music\\KageyGame.wav";
-			fieldColor = new Color(255, 255, 255);
+			fieldColor = Colors.WHITE;
 			menuColor = new Color(224, 224, 224);
 			
 			falseThingArray.add(new FalseThing("Rock", "Objects", "", ML*4, ML*1, 1, 0, new ArrayList<String>()));
