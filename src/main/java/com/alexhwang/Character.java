@@ -11,7 +11,8 @@ public class Character{
 	int step; //Used for sprite
 	ImageIcon imageIcon;
 	
-	public Character(String name, String month, String direction, int x, int y, int step){
+	public Character(final String name, final String month, final String direction, final int x, final int y,
+                     final int step){
 		this.name = name;
 		this.month = month;
 		this.direction = direction;
@@ -40,31 +41,31 @@ public class Character{
 		return imageIcon;
 	}*/
 
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 
-	public void setMonth(String month) {
+	public void setMonth(final String month) {
 		this.month = month;
 	}
 	
-	public void setDirection(String direction) {
+	public void setDirection(final String direction) {
 		this.direction = direction;
 	}
 	
-	public void setX(int x) {
+	public void setX(final int x) {
 		this.x = x;
 	}
 	
-	public void setY(int y) {
+	public void setY(final int y) {
 		this.y = y;
 	}
 	
-	public void setStep(int step) {
+	public void setStep(final int step) {
 		this.step = step;
 	}
 	
-	public void setImageIcon(String iconString) {
+	public void setImageIcon(final String iconString) {
 		this.imageIcon = new ImageIcon(iconString);
 	}
 }

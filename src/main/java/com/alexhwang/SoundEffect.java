@@ -10,10 +10,10 @@ import sun.audio.AudioStream;
 public class SoundEffect {
 
 	public static void play(String sf) throws Exception{
-		File soundFile = new File(sf);
+        final File soundFile = new File(sf);
 		if (soundFile.exists()) {
-			InputStream in = new FileInputStream(sf);
-			AudioStream as = new AudioStream(in);
+            final InputStream in = new FileInputStream(sf);
+            final AudioStream as = new AudioStream(in);
 			AudioPlayer.player.start(as);
 		}
 	}

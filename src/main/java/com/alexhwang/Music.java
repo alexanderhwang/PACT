@@ -12,10 +12,10 @@ public class Music {
 	static File soundFile;
 	static Clip clip;
 
-	public static void play(String sf) throws Exception{
+	public static void play(final String sf) throws Exception{
 		soundFile = new File(sf);
 		clip = AudioSystem.getClip();
-		AudioInputStream stream = AudioSystem.getAudioInputStream(soundFile);
+		final AudioInputStream stream = AudioSystem.getAudioInputStream(soundFile);
         clip.open(stream);
         clip.start();
         clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -34,8 +34,8 @@ public class Music {
 		clip.start();
 	}
 	
-	public static void changeVolume(float value) {
-		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	public static void changeVolume(final float value) {
+		final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		gainControl.setValue(value);
 	}
 }

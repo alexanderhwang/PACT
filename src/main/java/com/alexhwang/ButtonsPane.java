@@ -40,14 +40,14 @@ public class ButtonsPane extends JOptionPane{
 	int currentButton = -1;
 	int i = 0;
 	
-	public ButtonsPane(ArrayList<Integer> keyArray) {
+	public ButtonsPane(final ArrayList<Integer> keyArray) {
 		confirmation = false;
 		this.keyArray = keyArray;
 		setControls();
 	}
 
 	public void setControls() {
-		for (int key : keyArray) {
+		for (final int key : keyArray) {
 			buttonButtons.add(new JButton(KeyEvent.getKeyText(key)));
 		}
 		activateButton("");
@@ -75,10 +75,10 @@ public class ButtonsPane extends JOptionPane{
 				});
 				thisButton.addKeyListener(new KeyListener() {
 					@Override
-					public void keyPressed(KeyEvent e) {
-						int thisKey = e.getKeyCode();
+					public void keyPressed(final KeyEvent e) {
+                        final int thisKey = e.getKeyCode();
 						Boolean conflict = false;
-						for (int key : keyArray) {
+						for (final int key : keyArray) {
 							if (thisKey == key) {
 								conflict = true;
 							}
@@ -147,8 +147,8 @@ public class ButtonsPane extends JOptionPane{
 		dialog.setVisible(true);
 	}
 	
-	public void activateButton(String activeString) {
-		for (JButton activeButton : buttonButtons) {
+	public void activateButton(final String activeString) {
+		for (final JButton activeButton : buttonButtons) {
 			if (activeButton.getText().equals("Escape") || activeButton.getText().equals("Enter")) {
 			}
 			else if (activeButton.getText().equals(activeString)) {
@@ -164,7 +164,7 @@ public class ButtonsPane extends JOptionPane{
 	public void close() {
 		keyArrayIndex = -1;
 		i = 0;
-		Window w = SwingUtilities.getWindowAncestor(this);
+        final Window w = SwingUtilities.getWindowAncestor(this);
 		w.setVisible(false);
 	}
 
