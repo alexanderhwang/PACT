@@ -27,11 +27,11 @@ public class FalseThing{
 		this.step = step;
 		this.action = action;
 		this.misc = misc;
-		if (direction != "") {
-			this.imageIcon = new ImageIcon("Data\\" + type + "\\" + name + direction.substring(0,  1) + step + ".png");
+		if (!direction.equals("")) {
+			this.imageIcon = new ImageIcon(Board.BASE_RESOURCE_PATH + type + "\\" + name + direction.substring(0,  1) + step + ".png");
 		}
 		else {
-			this.imageIcon = new ImageIcon("Data\\" + type + "\\" + name + step + ".png");
+			this.imageIcon = new ImageIcon(Board.BASE_RESOURCE_PATH + type + "\\" + name + step + ".png");
 		}
 	}
 

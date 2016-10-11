@@ -2,9 +2,7 @@ package com.alexhwang;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -89,7 +87,7 @@ public class Fae {
 	}
 	
 	public void readFae(final String id) {
-		final File faeData = new File("Data\\InnerData\\Fae.kg");
+		final File faeData = new File("src\\main\\resources\\InnerData\\Fae.kg");
 		String idCheck = "00000";
 		String line;
 		String dataString;

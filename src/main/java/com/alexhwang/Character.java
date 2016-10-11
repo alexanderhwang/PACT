@@ -19,7 +19,7 @@ public class Character{
 		this.x = x;
 		this.y = y;
 		this.step = step;
-		this.imageIcon = new ImageIcon("Data\\Characters\\" + month + direction.substring(0,  1) + step + ".png");
+		this.imageIcon = new ImageIcon(Board.BASE_RESOURCE_PATH + "Characters\\" + month + direction.substring(0,  1) + step + ".png");
 	}
 	
 /*	public String getName() {

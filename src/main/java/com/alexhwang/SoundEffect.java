@@ -1,20 +1,29 @@
 package com.alexhwang;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.SwingUtilities;
+
+
 
 public class SoundEffect {
+	static File soundFile;
+	static Clip clip;
 
-	public static void play(String sf) throws Exception{
-        final File soundFile = new File(sf);
-		if (soundFile.exists()) {
-            final InputStream in = new FileInputStream(sf);
-            final AudioStream as = new AudioStream(in);
-			AudioPlayer.player.start(as);
-		}
+	public static void play(final String sf) throws Exception{
+		soundFile = new File(sf);
+		clip = AudioSystem.getClip();
+		final AudioInputStream stream = AudioSystem.getAudioInputStream(soundFile);
+        clip.open(stream);
+        clip.start();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	
+            }
+        });
 	}
+	
 }
