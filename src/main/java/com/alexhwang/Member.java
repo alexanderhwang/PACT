@@ -9,8 +9,8 @@ public class Member {
 	String chosenName;
 	String variety;
 	String rank;
-	//ArrayList<Aspect> aspectArray;
-	//ArrayList<Skill> skillArray;
+	ArrayList<Aspect> aspectArray;
+	ArrayList<Skill> skillArray;
 	Boolean mainCharacter;
 	
 	int level;
