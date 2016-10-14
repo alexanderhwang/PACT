@@ -22,7 +22,7 @@ public class Fae {
 	ArrayList<String> possibleAspectArray;
 	ArrayList<String> possibleSkillArray; //Aspect+condition -- maybe none?
 	ArrayList<String> possibleTransformationArray; //Fae, conditions
-	int levelClass; //0 - 8: fast, medium to fast, fast to medium, medium, slow to fast, fast to slow, slow to medium, medium to slow, slow
+	int levelClass; //0: fast, 1: medium to fast, 2: fast to medium, 3: medium, 4: slow to fast, 5: fast to slow, 6: slow to medium, 7: medium to slow, 8: slow
 	int rankOffset;
 	int typeImpact;
 	int typeCutting;
@@ -70,7 +70,7 @@ public class Fae {
 	int ailmentSleep;
 	ArrayList<Integer> ailmentArray = new ArrayList<Integer>(Arrays.asList(ailmentDeath, ailmentWound, ailmentPetrification, ailmentDampness, ailmentBurn, ailmentFreeze, ailmentShock,
 			ailmentPressure, ailmentPoisoning, ailmentConfusion, ailmentSilence, ailmentSleep));
-	int spirit;
+	int essence;
 	int experienceMultiplier;
 	ArrayList<String> spriteBaseArray;
 	
@@ -189,7 +189,7 @@ public class Fae {
     					}
     					break;
     				case 17:
-    					spirit = Integer.parseInt(dataString);
+    					essence = Integer.parseInt(dataString);
     					break;
     				case 18:
     					experienceMultiplier = Integer.parseInt(dataString);
