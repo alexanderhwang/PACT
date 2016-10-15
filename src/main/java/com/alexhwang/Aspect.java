@@ -58,85 +58,25 @@ public class Aspect {
     					name = dataString;
     					break;
     				case 1:
-    					faeClass = dataString;
+    					rankRequirement = Integer.parseInt(dataString);
     					break;
     				case 2:
-    					givenNameArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					aspectType = Integer.parseInt(dataString);
     					break;
     				case 3:
-    					varietyArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					affectedEffects = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				case 4:
-    					possibleRankArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					break;
+						final ArrayList<String> tempArray1 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						affectedValues = new ArrayList<Integer>();
+    					for (String element : tempArray1) {
+    						affectedValues.add((int) Integer.parseInt(element));
+    					}
     				case 5:
-    					flagArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					valueType = Integer.parseInt(dataString);
     					break;
     				case 6:
-						final ArrayList<String> tempArray1 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					initialPreferenceArray = new ArrayList<Integer>();
-    					for (String element : tempArray1) {
-    						initialPreferenceArray.add((int) Integer.parseInt(element));
-    					}
-    					break;
-    				case 7:
-						final ArrayList<String> tempArray2 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					initialAttributeArray = new ArrayList<Integer>();
-    					for (String element : tempArray2) {
-    						initialAttributeArray.add((int) Integer.parseInt(element));
-    					}
-    					break;
-    				case 8:
-						final ArrayList<String> tempArray3 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					initialBasicAttributeArray = new ArrayList<Integer>();
-    					for (String element : tempArray3) {
-    						initialBasicAttributeArray.add((int) Integer.parseInt(element));
-    					}
-    					break;
-    				case 9:
-    					possibleAspectArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					break;
-    				case 10:
-    					possibleSkillArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					break;
-    				case 11:
-    					possibleTransformationArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					break;
-    				case 12:
-    					levelClass = Integer.parseInt(dataString);
-    					break;
-    				case 13:
-    					rankOffset = Integer.parseInt(dataString);
-    					break;
-    				case 14:
-						final ArrayList<String> tempArray4 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					typeArray = new ArrayList<Integer>();
-    					for (String element : tempArray4) {
-    						typeArray.add((int) Integer.parseInt(element));
-    					}
-    					break;
-    				case 15:
-						final ArrayList<String> tempArray5 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					elementArray = new ArrayList<Integer>();
-    					for (String element : tempArray5) {
-    						elementArray.add((int) Integer.parseInt(element));
-    					}
-    					break;
-    				case 16:
-						final ArrayList<String> tempArray6 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-    					ailmentArray = new ArrayList<Integer>();
-    					for (String element : tempArray6) {
-    						ailmentArray.add(Integer.parseInt(element));
-    					}
-    					break;
-    				case 17:
-    					spirit = Integer.parseInt(dataString);
-    					break;
-    				case 18:
-    					experienceMultiplier = Integer.parseInt(dataString);
-    					break;
-    				case 19:
-    					spriteBaseArray = new ArrayList<>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					preferences = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				}
     				line = line.substring(dataString.length() + 2, line.length());
