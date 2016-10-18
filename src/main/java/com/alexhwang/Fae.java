@@ -18,7 +18,7 @@ public class Fae {
 	ArrayList<String> flagArray;
 	ArrayList<Integer> initialPreferenceArray; //vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck
 	ArrayList<Integer> initialAttributeArray; //vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck
-	ArrayList<Integer> initialBasicAttributeArray; //health, energy, attack, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
+	ArrayList<Integer> initialBasicAttributeArray; //health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
 	ArrayList<String> possibleAspectArray;
 	ArrayList<String> possibleSkillArray; //Aspect+condition -- maybe none?
 	ArrayList<String> possibleTransformationArray; //Fae, conditions
@@ -73,6 +73,7 @@ public class Fae {
 	int essence;
 	int experienceMultiplier;
 	ArrayList<String> spriteBaseArray;
+	String description;
 	
 	ImageIcon frontSprite;
 	ImageIcon backSprite;
@@ -196,6 +197,9 @@ public class Fae {
     					break;
     				case 19:
     					spriteBaseArray = new ArrayList<>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					break;
+    				case 20:
+    					description = dataString;
     					break;
     				}
     				line = line.substring(dataString.length() + 2, line.length());

@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.ImageIcon;
 
 public class Aspect {
 	//int id
@@ -15,13 +14,14 @@ public class Aspect {
 	int aspectType; //0: stat boost (self), 1: aura (allies), 2: aura (enemies), 3: super aura (self/allies)
 	ArrayList<String> affectedEffects; //none
 	//vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck
-	//health, energy, attack, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
+	//health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
 	//impact, cutting, piercing, magic, psychic, holy, evil
 	//neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, mind, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
 	//death, wound, petrification, dampness, burn, freeze, shock, pressure, poisoning, confusion, silence, sleep
 	ArrayList<Integer> affectedValues;
 	int valueType; //0: percent, 1: value
 	ArrayList<String> preferences; //preference+value
+	String description;
 	
 	public Aspect(final String id) { //Basic aspect creation
 		readAspect(id);
@@ -77,6 +77,9 @@ public class Aspect {
     					break;
     				case 6:
     					preferences = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					break;
+    				case 7:
+    					description = dataString;
     					break;
     				}
     				line = line.substring(dataString.length() + 2, line.length());
