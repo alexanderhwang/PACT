@@ -17,4 +17,3 @@
 	00016;	Feebleness;	0;	0;	resistance;	-10;	0;	vitality+1,strength+1,stamina+1,dexterity+1,passion+1,agility+1,luck+1;	Reduces resistance by 10%.;
 	00017;	Enervation;	0;	0;	tolerance;	-10;	0;	vitality+2,wisdom+2,strength+2,intelligence+2,stamina+1,dexterity+2,passion+2,agility+2,luck+2;	Reduces tolerance by 10%.;
 	00018;	Ineptitude;	0;	0;	accuracy;	-10;	0;	vitality+2,wisdom+2,strength+2,intelligence+2,stamina+2,passion+2,resolve+2,agility+2,luck+1;	Reduces accuracy by 10%.;
-	
