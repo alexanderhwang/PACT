@@ -19,7 +19,8 @@ public class Skill { //TODO edit all
 	ArrayList<Integer> skillTypes; //0: impact, 1: cutting, 2: piercing, 3: magic, 4: psychic, 5: holy, 6: evil, 7: special (no/pure damage)
 	ArrayList<String> skillElements; //neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, mind, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
 	ArrayList<Integer> attributePercentages; //health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
-	int rechargePercentage;
+	int chargeValue;
+	int rechargeValue;
 	int damage;
 	int accuracyFormula; //0: 100%, 1: 100% (modified by accuracy, determined by target evasion), 2: 100% (modified by 90% accuracy, determined by target evasion),
 	//3: 90%
@@ -27,12 +28,13 @@ public class Skill { //TODO edit all
 	ArrayList<String> statusEffects; //effect+percentage
 	//death, wound, petrification, dampness, burn, freeze, shock, pressure, poisoning, confusion, silence, sleep
 	//health down, energy down, offense down, focus down, defense down, resistance down, tolerance down, accuracy down, evasion down, speed down, critical down, cast down
-		//1,2,3,4,5,6,7,8
+	//health up, energy up, offense up, focus up, defense up, resistance up, tolerance up, accuracy up, evasion up, speed up, critical up, cast up
+		//1,2,3,4,5,6,7,8,9,10,11,12
 	String userAnimation; //kick,
-	//slash, bash, scratch, stab, rupture, loose, whack, snap, shoot,
+	//slash, knock, scratch, stab, rupture, loose, whack, snap, shoot,
 	//
 	String targetAnimation; //weakhit,
-	//slash, knock, scratch, gouge, sever, rupture, snap, bind, knock, smash, whack, gash, skewer, clobber, stab, arrow, bullet,
+	//slash, bash, scratch, gouge, sever, rupture, snap, bind, knock, smash, whack, gash, skewer, clobber, stab, arrow, bullet,
 	//lightshot
 	//String description; 
 	//Damage: 1-4 minimum, 5-19 minimal, 20-59 minor, 60-139 mediocre, 140-
@@ -91,6 +93,7 @@ public class Skill { //TODO edit all
     					for (String element : tempArray1) {
     						skillTypes.add((int) Integer.parseInt(element));
     					}
+    					break;
     				case 6:
     					skillElements = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
@@ -100,25 +103,29 @@ public class Skill { //TODO edit all
     					for (String element : tempArray2) {
     						attributePercentages.add((int) Integer.parseInt(element));
     					}
+    					break;
     				case 8:
-    					rechargePercentage = Integer.parseInt(dataString);
+    					chargeValue = Integer.parseInt(dataString);
     					break;
     				case 9:
-    					damage = Integer.parseInt(dataString);
+    					rechargeValue = Integer.parseInt(dataString);
     					break;
     				case 10:
-    					accuracyFormula = Integer.parseInt(dataString);
+    					damage = Integer.parseInt(dataString);
     					break;
     				case 11:
-    					damageFormula = Integer.parseInt(dataString);
+    					accuracyFormula = Integer.parseInt(dataString);
     					break;
     				case 12:
-    					statusEffects = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					damageFormula = Integer.parseInt(dataString);
     					break;
     				case 13:
-    					userAnimation = dataString;
+    					statusEffects = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				case 14:
+    					userAnimation = dataString;
+    					break;
+    				case 15:
     					targetAnimation = dataString;
     					break;
     				}
