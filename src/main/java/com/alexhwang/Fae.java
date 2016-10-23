@@ -14,7 +14,7 @@ public class Fae {
 	String faeClass;
 	ArrayList<String> givenNameArray;
 	ArrayList<String> varietyArray; //manifest as sex+type (when applicable) separately, check for bracketed values to add to flags
-	ArrayList<String> possibleRankArray; //rank+condition
+	ArrayList<String> rankArray; //rank+condition
 	ArrayList<String> flagArray;
 	ArrayList<Integer> initialPreferenceArray; //vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck
 	ArrayList<Integer> initialAttributeArray; //vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck
@@ -127,7 +127,7 @@ public class Fae {
     					varietyArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				case 4:
-    					possibleRankArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					rankArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				case 5:
     					flagArray = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));

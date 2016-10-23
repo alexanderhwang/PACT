@@ -25,7 +25,13 @@ public class Member {
 		this.fae = fae;
 		this.chosenName = chosenName;
 		this.variety = variety;
-		this.rank = rank;
+		if (variety.equals("")) {
+			variety = fae.varietyArray.get(0);
+		}
+		this.rank = rank; //"" goes to first
+		if (rank.equals("")) {
+			rank = fae.rankArray.get(0);
+		}
 	}
 }
 

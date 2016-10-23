@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class Skill { //TODO edit all
 	//int id
 	String name;
-	ArrayList<String> requiredFlags;
+	ArrayList<String> requiredFlags; //includes rank[int], level[int]
 	int healthCost;
 	int energyCost;
 	int target;	//0: 1 front enemy (100%), 1: 1 enemy (90%), 2: 2 front/back enemies (75%), 3: front enemy line (50%), 4: enemy line (45%), 5: enemy party (33%),
@@ -36,7 +36,7 @@ public class Skill { //TODO edit all
 	String targetAnimation; //weakhit,
 	//slash, bash, scratch, gouge, sever, rupture, snap, bind, knock, smash, whack, gash, skewer, clobber, stab, arrow, bullet,
 	//lightshot
-	//String description; 
+	String description; 
 	//Damage: 1-4 minimum, 5-19 minimal, 20-59 minor, 60-139 mediocre, 140-
 	//Percent: 1-5 minimum, 6-15 minimal, 16-25 minor, 26-39 mediocre, 40-59 medium, 60-79 major, 80-99 massive
 	//Effect: 1 slightly, 2 somewhat, 3 significantly, 4 severely
@@ -127,6 +127,9 @@ public class Skill { //TODO edit all
     					break;
     				case 15:
     					targetAnimation = dataString;
+    					break;
+    				case 16:
+    					description = dataString;
     					break;
     				}
     				line = line.substring(dataString.length() + 2, line.length());
