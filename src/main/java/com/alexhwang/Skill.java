@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class Skill { //TODO edit all
+public class Skill {
+	static final int IBASIZE = 12;
+	
 	//int id
 	String name;
 	ArrayList<String> requiredFlags; //includes rank[int], level[int]
@@ -18,7 +20,7 @@ public class Skill { //TODO edit all
 				//12: random enemy (120%), 13: random ally (125%), 14: random enemy or ally (150%), 15: 2-5 random enemies (40%), 15: everyone (100%)
 	ArrayList<Integer> skillTypes; //0: impact, 1: cutting, 2: piercing, 3: magic, 4: psychic, 5: holy, 6: evil, 7: special (no/pure damage)
 	ArrayList<String> skillElements; //neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, mind, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
-	ArrayList<Integer> attributePercentages; //health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
+	ArrayList<Integer> basicAttributePercentages; //health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
 	int chargeValue;
 	int rechargeValue;
 	int damage;
@@ -99,9 +101,12 @@ public class Skill { //TODO edit all
     					break;
     				case 7:
 						final ArrayList<String> tempArray2 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
-						attributePercentages = new ArrayList<Integer>();
+						if (tempArray2.size() != IBASIZE) { //error checking
+							System.out.println("Skill basicAttributePercentages error: " + id);
+						}
+						basicAttributePercentages = new ArrayList<Integer>();
     					for (String element : tempArray2) {
-    						attributePercentages.add((int) Integer.parseInt(element));
+    						basicAttributePercentages.add((int) Integer.parseInt(element));
     					}
     					break;
     				case 8:

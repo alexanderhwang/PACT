@@ -9,6 +9,13 @@ import java.util.Arrays;
 import javax.swing.ImageIcon;
 
 public class Fae {
+	static final int IPSIZE = 10;
+	static final int IASIZE = 10;
+	static final int IBASIZE = 12;
+	static final int TSIZE = 7;
+	static final int ESIZE = 24;
+	static final int ASIZE = 12;
+	
 	//int id
 	String name;
 	String faeClass;
@@ -44,6 +51,8 @@ public class Fae {
 	int elementPoison;
 	int elementMetal;
 	int elementBone;
+	int elementBlood;
+	int elementPassion;
 	int elementMind;
 	int elementSpirit;
 	int elementLight;
@@ -55,7 +64,7 @@ public class Fae {
 	int elementAlmighty;
 	int elementVoid;
 	ArrayList<Integer> elementArray = new ArrayList<Integer>(Arrays.asList(elementNeutral, elementEarth, elementAir, elementWater, elementFire, elementIce, elementPower, elementForce, elementWood, elementPoison,
-			elementMetal, elementBone, elementMind, elementSpirit, elementLight, elementDarkness, elementArcanum, elementHeaven, elementHell, elementChaos, elementAlmighty, elementVoid));
+			elementMetal, elementBone, elementBlood, elementPassion, elementMind, elementSpirit, elementLight, elementDarkness, elementArcanum, elementHeaven, elementHell, elementChaos, elementAlmighty, elementVoid));
 	int ailmentDeath;
 	int ailmentWound;
 	int ailmentPetrification;
@@ -134,6 +143,9 @@ public class Fae {
     					break;
     				case 6:
 						final ArrayList<String> tempArray1 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						if (tempArray1.size() != IPSIZE) { //error checking
+							System.out.println("Fae initialPreferenceArray error: " + id);
+						}
     					initialPreferenceArray = new ArrayList<Integer>();
     					for (String element : tempArray1) {
     						initialPreferenceArray.add((int) Integer.parseInt(element));
@@ -141,6 +153,9 @@ public class Fae {
     					break;
     				case 7:
 						final ArrayList<String> tempArray2 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						if (tempArray2.size() != IASIZE) { //error checking
+							System.out.println("Fae initialAttributeArray error: " + id);
+						}
     					initialAttributeArray = new ArrayList<Integer>();
     					for (String element : tempArray2) {
     						initialAttributeArray.add((int) Integer.parseInt(element));
@@ -148,6 +163,9 @@ public class Fae {
     					break;
     				case 8:
 						final ArrayList<String> tempArray3 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						if (tempArray3.size() != IBASIZE) { //error checking
+							System.out.println("Fae initialBasicAttributeArray error: " + id);
+						}
     					initialBasicAttributeArray = new ArrayList<Integer>();
     					for (String element : tempArray3) {
     						initialBasicAttributeArray.add((int) Integer.parseInt(element));
@@ -170,6 +188,9 @@ public class Fae {
     					break;
     				case 14:
 						final ArrayList<String> tempArray4 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						if (tempArray4.size() != TSIZE) { //error checking
+							System.out.println("Fae typeArray error: " + id);
+						}
     					typeArray = new ArrayList<Integer>();
     					for (String element : tempArray4) {
     						typeArray.add((int) Integer.parseInt(element));
@@ -177,6 +198,9 @@ public class Fae {
     					break;
     				case 15:
 						final ArrayList<String> tempArray5 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						if (tempArray5.size() != ESIZE) { //error checking
+							System.out.println("Fae elementArray error: " + id);
+						}
     					elementArray = new ArrayList<Integer>();
     					for (String element : tempArray5) {
     						elementArray.add((int) Integer.parseInt(element));
@@ -184,6 +208,9 @@ public class Fae {
     					break;
     				case 16:
 						final ArrayList<String> tempArray6 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						if (tempArray6.size() != ASIZE) { //error checking
+							System.out.println("Fae ailmentArray error: " + id);
+						}
     					ailmentArray = new ArrayList<Integer>();
     					for (String element : tempArray6) {
     						ailmentArray.add(Integer.parseInt(element));

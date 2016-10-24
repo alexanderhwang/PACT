@@ -118,8 +118,9 @@ public class Board extends JFrame implements KeyListener{
 	private ArrayList<Zone> zoneArray = new ArrayList<Zone>();
 	private Zone currentZone;
 	
-	private ArrayList<Fae> faeRegistryArray; //TODO save these things
-	private ArrayList<Member> partyMemberArray;
+	private ArrayList<Fae> faeRegistryArray = new ArrayList<Fae>();
+	private ArrayList<Member> partyMemberArray = new ArrayList<Member>();
+	//TODO arrays for items, pacts
 	
 	private Boolean animation = true;
 	private Boolean autosave = false;
@@ -1916,7 +1917,7 @@ public class Board extends JFrame implements KeyListener{
 			"\tde3vwfg13\t",
 			//End
 			"\t2node\t"
-			);
+			); //TODO finish saving all things
 		playSound(BASE_RESOURCE_PATH + "Sounds\\Save.wav");
 		try {
 		    Files.write(Paths.get("File\\Save" + currentFile + ".jsmn"), lines, utf8);
