@@ -1,4 +1,4 @@
-	00000;	Nothing;	0;	0;	none;	0;	0;	none+0;	;
+	00000;	Nothing;	-1;	0;	none;	0;	0;	none+0;	;
 	00001;	Aura of Constitution;	2;	1;	vitality;	10;	0;	vitality+1;	Adds 10% of your vitality to allies.;
 	00002;	Aura of Insight;	2;	1;	wisdom;	10;	0;	wisdom+1;	Adds 10% of your wisdom to allies.;
 	00003;	Aura of Might;	2;	1;	strength;	10;	0;	strength+1;	Adds 10% of your strength to allies.;
@@ -9,11 +9,11 @@
 	00008;	Aura of Determination;	2;	1;	resolve;	10;	0;	resolve+1;	Adds 10% of your resolve to allies.;
 	00009;	Aura of Alacrity;	2;	1;	agility;	10;	0;	agility+1;	Adds 10% of your agility to allies.;
 	00010;	Aura of Fortune;	2;	1;	luck;	10;	0;	luck+1;	Adds 10% of your luck to allies.;
-	00011;	Impotence;	0;	0;	health;	-10;	0;	wisdom+2,strength+2,intelligence+2,stamina+1,dexterity+2,passion+2,resolve+2,agility+2,luck+2;	Reduces health by 10%.;
-	00012;	Ignorance;	0;	0;	energy;	-10;	0;	vitality+2,strength+2,intelligence+2,stamina+1,dexterity+2,passion+2,resolve+2,agility+2,luck+2;	Reduces energy by 10%.;
-	00013;	Weakness;	0;	0;	offense;	-10;	0;	vitality+3,wisdom+3,intelligence+3,stamina+3,dexterity+3,passion+3,resolve+3,agility+3,luck+3;	Reduces offense by 10%.;
-	00014;	Fatuity;	0;	0;	focus;	-10;	0;	vitality+3,wisdom+3,strength+3,stamina+3,dexterity+3,passion+3,resolve+3,agility+3,luck+3;	Reduces focus by 10%.;
-	00015;	Fragility;	0;	0;	defense;	-10;	0;	wisdom+1,intelligence+1,stamina+1,dexterity+1,passion+1,agility+1,luck+1;	Reduces defense by 10%.;
-	00016;	Feebleness;	0;	0;	resistance;	-10;	0;	vitality+1,strength+1,stamina+1,dexterity+1,passion+1,agility+1,luck+1;	Reduces resistance by 10%.;
-	00017;	Enervation;	0;	0;	tolerance;	-10;	0;	vitality+2,wisdom+2,strength+2,intelligence+2,stamina+1,dexterity+2,passion+2,agility+2,luck+2;	Reduces tolerance by 10%.;
-	00018;	Ineptitude;	0;	0;	accuracy;	-10;	0;	vitality+2,wisdom+2,strength+2,intelligence+2,stamina+2,passion+2,resolve+2,agility+2,luck+1;	Reduces accuracy by 10%.;
+	00011;	Impotence;	-1;	0;	health;	-10;	0;	wisdom+2,strength+2,intelligence+2,stamina+1,dexterity+2,passion+2,resolve+2,agility+2,luck+2;	Reduces health by 10%.;
+	00012;	Ignorance;	-1;	0;	energy;	-10;	0;	vitality+2,strength+2,intelligence+2,stamina+1,dexterity+2,passion+2,resolve+2,agility+2,luck+2;	Reduces energy by 10%.;
+	00013;	Weakness;	-1;	0;	offense;	-10;	0;	vitality+3,wisdom+3,intelligence+3,stamina+3,dexterity+3,passion+3,resolve+3,agility+3,luck+3;	Reduces offense by 10%.;
+	00014;	Fatuity;	-1;	0;	focus;	-10;	0;	vitality+3,wisdom+3,strength+3,stamina+3,dexterity+3,passion+3,resolve+3,agility+3,luck+3;	Reduces focus by 10%.;
+	00015;	Fragility;	-1;	0;	defense;	-10;	0;	wisdom+1,intelligence+1,stamina+1,dexterity+1,passion+1,agility+1,luck+1;	Reduces defense by 10%.;
+	00016;	Feebleness;	-1;	0;	resistance;	-10;	0;	vitality+1,strength+1,stamina+1,dexterity+1,passion+1,agility+1,luck+1;	Reduces resistance by 10%.;
+	00017;	Enervation;	-1;	0;	tolerance;	-10;	0;	vitality+2,wisdom+2,strength+2,intelligence+2,stamina+1,dexterity+2,passion+2,agility+2,luck+2;	Reduces tolerance by 10%.;
+	00018;	Ineptitude;	-1;	0;	accuracy;	-10;	0;	vitality+2,wisdom+2,strength+2,intelligence+2,stamina+2,passion+2,resolve+2,agility+2,luck+1;	Reduces accuracy by 10%.;

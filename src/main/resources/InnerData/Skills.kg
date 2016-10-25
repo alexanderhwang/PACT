@@ -1,4 +1,4 @@
-	00001;	Slash;	sword;	0;	1;	metal;	0,75,0,0,0,0,5,0,20,0,0;	40;	100;	120;	1;	1;	wound+20;	slash;	slash;	;
+	00001;	Slash;	sword;	0;	1;	metal;	0,0,75,0,0,0,0,5,0,20,0,0;	40;	100;	120;	1;	1;	wound+20;	slash;	slash;	;
 	00002;	Knock;	sword,hammer;	0;	0;	0;	0;	metal;	0,0,90,0,0,0,0,10,0,0,0,0;	20;	80;	90;	1;	1;	evasion down1+20;	knock;	knock;	;
 	00003;	Scratch;	claw;	0;	0;	0;	1;	metal;	0,0,90,0,0,0,0,5,0,5,0,0;	10;	50;	50;	1;	1;	wound+10;	scratch;	scratch;	;
 	00004;	Gouge;	claw,knife,spear;	0;	0;	0;	2;	metal;	0,0,80,0,0,0,0,10,0,10,0,0;	50;	130;	110;	1;	1;	accuracy down1+100,wound+20;	stab;	gouge;	;
