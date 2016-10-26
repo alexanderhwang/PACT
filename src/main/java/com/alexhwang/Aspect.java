@@ -16,7 +16,7 @@ public class Aspect {
 	//vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck
 	//health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
 	//impact, cutting, piercing, magic, psychic, holy, evil
-	//neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, mind, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
+	//neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, mind, blood, emotion, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
 	//death, wound, petrification, dampness, burn, freeze, shock, pressure, poisoning, confusion, silence, sleep
 	ArrayList<Integer> affectedValues;
 	int valueType; //0: percent, 1: value

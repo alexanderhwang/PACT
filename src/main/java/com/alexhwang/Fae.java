@@ -52,7 +52,7 @@ public class Fae {
 	int elementMetal;
 	int elementBone;
 	int elementBlood;
-	int elementPassion;
+	int elementEmotion;
 	int elementMind;
 	int elementSpirit;
 	int elementLight;
@@ -64,7 +64,7 @@ public class Fae {
 	int elementAlmighty;
 	int elementVoid;
 	ArrayList<Integer> elementArray = new ArrayList<Integer>(Arrays.asList(elementNeutral, elementEarth, elementAir, elementWater, elementFire, elementIce, elementPower, elementForce, elementWood, elementPoison,
-			elementMetal, elementBone, elementBlood, elementPassion, elementMind, elementSpirit, elementLight, elementDarkness, elementArcanum, elementHeaven, elementHell, elementChaos, elementAlmighty, elementVoid));
+			elementMetal, elementBone, elementBlood, elementEmotion, elementMind, elementSpirit, elementLight, elementDarkness, elementArcanum, elementHeaven, elementHell, elementChaos, elementAlmighty, elementVoid));
 	int ailmentDeath;
 	int ailmentWound;
 	int ailmentPetrification;

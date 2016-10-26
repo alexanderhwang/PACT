@@ -19,7 +19,7 @@ public class Skill {
 				//6: 1 ally (100%), 7: ally line (50%), 8: ally party (30%), 9: 1 enemy or ally (95%), 10: enemy or ally line (48%), 11: enemy or ally party (32%),
 				//12: random enemy (120%), 13: random ally (125%), 14: random enemy or ally (150%), 15: 2-5 random enemies (40%), 15: everyone (100%)
 	ArrayList<Integer> skillTypes; //0: impact, 1: cutting, 2: piercing, 3: magic, 4: psychic, 5: holy, 6: evil, 7: special (no/pure damage)
-	ArrayList<String> skillElements; //neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, mind, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
+	ArrayList<String> skillElements; //neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, blood, emotion, mind, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
 	ArrayList<Integer> basicAttributePercentages; //health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
 	int chargeValue;
 	int rechargeValue;
@@ -38,6 +38,7 @@ public class Skill {
 	String targetAnimation; //weakhit,
 	//slash, bash, scratch, gouge, sever, rupture, snap, bind, knock, smash, whack, gash, skewer, clobber, stab, arrow, bullet,
 	//lightshot
+	ArrayList<String> preferences; //preference+value
 	String description; 
 	//Damage: 1-4 minimum, 5-19 minimal, 20-59 minor, 60-139 mediocre, 140-
 	//Percent: 1-5 minimum, 6-15 minimal, 16-25 minor, 26-39 mediocre, 40-59 medium, 60-79 major, 80-99 massive
@@ -134,6 +135,9 @@ public class Skill {
     					targetAnimation = dataString;
     					break;
     				case 16:
+    					preferences = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					break;
+    				case 17:
     					description = dataString;
     					break;
     				}
