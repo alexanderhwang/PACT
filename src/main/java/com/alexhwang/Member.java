@@ -67,7 +67,7 @@ public class Member {
 					if (rankValue >= potentialAspect.rankRequirement && !aspectArray.contains(potentialAspect)) {
 						aspectArray.add(potentialAspect);
 						for (String preference : potentialAspect.preferences) {
-							//TODO
+							//TODO add to preferences based on added aspects
 						}
 						done = true;
 					}
@@ -95,6 +95,9 @@ public class Member {
 					final Skill potentialSkill = new Skill(consideredSkill.substring(0, consideredSkill.indexOf('+') - 1));
 					if (!skillArray.contains(potentialSkill) && level >= Integer.parseInt(skillLevel)) {
 						skillArray.add(potentialSkill);
+						for (String preference : potentialSkill.preferences) {
+							//TODO add to preferences based on added skills
+						}
 					}
 					/*else {
 						break;
