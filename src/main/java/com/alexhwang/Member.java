@@ -54,7 +54,7 @@ public class Member {
 		preferences = new ArrayList<Integer>(fae.initialPreferenceArray);
 		
 		aspectArray = new ArrayList<Aspect>();
-		for (int i = 0; i < allowedAspects; i++) {
+		for (int h = 0; h < allowedAspects; h++) {
 			if (aspectArray.size() < ASPECTMAX) {
 				Boolean done = false;
 				int loopCheck = 0;
@@ -113,15 +113,31 @@ public class Member {
 				} //TODO check if works
 			}
 		}
-		for (int i = 0; i < attributes.size(); i++) {
-			attributes.set(i, fae.initialAttributeArray.get(i));
+		for (int j = 0; j < attributes.size(); j++) {
+			attributes.set(j, fae.initialAttributeArray.get(j));
 		}
-		for (int i = 0; i < basicAttributes.size(); i++) {
-			basicAttributes.set(i, fae.initialBasicAttributeArray.get(i));
+		for (int k = 0; k < basicAttributes.size(); k++) {
+			basicAttributes.set(k, fae.initialBasicAttributeArray.get(k));
 		}
-		for (int i = 1; i <= level; i++) {
-			
+		if (level >= 2) {
+			ArrayList<Integer> preferenceReferenceArray = new ArrayList<Integer>();
+			int runningSum = 0;
+			for (int i = 0; i < preferences.size(); i++) {
+				runningSum += preferences.get(i);
+				preferenceReferenceArray.add(runningSum);
+			}
+			for (int l = 2; l <= level; l++) {
+				Random random = new Random();
+				int randomChoice = random.nextInt(runningSum) + 1;
+				for (int m = 0; m < preferenceReferenceArray.size(); m++) {
+					if (randomChoice <= preferenceReferenceArray.get(m)) {
+						attributes.set(m, attributes.get(m) + 1);
+					}
+				}
+				//TODO check if works
+			}
 		}
+		attributeCorrect();
 		currentHealth = health;
 		currentEnergy = energy;
 	}
@@ -147,7 +163,7 @@ public class Member {
 		rankValue = fae.rankOffset + fae.rankArray.indexOf(this.rank);
 	}
 	
-	public void attributeCorrect() {
+	public void attributeCorrect() { //initialization only
 		int index = 0;
 		for (int basicAttribute : basicAttributes) {
 			switch (index) {
