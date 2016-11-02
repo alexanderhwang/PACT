@@ -66,8 +66,12 @@ public class Member {
 					
 					if (rankValue >= potentialAspect.rankRequirement && !aspectArray.contains(potentialAspect)) {
 						aspectArray.add(potentialAspect);
-						for (String preference : potentialAspect.preferences) {
-							//TODO add to preferences based on added aspects
+						for (String preferenceModule : potentialAspect.preferences) {
+							if (preferenceModule.length() >= 1) {
+								int consideredPreferenceIndex = Integer.parseInt(preferenceModule.substring(0, preferenceModule.indexOf('+') - 1));
+								int consideredPreferenceIncrement = Integer.parseInt(preferenceModule.substring(preferenceModule.indexOf('+'), preferenceModule.length() - 1));
+								preferences.set(consideredPreferenceIndex, preferences.get(consideredPreferenceIndex) + consideredPreferenceIncrement);
+							}
 						}
 						done = true;
 					}
@@ -95,8 +99,12 @@ public class Member {
 					final Skill potentialSkill = new Skill(consideredSkill.substring(0, consideredSkill.indexOf('+') - 1));
 					if (!skillArray.contains(potentialSkill) && level >= Integer.parseInt(skillLevel)) {
 						skillArray.add(potentialSkill);
-						for (String preference : potentialSkill.preferences) {
-							//TODO add to preferences based on added skills
+						for (String preferenceModule : potentialSkill.preferences) {
+							if (preferenceModule.length() >= 1) {
+								int consideredPreferenceIndex = Integer.parseInt(preferenceModule.substring(0, preferenceModule.indexOf('+') - 1));
+								int consideredPreferenceIncrement = Integer.parseInt(preferenceModule.substring(preferenceModule.indexOf('+'), preferenceModule.length() - 1));
+								preferences.set(consideredPreferenceIndex, preferences.get(consideredPreferenceIndex) + consideredPreferenceIncrement);
+							}
 						}
 					}
 					/*else {
