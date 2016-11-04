@@ -142,6 +142,122 @@ public class Member {
 		currentEnergy = energy;
 	}
 
+	public Member(Fae fae, int level) { //random creation
+		Random rand = new Random();
+		int randChoice = rand.nextInt(fae.givenNameArray.size());
+		
+		this.fae = fae;
+		this.chosenName = fae.givenNameArray.get(randChoice);
+		this.variety = fae.varietyArray.get(randChoice % fae.varietyArray.size());
+		this.level = level;
+		for (final String consideredRank : fae.rankArray) {
+			if (!consideredRank.contains("+")) {
+				rank = consideredRank;
+			}
+			else {
+				final String rankLevel = consideredRank.substring(consideredRank.indexOf('+'), consideredRank.length() - 1);
+				
+				if (level >= Integer.parseInt(rankLevel)) {
+					rank = consideredRank.substring(0, consideredRank.indexOf('+') - 1);
+				} 
+				/*else {
+					break;
+				}*/
+			}
+		}
+		rankValue = fae.rankOffset + fae.rankArray.indexOf(this.rank);
+		allowedAspects = fae.rankArray.indexOf(this.rank) + 1;
+		preferences = new ArrayList<Integer>(fae.initialPreferenceArray);
+		
+		aspectArray = new ArrayList<Aspect>();
+		for (int h = 0; h < allowedAspects; h++) {
+			if (aspectArray.size() < ASPECTMAX) {
+				Boolean done = false;
+				int loopCheck = 0;
+				while (!done) {
+					Random random = new Random();
+					int randomChoice = random.nextInt(fae.possibleAspectArray.size());
+					String randomAspect = fae.possibleAspectArray.get(randomChoice);
+					Aspect potentialAspect = new Aspect(randomAspect);
+					
+					if (rankValue >= potentialAspect.rankRequirement && !aspectArray.contains(potentialAspect)) {
+						aspectArray.add(potentialAspect);
+						for (String preferenceModule : potentialAspect.preferences) {
+							if (preferenceModule.length() >= 1) {
+								int consideredPreferenceIndex = Integer.parseInt(preferenceModule.substring(0, preferenceModule.indexOf('+') - 1));
+								int consideredPreferenceIncrement = Integer.parseInt(preferenceModule.substring(preferenceModule.indexOf('+'), preferenceModule.length() - 1));
+								preferences.set(consideredPreferenceIndex, preferences.get(consideredPreferenceIndex) + consideredPreferenceIncrement);
+							}
+						}
+						done = true;
+					}
+					else {
+						loopCheck++;
+						if (loopCheck > fae.rankArray.size()) {
+							System.out.println("Member aspectArray error: loopCheck failed for " + fae.name);
+							done = true;
+						}
+					}
+				} //TODO check if works
+			}
+		}
+		skillArray = new ArrayList<Skill>();
+		for (String consideredSkill : fae.possibleSkillArray) {
+			if (skillArray.size() < SKILLMAX) {
+				if (!consideredSkill.contains("+")) {
+					final Skill potentialSkill = new Skill(consideredSkill);
+					if (!skillArray.contains(potentialSkill)) {
+						skillArray.add(potentialSkill);
+					}
+				}
+				else {
+					final String skillLevel = consideredSkill.substring(consideredSkill.indexOf('+'), consideredSkill.length() - 1);
+					final Skill potentialSkill = new Skill(consideredSkill.substring(0, consideredSkill.indexOf('+') - 1));
+					if (!skillArray.contains(potentialSkill) && level >= Integer.parseInt(skillLevel)) {
+						skillArray.add(potentialSkill);
+						for (String preferenceModule : potentialSkill.preferences) {
+							if (preferenceModule.length() >= 1) {
+								int consideredPreferenceIndex = Integer.parseInt(preferenceModule.substring(0, preferenceModule.indexOf('+') - 1));
+								int consideredPreferenceIncrement = Integer.parseInt(preferenceModule.substring(preferenceModule.indexOf('+'), preferenceModule.length() - 1));
+								preferences.set(consideredPreferenceIndex, preferences.get(consideredPreferenceIndex) + consideredPreferenceIncrement);
+							}
+						}
+					}
+					/*else {
+						break;
+					}*/
+				} //TODO check if works
+			}
+		}
+		for (int j = 0; j < attributes.size(); j++) {
+			attributes.set(j, fae.initialAttributeArray.get(j));
+		}
+		for (int k = 0; k < basicAttributes.size(); k++) {
+			basicAttributes.set(k, fae.initialBasicAttributeArray.get(k));
+		}
+		if (level >= 2) {
+			ArrayList<Integer> preferenceReferenceArray = new ArrayList<Integer>();
+			int runningSum = 0;
+			for (int i = 0; i < preferences.size(); i++) {
+				runningSum += preferences.get(i);
+				preferenceReferenceArray.add(runningSum);
+			}
+			for (int l = 2; l <= level; l++) {
+				Random random = new Random();
+				int randomChoice = random.nextInt(runningSum) + 1;
+				for (int m = 0; m < preferenceReferenceArray.size(); m++) {
+					if (randomChoice <= preferenceReferenceArray.get(m)) {
+						attributes.set(m, attributes.get(m) + 1);
+					}
+				}
+				//TODO check if works
+			}
+		}
+		attributeCorrect();
+		currentHealth = health;
+		currentEnergy = energy;
+	}
+	
 	public Member(Fae fae, String chosenName, int varietyNumber, String rank, int level, ArrayList<Aspect> aspectArray, ArrayList<Skill> skillArray, Boolean mainCharacter, ArrayList<Integer> preferences, ArrayList<Integer> attributes, ArrayList<Integer> basicAttributes, int currentHealth, int currentEnergy, int allowedAspects) {
 		this.fae = fae;
 		this.chosenName = chosenName;
