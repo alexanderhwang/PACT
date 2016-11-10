@@ -12,13 +12,14 @@ public class Thing{
 	int y;
 	int step; //Used for sprite
 	ImageIcon imageIcon;
-	int action; //0 = nothing, 1 = generic thing, 2 = generic person
+	int action; //0 = nothing, 1 = generic thing, 2 = generic person, 3 = zone change (zone, x, y)
 	ArrayList<String> misc;
-
+	Boolean trueness;
+	
 	int flag; //set per interaction
 
 	public Thing(final String name, final String type, final String direction, final int x, final int y,
-                 final int step, final int action, final ArrayList<String> misc) {
+                 final int step, final int action, final ArrayList<String> misc, final Boolean trueness) {
 		this.name = name;
 		this.type = type;
 		this.direction = direction;
@@ -27,6 +28,7 @@ public class Thing{
 		this.step = step;
 		this.action = action;
 		this.misc = misc;
+		this.trueness = trueness;
 		if (!direction.equals("")) {
 			this.imageIcon = new ImageIcon(Board.BASE_RESOURCE_PATH + type + "\\" + name + direction.substring(0,  1) + step + ".png");
 		}

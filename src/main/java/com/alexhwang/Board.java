@@ -111,7 +111,7 @@ public class Board extends JFrame implements KeyListener{
 	private Boolean saved = false;
 	private Timer timer;
 	private ArrayList<Thing> thingArray = new ArrayList<Thing>();
-	private ArrayList<FalseThing> falseThingArray = new ArrayList<FalseThing>();
+	private ArrayList<Thing> falseThingArray = new ArrayList<Thing>();
 	private ArrayList<JLabel> thingSpriteArray = new ArrayList<JLabel>();
 	private ArrayList<JLabel> falseThingSpriteArray = new ArrayList<JLabel>();
 	private Thing savedThing;
@@ -323,7 +323,7 @@ public class Board extends JFrame implements KeyListener{
 		    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
 		    	//FALSE THING
 		    	for (int i = 0; i < falseThingArray.size(); i++) {
-		    		FalseThing nowFalseThing = falseThingArray.get(i);
+		    		Thing nowFalseThing = falseThingArray.get(i);
 		    		if (character.x == nowFalseThing.x && character.y == nowFalseThing.y) {
 		    			switch(nowFalseThing.action) {
 		    			case 1:
@@ -533,7 +533,7 @@ public class Board extends JFrame implements KeyListener{
         		}
         	}
     		dataPanel.remove(portraitData);
-        	switch (menuButton) {
+        	switch (menuButton) { //TODO add descriptions
         	case 101:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\MarxF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Marx</b></font><br></html>");
@@ -1320,7 +1320,7 @@ public class Board extends JFrame implements KeyListener{
 							    		drawSpeechBox(nowThing);
 							    		ArrayList<String> nowThingMiscClone = new ArrayList<String>();
 							    		nowThingMiscClone.addAll(nowThing.misc);
-							    		savedThing = new Thing(nowThing.name, nowThing.type, nowThing.direction, nowThing.x, nowThing.y, nowThing.step, nowThing.action, nowThingMiscClone);
+							    		savedThing = new Thing(nowThing.name, nowThing.type, nowThing.direction, nowThing.x, nowThing.y, nowThing.step, nowThing.action, nowThingMiscClone, true);
 							    		
 							    		nowThing.setFlag(nowThing.flag + 1);
 							    	}
