@@ -326,7 +326,7 @@ public class Board extends JFrame implements KeyListener{
 		    		Thing nowFalseThing = falseThingArray.get(i);
 		    		if (character.x == nowFalseThing.x && character.y == nowFalseThing.y) {
 		    			switch(nowFalseThing.action) {
-		    			case 1:
+		    			case 3:
 		    				pauseMusic();
 		    	        	character.setX(ML*Integer.parseInt(nowFalseThing.misc.get(1)));
 		    	        	character.setY(ML*Integer.parseInt(nowFalseThing.misc.get(2)));
@@ -335,7 +335,7 @@ public class Board extends JFrame implements KeyListener{
 		    				break;
 		    			default:
 		    				break;
-		    			}
+		    			} //TODO finish adding cases
 		    		}
 		    	}
 		    	mainPanel.revalidate();
@@ -1280,6 +1280,7 @@ public class Board extends JFrame implements KeyListener{
 						else if (character.direction.equals("RIGHT")) {actX += ML*1;}
 						else if (character.direction.equals("UP")) {actY -= ML*1;}
 						else if (character.direction.equals("DOWN")) {actY += ML*1;}
+						//THING
 						for (int i = 0; i < thingArray.size(); i++) {
 							Thing nowThing = thingArray.get(i);
 							if (actX == nowThing.x && actY == nowThing.y) {
@@ -1325,7 +1326,7 @@ public class Board extends JFrame implements KeyListener{
 							    		nowThing.setFlag(nowThing.flag + 1);
 							    	}
 									break;
-								}
+								} //TODO finish adding cases
 							}
 						}
 					}
@@ -2297,7 +2298,7 @@ public class Board extends JFrame implements KeyListener{
         	characterSprite.setBounds(character.x,character.y,ML*1,ML*1);
 			menuSet();
         	break;
-    	}
+    	} //TODO finish adding areas
     	for (int i = 0; i < thingArray.size(); i++) {
     		thingSpriteArray.add(new JLabel(thingArray.get(i).imageIcon));
 	    	mainPanel.setLayer(thingSpriteArray.get(i), 1);

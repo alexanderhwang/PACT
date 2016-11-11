@@ -359,9 +359,10 @@ public class Member {
 				basicAttribute += attributes.get(9) * 1;
 				break;
 			}
-			attributes.set(index, basicAttribute);
+			basicAttributes.set(index, basicAttribute);
 			index++;
 		}
+		//System.out.println(basicAttributes);
 	}
 	
 	public void setMainCharacter() {

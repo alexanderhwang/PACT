@@ -11,10 +11,10 @@ public class Thing{
 	int x;
 	int y;
 	int step; //Used for sprite
-	ImageIcon imageIcon;
 	int action; //0 = nothing, 1 = generic thing, 2 = generic person, 3 = zone change (zone, x, y)
 	ArrayList<String> misc;
 	Boolean trueness;
+	ImageIcon imageIcon;
 	
 	int flag; //set per interaction
 
