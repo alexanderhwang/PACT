@@ -79,7 +79,7 @@ public class Fae {
 	int ailmentSleep;
 	ArrayList<Integer> ailmentArray = new ArrayList<Integer>(Arrays.asList(ailmentDeath, ailmentWound, ailmentPetrification, ailmentDampness, ailmentBurn, ailmentFreeze, ailmentShock,
 			ailmentPressure, ailmentPoisoning, ailmentConfusion, ailmentSilence, ailmentSleep));
-	int essence;
+	int prana; //currency
 	int experienceMultiplier;
 	ArrayList<String> spriteBaseArray;
 	String description;
@@ -217,7 +217,7 @@ public class Fae {
     					}
     					break;
     				case 17:
-    					essence = Integer.parseInt(dataString);
+    					prana = Integer.parseInt(dataString);
     					break;
     				case 18:
     					experienceMultiplier = Integer.parseInt(dataString);

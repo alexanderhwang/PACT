@@ -46,12 +46,21 @@ public class Board extends JFrame implements KeyListener{
 	private final ArrayList<JLabel> menuArray0 = new ArrayList<JLabel>();
 	private final JLabel menu1 = new JLabel("Party");
 	private final JLabel menu2 = new JLabel("Inventory");
-	private final JLabel menu3 = new JLabel("Equipment");
+	private final JLabel menu3 = new JLabel("Essences");
 	private final JLabel menu4 = new JLabel("Pacts");
 	private final JLabel menu5 = new JLabel("Registry");
 	private final JLabel menu6 = new JLabel("File");
 	private final JLabel menu7 = new JLabel("Options");
 	private final JLabel menu8 = new JLabel("Quit");
+	private final ArrayList<JLabel> menuArray1 = new ArrayList<JLabel>();
+	private final JLabel menu10 = new JLabel("Party");
+	private final JLabel menu11 = new JLabel("-");
+	private final JLabel menu12 = new JLabel("-");
+	private final JLabel menu13 = new JLabel("-");
+	private final JLabel menu14 = new JLabel("-");
+	private final JLabel menu15 = new JLabel("-");
+	private final JLabel menu16 = new JLabel("-");
+	private final JLabel menu17 = new JLabel("Back");
 	private final ArrayList<JLabel> menuArray6 = new ArrayList<JLabel>();
 	private final JLabel menu60 = new JLabel("File");
 	private final JLabel menu61 = new JLabel("Save");
@@ -209,8 +218,11 @@ public class Board extends JFrame implements KeyListener{
     	dataPanel.add(descriptionData, BorderLayout.EAST);
     	
     	menuArray0.addAll(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8));
+    	menuArray1.addAll(Arrays.asList(menu10, menu11, menu12, menu13, menu14, menu15, menu16, menu17));
     	menuArray6.addAll(Arrays.asList(menu60, menu61, menu62, menu63));
     	menuArray7.addAll(Arrays.asList(menu70, menu71, menu72, menu73, menu74, menu75));
+    	ArrayList<ArrayList<JLabel>> menuArrayArray = new ArrayList<ArrayList<JLabel>>();
+    	menuArrayArray.addAll(Arrays.asList(menuArray1, menuArray6, menuArray7)); //TODO add the rest
     	menuArray100.addAll(Arrays.asList(menu100, menu101, menu102, menu103, menu104, menu105, menu106, menu107, menu108, menu109, menu110, menu111, menu112));
     	menuArray120.addAll(Arrays.asList(menu120, menu121, menu122, menu123));
     	for (int i = 0; i < menuArray0.size(); i++) {
@@ -221,35 +233,22 @@ public class Board extends JFrame implements KeyListener{
     		menuPanel.setLayer(menuArray0.get(i), 1);
     		menuPanel.add(menuArray0.get(i));
     	}
-    	for (int i = 0; i < menuArray6.size(); i++) {
-    		if (i == 0) {
-    			menuArray6.get(i).setBounds(10, 20 + i * 30, 140, 25);
-        		menuArray6.get(i).setFont(new Font("Arial", Font.BOLD, 15));
-        		menuArray6.get(i).setForeground(Color.BLACK);
+    	for (ArrayList<JLabel> menuArray : menuArrayArray) {
+    		for (int i = 0; i < menuArray.size(); i++) {
+    			if (i == 0) {
+        			menuArray.get(i).setBounds(10, 20 + i * 30, 140, 25);
+            		menuArray.get(i).setFont(new Font("Arial", Font.BOLD, 15));
+            		menuArray.get(i).setForeground(Color.BLACK);
+    			}
+        		else {
+        			menuArray.get(i).setBounds(20, 20 + i * 30, 140, 25);
+            		menuArray.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+            		menuArray.get(i).setForeground(Color.GRAY);
+        		}
+        		menuArray.get(i).setVisible(false);
+        		menuPanel.setLayer(menuArray.get(i), 2);
+        		menuPanel.add(menuArray.get(i));
     		}
-    		else {
-    			menuArray6.get(i).setBounds(20, 20 + i * 30, 140, 25);
-        		menuArray6.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
-        		menuArray6.get(i).setForeground(Color.GRAY);
-    		}
-    		menuArray6.get(i).setVisible(false);
-    		menuPanel.setLayer(menuArray6.get(i), 2);
-    		menuPanel.add(menuArray6.get(i));
-    	}
-    	for (int i = 0; i < menuArray7.size(); i++) {
-    		if (i == 0) {
-    			menuArray7.get(i).setBounds(10, 20 + i * 30, 140, 25);
-        		menuArray7.get(i).setFont(new Font("Arial", Font.BOLD, 15));
-        		menuArray7.get(i).setForeground(Color.BLACK);
-    		}
-    		else {
-    			menuArray7.get(i).setBounds(20, 20 + i * 30, 140, 25);
-        		menuArray7.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
-        		menuArray7.get(i).setForeground(Color.GRAY);
-    		}
-    		menuArray7.get(i).setVisible(false);
-    		menuPanel.setLayer(menuArray7.get(i), 2);
-    		menuPanel.add(menuArray7.get(i));
     	}
     	for (int i = 0; i < menuArray100.size(); i++) {
     		if (i == 0) {
@@ -361,6 +360,24 @@ public class Board extends JFrame implements KeyListener{
     	    	}
     	    });
     	}
+
+    	for (int i = 1; i < menuArray1.size(); i++) {
+    		menuArray1.get(i).addMouseListener(new MegaMouseAdapter(10 + i) {
+    	    	public void mouseClicked(MouseEvent c) {
+    	    		int buttonIndex = getSavedValue();
+    	    		if (!paused && menuButton >= 11 && menuButton <= 17 && !keyPaused && !superPaused) {
+    	    			if (menuButton == buttonIndex) {
+    	    				menuPress();
+    	    			}
+    	    			else {
+    	    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
+    	        			menuButton = buttonIndex;
+    	    			}
+    		   			menuSet();
+    	    		}
+    	    	}
+    	    });
+    	}//TODO finish adding listeners
 
     	for (int i = 1; i < menuArray6.size(); i++) {
     		menuArray6.get(i).addMouseListener(new MegaMouseAdapter(60 + i) {
@@ -492,6 +509,20 @@ public class Board extends JFrame implements KeyListener{
     			}
     		}
     	}
+    	else if (menuButton >= 11 && menuButton <= 17) {
+    		for (int i = 0; i < menuArray1.size(); i++) {
+    			if (i == menuButton - 10) {
+    				menuArray1.get(i).setFont(new Font("Arial", Font.BOLD, 15));
+    				menuArray1.get(i).setForeground(Color.BLACK);
+    			}
+    			else {
+    				menuArray1.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+    				menuArray1.get(i).setForeground(Color.GRAY);
+    			}
+    		}
+			menu10.setFont(new Font("Arial", Font.BOLD, 15));
+			menu10.setForeground(Color.BLACK);
+    	} //TODO finish adding button sets
     	else if (menuButton >= 61 && menuButton <= 63) {
     		for (int i = 0; i < menuArray6.size(); i++) {
     			if (i == menuButton - 60) {
@@ -627,6 +658,13 @@ public class Board extends JFrame implements KeyListener{
     		else if (menuButton == 1) {
     			menuButton = 8;
     		}
+    		else if (menuButton > 11 && menuButton <= 17) {
+    			menuButton--;
+    		}
+    		else if (menuButton == 11) {
+    			menuButton = 17;
+    		} 
+    		//TODO finish adding ups
     		else if (menuButton > 61 && menuButton <= 63) {
     			menuButton--;
     		}
@@ -659,6 +697,13 @@ public class Board extends JFrame implements KeyListener{
     		else if (menuButton == 8) {
     			menuButton = 1;
     		}
+    		else if (menuButton < 17 && menuButton >= 11) {
+    			menuButton++;
+    		}
+    		else if (menuButton == 17) {
+    			menuButton = 11;
+    		} 
+    		//TODO finish adding downs
     		else if (menuButton < 63 && menuButton >= 61) {
     			menuButton++;
     		}
@@ -702,6 +747,18 @@ public class Board extends JFrame implements KeyListener{
     		else if (menuButton == 1) {
     			menuButton = 8;
     		}
+    		else if (menuButton > 11 && menuButton <= 17) {
+    			if (valueSkip >= (menuButton - 10)) {
+    				menuButton = 11;
+    			}
+    			else {
+    				menuButton -= valueSkip;
+    			}
+    		}
+    		else if (menuButton == 11) {
+    			menuButton = 17;
+    		}
+    		//TODO finish adding ups
     		else if (menuButton > 61 && menuButton <= 63) {
     			if (valueSkip >= (menuButton - 60)) {
     				menuButton = 61;
@@ -759,6 +816,18 @@ public class Board extends JFrame implements KeyListener{
     		else if (menuButton == 8) {
     			menuButton = 1;
     		}
+    		else if (menuButton < 17 && menuButton >= 11) {
+    			if (valueSkip >= (7 - (menuButton - 10))) {
+    				menuButton = 17;
+    			}
+    			else {
+    				menuButton += valueSkip;
+    			}
+    		}
+    		else if (menuButton == 17) {
+    			menuButton = 11;
+    		}
+    		//TODO finish adding downs
     		else if (menuButton < 63 && menuButton >= 61) {
     			if (valueSkip >= (3 - (menuButton - 60))) {
     				menuButton = 63;
@@ -811,18 +880,30 @@ public class Board extends JFrame implements KeyListener{
     	switch (menuButton) {
 		case 1: //Party
 			playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
+			menuButton = 17;
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray1) {
+				menuLabel.setVisible(true);
+			}
+			menuSet();
 			break;
 		case 2: //Inventory
 			playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
+			//TODO 
 			break;
-		case 3: //Equipment
+		case 3: //Essences
 			playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
+			//TODO 
 			break;
 		case 4: //Pacts
 			playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
+			//TODO 
 			break;
 		case 5: //Registry
 			playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
+			//TODO 
 			break;
 		case 6: //File
 			playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
@@ -869,6 +950,29 @@ public class Board extends JFrame implements KeyListener{
 			else {
 				System.exit(0);
 			}
+			break;
+		case 11: //TODO
+			break;
+		case 12:
+			break;
+		case 13:
+			break;
+		case 14:
+			break;
+		case 15:
+			break;
+		case 16:
+			break;
+		case 17: //File - Back
+			playSound(BASE_RESOURCE_PATH + "Sounds\\MenuBack.wav");
+			menuButton = 1;
+			for (JLabel menuLabel : menuArray1) {
+				menuLabel.setVisible(false);
+			}
+			for (JLabel menuLabel : menuArray0) {
+				menuLabel.setVisible(true);
+			}
+			menuSet();
 			break;
 		case 61: //File - Save
 			if (!autosave) {
@@ -1066,6 +1170,15 @@ public class Board extends JFrame implements KeyListener{
 						menuButton = 8;
 					}
 				}
+				else if (menuButton >= 11 && menuButton <= 17) {
+					if (k.getKeyCode() >= KeyEvent.VK_1 && k.getKeyCode() <= KeyEvent.VK_7) {
+						menuButton = 10 + k.getKeyCode() - KeyEvent.VK_0;
+					}
+					else {
+						menuButton = 17;
+					}
+				}
+				//TODO finish adding numbers
 				else if (menuButton >= 61 && menuButton <= 63) {
 					if (k.getKeyCode() >= KeyEvent.VK_1 && k.getKeyCode() <= KeyEvent.VK_3) {
 						menuButton = 60 + k.getKeyCode() - KeyEvent.VK_0;
@@ -1085,8 +1198,19 @@ public class Board extends JFrame implements KeyListener{
 				menuSet();
 			}
 			else if ((k.getKeyCode() == keyArray.get(33) || k.getKeyCode() == keyArray.get(34) || k.getKeyCode() == keyArray.get(35)) && !paused) {
-				
-				if (menuButton >= 61 && menuButton <= 63) {
+				if (menuButton >= 11 && menuButton <= 17) {
+					playSound(BASE_RESOURCE_PATH + "Sounds\\MenuBack.wav");
+					menuButton = 1;
+					for (JLabel menuLabel : menuArray1) {
+						menuLabel.setVisible(false);
+					}
+					for (JLabel menuLabel : menuArray0) {
+						menuLabel.setVisible(true);
+					}
+					menuSet();
+				}
+				//TODO finish adding backs
+				else if (menuButton >= 61 && menuButton <= 63) {
 					playSound(BASE_RESOURCE_PATH + "Sounds\\MenuBack.wav");
 					menuButton = 6;
 					for (JLabel menuLabel : menuArray6) {
@@ -1689,10 +1813,11 @@ public class Board extends JFrame implements KeyListener{
 			}
 			partyMemberArray.add(new Member(new Fae(menuButton), nameString, 0, 1)); //TODO expand upon?
 			partyMemberArray.get(0).setMainCharacter();
+			menu11.setText(partyMemberArray.get(0).chosenName);
 			menuButton = 1;
         	character.setX(ML*12);
         	character.setY(ML*12);
-			setZone(2);
+			setZone(2); //default initial zone
 			loadArea();
 			superPaused = false;
 		}
@@ -1906,8 +2031,8 @@ public class Board extends JFrame implements KeyListener{
 			"\tde3vwpq1rstuyz\t",
 			//Inventory
 			"\tde3vw3novw2notu4rsyz\t",
-			//Equipment
-			"\tde3vw2qr53pqmn2notu\t",
+			//Essences
+			"\tde3vw2stst2nocd2st\t",
 			//Items
 			"\tde3vw3tu2mnst\t",
 			//Pacts
@@ -2154,8 +2279,8 @@ public class Board extends JFrame implements KeyListener{
     				overallProgress = 6;
     				progress = 0;
     			}
-    			//Equipment
-    			else if (overallProgress == 6 && line.equals("\tde3vw2qr53pqmn2notu\t")) {
+    			//Essences
+    			else if (overallProgress == 6 && line.equals("\tde3vw2stst2nocd2st\t")) {
     				overallProgress = 7;
     				progress = 0;
     			}
