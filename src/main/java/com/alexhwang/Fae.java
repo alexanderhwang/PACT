@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.ImageIcon;
-
 public class Fae {
 	static final int IPSIZE = 10;
 	static final int IASIZE = 10;
@@ -83,9 +81,6 @@ public class Fae {
 	int experienceMultiplier;
 	ArrayList<String> spriteBaseArray;
 	String description;
-	
-	ImageIcon frontSprite;
-	ImageIcon backSprite;
 	
 	public Fae(final String id) { //Basic fae creation
 		readFae(id);

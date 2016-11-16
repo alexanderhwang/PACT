@@ -54,12 +54,12 @@ public class Board extends JFrame implements KeyListener{
 	private final JLabel menu8 = new JLabel("Quit");
 	private final ArrayList<JLabel> menuArray1 = new ArrayList<JLabel>();
 	private final JLabel menu10 = new JLabel("Party");
-	private final JLabel menu11 = new JLabel("-");
-	private final JLabel menu12 = new JLabel("-");
-	private final JLabel menu13 = new JLabel("-");
-	private final JLabel menu14 = new JLabel("-");
-	private final JLabel menu15 = new JLabel("-");
-	private final JLabel menu16 = new JLabel("-");
+	private final JLabel menu11 = new JLabel("-\t");
+	private final JLabel menu12 = new JLabel("-\t");
+	private final JLabel menu13 = new JLabel("-\t");
+	private final JLabel menu14 = new JLabel("-\t");
+	private final JLabel menu15 = new JLabel("-\t");
+	private final JLabel menu16 = new JLabel("-\t");
 	private final JLabel menu17 = new JLabel("Back");
 	private final ArrayList<JLabel> menuArray6 = new ArrayList<JLabel>();
 	private final JLabel menu60 = new JLabel("File");
@@ -106,7 +106,7 @@ public class Board extends JFrame implements KeyListener{
 	private final JLabel descriptionData = new JLabel("<html></html>");
 	private final ArrayList<JLabel> descriptionDataArray = new ArrayList<JLabel>();
 	
-	private String icon = BASE_RESOURCE_PATH + "Objects\\Rock1.png";
+	private String icon = BASE_RESOURCE_PATH + "Objects\\Rock1.png"; //TODO change
 	private Character character = new Character("?", "Marx", "DOWN", ML*1, ML*1, 1);
 	private JLabel characterSprite = new JLabel(character.imageIcon);
 	private SpeechBox speechBox;
@@ -128,7 +128,7 @@ public class Board extends JFrame implements KeyListener{
 	private Zone currentZone;
 	
 	private ArrayList<Fae> faeRegistryArray = new ArrayList<Fae>();
-	private ArrayList<Member> partyMemberArray = new ArrayList<Member>();
+	private ArrayList<Member> partyMemberArray = new ArrayList<Member>(); //max of 6
 	//TODO arrays for items, pacts
 	
 	private Boolean animation = true;
@@ -281,6 +281,9 @@ public class Board extends JFrame implements KeyListener{
     		menuPanel.add(menuArray120.get(i));
     	}
     	
+    	for (int i = 1; i <= 6; i++) {
+        	partyMemberArray.add(null); //TODO check if works
+    	}
 		timer = new Timer(timerRun, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -951,19 +954,35 @@ public class Board extends JFrame implements KeyListener{
 				System.exit(0);
 			}
 			break;
-		case 11: //TODO
-			break;
+		case 11: //Party Members
 		case 12:
-			break;
 		case 13:
-			break;
 		case 14:
-			break;
 		case 15:
-			break;
 		case 16:
+			if (partyMemberArray.get(menuButton - 11) != null) {
+				Member currentMember = partyMemberArray.get(menuButton - 11);
+				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
+				superPaused = true;
+				//TODO finish member window
+				mainPanel.add(dataPanel);
+				mainPanel.setLayer(dataPanel, 2);
+	    		dataPanel.remove(portraitData);
+	    		dataPanel.setOpaque(true);
+	            portraitData.setIcon(currentMember.frontSprite);
+	            nameDataName.setText("<html>" + currentMember.chosenName + "</html>");
+	            nameDataSpecies.setText("<html>" + currentMember.fae.name + "</html>");
+	            nameDataClass.setText("<html>" + currentMember.fae.faeClass + "</html>");
+	        	portraitData.setHorizontalAlignment(SwingConstants.CENTER);
+	        	portraitData.setPreferredSize(new Dimension(400, 250));
+	        	dataPanel.add(portraitData, BorderLayout.NORTH);
+	        	nameData.setVerticalAlignment(SwingConstants.TOP);
+	        	dataPanel.add(nameData, BorderLayout.CENTER);
+	        	dataPanel.add(descriptionData, BorderLayout.EAST);
+	        	dataPanel.repaint();
+			}
 			break;
-		case 17: //File - Back
+		case 17: //Party - Back
 			playSound(BASE_RESOURCE_PATH + "Sounds\\MenuBack.wav");
 			menuButton = 1;
 			for (JLabel menuLabel : menuArray1) {
@@ -1811,9 +1830,11 @@ public class Board extends JFrame implements KeyListener{
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(true);
 			}
-			partyMemberArray.add(new Member(new Fae(menuButton), nameString, 0, 1)); //TODO expand upon?
+			partyMemberArray.set(0, new Member(new Fae(menuButton), nameString, 0, 1)); //TODO expand upon?
 			partyMemberArray.get(0).setMainCharacter();
 			menu11.setText(partyMemberArray.get(0).chosenName);
+			icon = "" + character.imageIcon;
+	    	frame.setIconImage(new ImageIcon(icon).getImage());
 			menuButton = 1;
         	character.setX(ML*12);
         	character.setY(ML*12);
@@ -2237,6 +2258,8 @@ public class Board extends JFrame implements KeyListener{
 			    	characterSprite.setBounds(character.x, character.y, ML*1, ML*1);
 			    	mainPanel.revalidate();
 			    	mainPanel.repaint();
+					icon = "" + character.imageIcon;
+			    	frame.setIconImage(new ImageIcon(icon).getImage());
 				}
 			}
 		}

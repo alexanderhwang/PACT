@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
 
 public class Member {
 	static final int ASPECTMAX = 4;
 	static final int SKILLMAX = 8;
+	static final String BASE_RESOURCE_PATH = "src\\main\\resources\\";
 	
 	Fae fae;
 	String chosenName;
@@ -28,6 +31,9 @@ public class Member {
 
 	int allowedAspects; //determined by rank+1 by default, unless transformed
 	int rankValue;
+	
+	ImageIcon frontSprite;
+	ImageIcon backSprite;
 	
 	public Member(Fae fae, String chosenName, int varietyNumber, int level) { //default creation
 		this.fae = fae;
@@ -140,15 +146,19 @@ public class Member {
 		attributeCorrect();
 		currentHealth = health;
 		currentEnergy = energy;
+		//TODO force correlation
+		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(((varietyNumber + 1) % fae.spriteBaseArray.size()) - 1) + "F.png");
+		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(((varietyNumber + 1) % fae.spriteBaseArray.size()) - 1) + "B.png");
 	}
 
 	public Member(Fae fae, int level) { //random creation
 		Random rand = new Random();
 		int randChoice = rand.nextInt(fae.givenNameArray.size());
+		int varietyNumber = randChoice % fae.varietyArray.size();
 		
 		this.fae = fae;
 		this.chosenName = fae.givenNameArray.get(randChoice);
-		this.variety = fae.varietyArray.get(randChoice % fae.varietyArray.size());
+		this.variety = fae.varietyArray.get(varietyNumber);
 		this.level = level;
 		for (final String consideredRank : fae.rankArray) {
 			if (!consideredRank.contains("+")) {
@@ -256,6 +266,8 @@ public class Member {
 		attributeCorrect();
 		currentHealth = health;
 		currentEnergy = energy;
+		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get((varietyNumber + 1) % fae.spriteBaseArray.size()) + "F.png");
+		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get((varietyNumber + 1) % fae.spriteBaseArray.size()) + "B.png");
 	}
 	
 	public Member(Fae fae, String chosenName, int varietyNumber, String rank, int level, ArrayList<Aspect> aspectArray, ArrayList<Skill> skillArray, Boolean mainCharacter, ArrayList<Integer> preferences, ArrayList<Integer> attributes, ArrayList<Integer> basicAttributes, int currentHealth, int currentEnergy, int allowedAspects) {
@@ -277,6 +289,8 @@ public class Member {
 		this.allowedAspects = allowedAspects;
 
 		rankValue = fae.rankOffset + fae.rankArray.indexOf(this.rank);
+		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get((varietyNumber + 1) % fae.spriteBaseArray.size()) + "F.png");
+		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get((varietyNumber + 1) % fae.spriteBaseArray.size()) + "B.png");
 	}
 	
 	public void attributeCorrect() { //initialization only
