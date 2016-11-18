@@ -146,9 +146,8 @@ public class Member {
 		attributeCorrect();
 		currentHealth = health;
 		currentEnergy = energy;
-		//TODO force correlation
-		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(((varietyNumber + 1) % fae.spriteBaseArray.size()) - 1) + "F.png");
-		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(((varietyNumber + 1) % fae.spriteBaseArray.size()) - 1) + "B.png");
+		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "F.png");
+		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "B.png");
 	}
 
 	public Member(Fae fae, int level) { //random creation
@@ -266,8 +265,8 @@ public class Member {
 		attributeCorrect();
 		currentHealth = health;
 		currentEnergy = energy;
-		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get((varietyNumber + 1) % fae.spriteBaseArray.size()) + "F.png");
-		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get((varietyNumber + 1) % fae.spriteBaseArray.size()) + "B.png");
+		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "F.png");
+		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "B.png");
 	}
 	
 	public Member(Fae fae, String chosenName, int varietyNumber, String rank, int level, ArrayList<Aspect> aspectArray, ArrayList<Skill> skillArray, Boolean mainCharacter, ArrayList<Integer> preferences, ArrayList<Integer> attributes, ArrayList<Integer> basicAttributes, int currentHealth, int currentEnergy, int allowedAspects) {
@@ -289,8 +288,8 @@ public class Member {
 		this.allowedAspects = allowedAspects;
 
 		rankValue = fae.rankOffset + fae.rankArray.indexOf(this.rank);
-		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get((varietyNumber + 1) % fae.spriteBaseArray.size()) + "F.png");
-		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get((varietyNumber + 1) % fae.spriteBaseArray.size()) + "B.png");
+		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "F.png");
+		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "B.png");
 	}
 	
 	public void attributeCorrect() { //initialization only

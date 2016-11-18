@@ -103,8 +103,13 @@ public class Board extends JFrame implements KeyListener{
 	private final JLabel nameDataSpecies = new JLabel("<html>One of us</html>");
 	private final JLabel nameDataClass = new JLabel("<html>Soldier</html>");
 	private final ArrayList<JLabel> nameDataArray1 = new ArrayList<JLabel>();
-	private final JLabel descriptionData = new JLabel("<html></html>");
-	private final ArrayList<JLabel> descriptionDataArray = new ArrayList<JLabel>();
+	private final JLabel descriptionData = new JLabel("<html>Before the Collapse, Marx was kind-hearted soldier who had befriended November and sacrificed his memories to defeat the Embers.</html>"); //TODO describe
+	private final ArrayList<JLabel> attributeDataArray0 = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>Vitality</html>"), new JLabel("<html>Wisdom</html>"), 
+			new JLabel("<html>Strength</html>"), new JLabel("<html>Intelligence</html>"), new JLabel("<html>Stamina</html>"), new JLabel("<html>Dexterity</html>"), 
+			new JLabel("<html>Passion</html>"), new JLabel("<html>Resolve</html>"), new JLabel("<html>Agility</html>"), new JLabel("<html>Luck</html>")));
+	private final ArrayList<JLabel> attributeDataArray1 = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>12</html>"), new JLabel("<html>10</html>"), 
+			new JLabel("<html>13</html>"), new JLabel("<html>11</html>"), new JLabel("<html>12</html>"), new JLabel("<html>13</html>"), 
+			new JLabel("<html>13</html>"), new JLabel("<html>12</html>"), new JLabel("<html>13</html>"), new JLabel("<html>11</html>")));
 	
 	private String icon = BASE_RESOURCE_PATH + "Objects\\Rock1.png"; //TODO change
 	private Character character = new Character("?", "Marx", "DOWN", ML*1, ML*1, 1);
@@ -213,9 +218,25 @@ public class Board extends JFrame implements KeyListener{
     		nameDataArray1.get(i).setForeground(Color.WHITE);
     		nameData.add(nameDataArray1.get(i));
     	}
+    	for (int i = 0; i < attributeDataArray0.size(); i++) {
+    		attributeDataArray0.get(i).setBounds(580, 15 + i * 20, 140, 18);
+    		attributeDataArray0.get(i).setFont(new Font("Arial", Font.PLAIN, 14));
+    		attributeDataArray0.get(i).setForeground(new Color(212, 212, 212));
+    		nameData.add(attributeDataArray0.get(i));
+    	}
+    	for (int i = 0; i < attributeDataArray1.size(); i++) {
+    		attributeDataArray1.get(i).setBounds(680, 15 + i * 20, 140, 18);
+    		attributeDataArray1.get(i).setFont(new Font("Arial", Font.PLAIN, 14));
+    		attributeDataArray1.get(i).setForeground(Color.WHITE);
+    		nameData.add(attributeDataArray1.get(i));
+    	}
+		descriptionData.setBounds(340, 100, 200, 520);
+		descriptionData.setFont(new Font("Arial", Font.PLAIN, 15));
+		descriptionData.setForeground(Color.WHITE);
+		descriptionData.setVerticalAlignment(SwingConstants.TOP);
+		nameData.add(descriptionData);
     	nameData.setVerticalAlignment(SwingConstants.TOP);
     	dataPanel.add(nameData, BorderLayout.CENTER);
-    	dataPanel.add(descriptionData, BorderLayout.EAST);
     	
     	menuArray0.addAll(Arrays.asList(menu1, menu2, menu3, menu4, menu5, menu6, menu7, menu8));
     	menuArray1.addAll(Arrays.asList(menu10, menu11, menu12, menu13, menu14, menu15, menu16, menu17));
@@ -282,7 +303,7 @@ public class Board extends JFrame implements KeyListener{
     	}
     	
     	for (int i = 1; i <= 6; i++) {
-        	partyMemberArray.add(null); //TODO check if works
+        	partyMemberArray.add(null);
     	}
 		timer = new Timer(timerRun, new ActionListener() {
 			@Override
@@ -572,11 +593,13 @@ public class Board extends JFrame implements KeyListener{
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\MarxF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Marx</b></font><br></html>");
             	nameDataClass.setText("<html>Soldier</html>");
+            	descriptionData.setText("<html>Before the Collapse, Marx was kind-hearted soldier who had befriended November and sacrificed his memories to defeat the Embers.</html>");
         		break;
         	case 102:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\AprilF.png"));
             	nameDataName.setText("<html><font color='gray'><b>April</b></font><br></html>");
             	nameDataClass.setText("<html>Revealer</html>");
+            	descriptionData.setText("<html>Before the Collapse, Marx was kind-hearted soldier who had befriended November and sacrificed his memories to defeat the Embers.</html>");
         		break;
         	case 103:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\MaiaF.png"));
@@ -629,12 +652,15 @@ public class Board extends JFrame implements KeyListener{
             	nameDataClass.setText("<html>Purifier</html>");
         		break;
         	}
+        	Fae tempMonth = new Fae(menuButton);
+        	for (int i = 0; i < attributeDataArray1.size(); i++) {
+        		attributeDataArray1.get(i).setText("<html>" + tempMonth.initialAttributeArray.get(i) + "</html>");
+        	}
         	portraitData.setHorizontalAlignment(SwingConstants.CENTER);
         	portraitData.setPreferredSize(new Dimension(400, 250));
         	dataPanel.add(portraitData, BorderLayout.NORTH);
         	nameData.setVerticalAlignment(SwingConstants.TOP);
         	dataPanel.add(nameData, BorderLayout.CENTER);
-        	dataPanel.add(descriptionData, BorderLayout.EAST);
         	dataPanel.repaint();
     	}
     	else if (menuButton >= 121 && menuButton <= 123) {
@@ -978,7 +1004,6 @@ public class Board extends JFrame implements KeyListener{
 	        	dataPanel.add(portraitData, BorderLayout.NORTH);
 	        	nameData.setVerticalAlignment(SwingConstants.TOP);
 	        	dataPanel.add(nameData, BorderLayout.CENTER);
-	        	dataPanel.add(descriptionData, BorderLayout.EAST);
 	        	dataPanel.repaint();
 			}
 			break;
@@ -1164,6 +1189,18 @@ public class Board extends JFrame implements KeyListener{
 					|| k.getKeyCode() == keyArray.get(30) || k.getKeyCode() == keyArray.get(31) || k.getKeyCode() == keyArray.get(32)) {
 				menuPress();
 			}
+		}
+		else if (superPaused && menuButton >= 11 && menuButton <= 17) {
+			//INNER MENU
+			if (k.getKeyCode() == keyArray.get(12) || k.getKeyCode() == keyArray.get(13) || k.getKeyCode() == keyArray.get(14) ||
+					k.getKeyCode() == keyArray.get(30) || k.getKeyCode() == keyArray.get(31) || k.getKeyCode() == keyArray.get(32) ||
+					k.getKeyCode() == keyArray.get(33) || k.getKeyCode() == keyArray.get(34) || k.getKeyCode() == keyArray.get(35)) {
+				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuBack.wav");
+				superPaused = false;
+	        	mainPanel.remove(dataPanel);
+	        	mainPanel.repaint();
+			}
+			//TODO add switching
 		}
 		else if (!keyPaused && !superPaused) {
 			//MENU
