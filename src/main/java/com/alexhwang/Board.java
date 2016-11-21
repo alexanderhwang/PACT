@@ -101,15 +101,21 @@ public class Board extends JFrame implements KeyListener{
 	private final ArrayList<JLabel> nameDataArray0 = new ArrayList<JLabel>();
 	private final JLabel nameDataName = new JLabel("<html><font color='gray'><b>Marx</b></font><br></html>");
 	private final JLabel nameDataSpecies = new JLabel("<html>One of us</html>");
+	private final JLabel nameDataVariety = new JLabel(); //TODO create images for varieties
 	private final JLabel nameDataClass = new JLabel("<html>Soldier</html>");
+	private final JLabel nameDataRank = new JLabel();
 	private final ArrayList<JLabel> nameDataArray1 = new ArrayList<JLabel>();
-	private final JLabel descriptionData = new JLabel("<html>Before the Collapse, Marx was kind-hearted soldier who had befriended November and sacrificed his memories to defeat the Embers.</html>"); //TODO describe
+	private final JLabel descriptionData = new JLabel("<html></html>");
 	private final ArrayList<JLabel> attributeDataArray0 = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>Vitality</html>"), new JLabel("<html>Wisdom</html>"), 
 			new JLabel("<html>Strength</html>"), new JLabel("<html>Intelligence</html>"), new JLabel("<html>Stamina</html>"), new JLabel("<html>Dexterity</html>"), 
 			new JLabel("<html>Passion</html>"), new JLabel("<html>Resolve</html>"), new JLabel("<html>Agility</html>"), new JLabel("<html>Luck</html>")));
 	private final ArrayList<JLabel> attributeDataArray1 = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>12</html>"), new JLabel("<html>10</html>"), 
 			new JLabel("<html>13</html>"), new JLabel("<html>11</html>"), new JLabel("<html>12</html>"), new JLabel("<html>13</html>"), 
 			new JLabel("<html>13</html>"), new JLabel("<html>12</html>"), new JLabel("<html>13</html>"), new JLabel("<html>11</html>")));
+	private final ArrayList<JLabel> shownBasicAttributeDataArray0 = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>Level</html>"), new JLabel("<html>Health</html>"), 
+			new JLabel("<html>Energy</html>")));
+	private final ArrayList<JLabel> shownBasicAttributeDataArray1 = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>1</html>"), new JLabel("<html>1 / 1</html>"), 
+			new JLabel("<html>1 / 1</html>")));
 	
 	private String icon = BASE_RESOURCE_PATH + "Objects\\Rock1.png"; //TODO change
 	private Character character = new Character("?", "Marx", "DOWN", ML*1, ML*1, 1);
@@ -202,9 +208,12 @@ public class Board extends JFrame implements KeyListener{
     	nameDataArray0.add(new JLabel("<html>Name: </html>"));
     	nameDataArray0.add(new JLabel("<html>Species: </html>"));
     	nameDataArray0.add(new JLabel("<html>Class: </html>"));
+    	nameDataArray0.add(new JLabel("<html>Rank: </html>"));
+    	nameDataArray0.get(3).setVisible(false);
     	nameDataArray1.add(nameDataName);
     	nameDataArray1.add(nameDataSpecies);
     	nameDataArray1.add(nameDataClass);
+    	nameDataArray1.add(nameDataRank);
     	nameData.setLayout(null);
     	for (int i = 0; i < nameDataArray0.size(); i++) {
     		nameDataArray0.get(i).setBounds(340, 15 + i * 25, 140, 20);
@@ -230,7 +239,21 @@ public class Board extends JFrame implements KeyListener{
     		attributeDataArray1.get(i).setForeground(Color.WHITE);
     		nameData.add(attributeDataArray1.get(i));
     	}
-		descriptionData.setBounds(340, 100, 200, 520);
+    	for (int i = 0; i < shownBasicAttributeDataArray0.size(); i++) {
+    		shownBasicAttributeDataArray0.get(i).setBounds(340, 140 + i * 27, 140, 18);
+    		shownBasicAttributeDataArray0.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+    		shownBasicAttributeDataArray0.get(i).setForeground(new Color(212, 212, 212));
+    		nameData.add(shownBasicAttributeDataArray0.get(i));
+    		shownBasicAttributeDataArray0.get(i).setVisible(false);
+    	}
+    	for (int i = 0; i < shownBasicAttributeDataArray1.size(); i++) {
+    		shownBasicAttributeDataArray1.get(i).setBounds(410, 140 + i * 27, 140, 18);
+    		shownBasicAttributeDataArray1.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+    		shownBasicAttributeDataArray1.get(i).setForeground(Color.WHITE);
+    		nameData.add(shownBasicAttributeDataArray1.get(i));
+    		shownBasicAttributeDataArray1.get(i).setVisible(false);
+    	}
+		descriptionData.setBounds(340, 240, 440, 340);
 		descriptionData.setFont(new Font("Arial", Font.PLAIN, 15));
 		descriptionData.setForeground(Color.WHITE);
 		descriptionData.setVerticalAlignment(SwingConstants.TOP);
@@ -588,73 +611,85 @@ public class Board extends JFrame implements KeyListener{
         		}
         	}
     		dataPanel.remove(portraitData);
-        	switch (menuButton) { //TODO add descriptions
+        	switch (menuButton) { 
         	case 101:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\MarxF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Marx</b></font><br></html>");
             	nameDataClass.setText("<html>Soldier</html>");
-            	descriptionData.setText("<html>Before the Collapse, Marx was kind-hearted soldier who had befriended November and sacrificed his memories to defeat the Embers.</html>");
+            	descriptionData.setText("<html>A conflicted soldier, lover of Juno and closest friend of November. He considered his creativity his most valuable attribute and enjoyed telling stories to his friends.</html>");
         		break;
         	case 102:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\AprilF.png"));
             	nameDataName.setText("<html><font color='gray'><b>April</b></font><br></html>");
             	nameDataClass.setText("<html>Revealer</html>");
-            	descriptionData.setText("<html>Before the Collapse, Marx was kind-hearted soldier who had befriended November and sacrificed his memories to defeat the Embers.</html>");
+            	descriptionData.setText("<html>An inquisitive and friendly revealer, closest friend of Dichonoia and Khaos. She was very fond of exploring and discovering new things.</html>");
         		break;
         	case 103:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\MaiaF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Maia</b></font><br></html>");
             	nameDataClass.setText("<html>Harvester</html>");
+            	descriptionData.setText("<html>A stern but well-meaning harvester, closest friend of Septembra. She always desired to do the right thing, believing that doing good would bring fortune to her people.</html>");
         		break;
         	case 104:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\JunoF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Juno</b></font><br></html>");
             	nameDataClass.setText("<html>Guardian</html>");
+            	descriptionData.setText("<html>A kind-hearted but shy guardian, lover of Marx. She had great ambitions for herself and her people, but struggled with fear and self-doubt.</html>");
         		break;
         	case 105:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\JuliaF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Julia</b></font><br></html>");
             	nameDataClass.setText("<html>Patron</html>");
+            	descriptionData.setText("<html>A spirited and occasionally reckless patron, closest friend of Sygchys. She was a firm believer in the value of hard work and dedicated effort.</html>");
         		break;
         	case 106:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\AugustusF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Augustus</b></font><br></html>");
             	nameDataClass.setText("<html>Architect</html>");
+            	descriptionData.setText("<html>An ever-happy architect, lover of Satsuki and closest friend of Shravana. He always tried to be as helpful as possible to everyone around him.</html>");
         		break;
         	case 107:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\SeptembraF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Septembra</b></font><br></html>");
             	nameDataClass.setText("<html>Teacher</html>");
+            	descriptionData.setText("<html>A humble and thoughtful teacher, closest friend of Maia. She hoped to be instrumental in making the world a better place.</html>");
         		break;
         	case 108:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\OctobelleF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Octobelle</b></font><br></html>");
             	nameDataClass.setText("<html>Judge</html>");
+            	descriptionData.setText("<html>An honest and courageous judge, lover of Sneznike and closest friend of Nayoni. She sought fairness in all things and held herself to her highest standards.</html>");
         		break;
         	case 109:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\NovemberF.png"));
             	nameDataName.setText("<html><font color='gray'><b>November</b></font><br></html>");
             	nameDataClass.setText("<html>Monk</html>");
+            	descriptionData.setText("<html>An easygoing but forthright monk, closest friend of Marx and Maimaktera. He made sure to always be aware of all aspects of every situation he was in.</html>");
         		break;
         	case 110:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\DecembusF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Decembus</b></font><br></html>");
             	nameDataClass.setText("<html>Director</html>");
+            	descriptionData.setText("<html>A calm and good-natured director, closest friend of Undecim. He was a natural leader, and people would often look to him for guidance.</html>");
         		break;
         	case 111:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\JanusF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Janus</b></font><br></html>");
             	nameDataClass.setText("<html>Gatekeeper</html>");
+            	descriptionData.setText("<html>A timid gatekeeper, closest friend of Befran and Peri. He was often skeptical of things going well, fearing that the world was not a just one.</html>");
         		break;
         	case 112:
             	portraitData.setIcon(new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\FebruaF.png"));
             	nameDataName.setText("<html><font color='gray'><b>Februa</b></font><br></html>");
             	nameDataClass.setText("<html>Purifier</html>");
+            	descriptionData.setText("<html>A sometimes excitable, sometimes cautious purifier, closest friend of Mercedona. She regarded life in several different ways, changing her mind about things almost constantly.</html>");
         		break;
         	}
         	Fae tempMonth = new Fae(menuButton);
         	for (int i = 0; i < attributeDataArray1.size(); i++) {
-        		attributeDataArray1.get(i).setText("<html>" + tempMonth.initialAttributeArray.get(i) + "</html>");
+        		int attr = tempMonth.initialAttributeArray.get(i);
+        		attributeDataArray1.get(i).setText("<html>" + attr + "</html>");
+        		attributeDataArray1.get(i).setForeground(attributeDistributionColor(attr));
         	}
         	portraitData.setHorizontalAlignment(SwingConstants.CENTER);
         	portraitData.setPreferredSize(new Dimension(400, 250));
@@ -999,6 +1034,20 @@ public class Board extends JFrame implements KeyListener{
 	            nameDataName.setText("<html>" + currentMember.chosenName + "</html>");
 	            nameDataSpecies.setText("<html>" + currentMember.fae.name + "</html>");
 	            nameDataClass.setText("<html>" + currentMember.fae.faeClass + "</html>");
+	            nameDataRank.setText("<html>" + currentMember.rank + "</html>");
+	            descriptionData.setText("<html>" + currentMember.fae.description + "</html>");
+	        	for (int i = 0; i < attributeDataArray1.size(); i++) {
+	        		int attr = currentMember.attributes.get(i);
+	        		attributeDataArray1.get(i).setText("<html>" + attr + "</html>");
+	        		attributeDataArray1.get(i).setForeground(attributeDistributionColor(attr));
+	        	}
+	        	shownBasicAttributeDataArray1.get(0).setText("<html>" + currentMember.level + "</html>");
+	        	int healthPercent = (int)(((double)currentMember.currentHealth / currentMember.basicAttributes.get(0)) * 255);
+	        	int energyPercent = (int)(((double)currentMember.currentEnergy / currentMember.basicAttributes.get(1)) * 255);
+	        	shownBasicAttributeDataArray1.get(1).setText("<html><font color=rgb(" + healthPercent * 25 + "," + healthPercent * 1.75 + "," + healthPercent + ")>" + 
+	        			currentMember.currentHealth + "</font> / " +  currentMember.basicAttributes.get(0) + "</html>");
+	        	shownBasicAttributeDataArray1.get(2).setText("<html><font color=rgb(" + energyPercent * 25 + "," + energyPercent * 1.75 + "," + energyPercent + ")>" + 
+	        			currentMember.currentEnergy + "</font> / " +  currentMember.basicAttributes.get(1) + "</html>");
 	        	portraitData.setHorizontalAlignment(SwingConstants.CENTER);
 	        	portraitData.setPreferredSize(new Dimension(400, 250));
 	        	dataPanel.add(portraitData, BorderLayout.NORTH);
@@ -1466,6 +1515,8 @@ public class Board extends JFrame implements KeyListener{
 							if (actX == nowThing.x && actY == nowThing.y) {
 								switch (nowThing.action) {
 								case 0:
+									//playSound(BASE_RESOURCE_PATH + "Sounds\\Error.wav");
+									//partyMemberArray.get(0).setCurrentHealth(partyMemberArray.get(0).currentHealth / 2);
 									break;
 								case 1:
 								case 2:
@@ -1809,6 +1860,40 @@ public class Board extends JFrame implements KeyListener{
 		}
 	}
 	
+	public Color attributeDistributionColor(int attr) {
+		//ATTRIBUTE DISTRIBUTION COLORS
+		if (attr <= 5) {
+    		return new Color(attr * 10, attr * 10, attr * 10);
+		}
+		else if (attr <= 10) {
+			return new Color(50 + (attr * 5), 50 - (attr * 5), 50 - (attr * 5));
+		}
+		else if (attr <= 25) {
+			return new Color(5 + (attr * 10), 0, 0);
+		}
+		else if (attr <= 50) {
+			return new Color(255, attr * 5, 0);
+		}
+		else if (attr <= 100) {
+			return new Color(255 - (int)(attr * 2.5), 255, 0);
+		}
+		else if (attr <= 150) {
+			return new Color(0, 255, (int)(attr * 1.7));
+		}
+		else if (attr <= 200) {
+			return new Color(0, 255 - (int)(attr * 1.27), 255);
+		}
+		else if (attr <= 255) {
+			return new Color(attr, 0, 255);
+		}
+		else if (attr <= 1000) {
+			return new Color(255, (attr / 4), 255);
+		}
+		else {
+			return Color.WHITE;
+		}
+	}
+	
 	public void chooseMonth() {
 		String monthChoice;
 		switch(menuButton) {
@@ -1867,6 +1952,11 @@ public class Board extends JFrame implements KeyListener{
 			for (JLabel menuLabel : menuArray0) {
 				menuLabel.setVisible(true);
 			}
+	    	nameDataArray0.get(3).setVisible(true);
+	    	for (int i = 0; i < 3; i++) {
+	    		shownBasicAttributeDataArray0.get(i).setVisible(true);
+	    		shownBasicAttributeDataArray1.get(i).setVisible(true);
+	    	}
 			partyMemberArray.set(0, new Member(new Fae(menuButton), nameString, 0, 1)); //TODO expand upon?
 			partyMemberArray.get(0).setMainCharacter();
 			menu11.setText(partyMemberArray.get(0).chosenName);

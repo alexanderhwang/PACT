@@ -144,8 +144,8 @@ public class Member {
 			}
 		}
 		attributeCorrect();
-		currentHealth = health;
-		currentEnergy = energy;
+		currentHealth = basicAttributes.get(0);
+		currentEnergy = basicAttributes.get(1);
 		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "F.png");
 		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "B.png");
 	}
@@ -263,8 +263,8 @@ public class Member {
 			}
 		}
 		attributeCorrect();
-		currentHealth = health;
-		currentEnergy = energy;
+		currentHealth = basicAttributes.get(0);
+		currentEnergy = basicAttributes.get(1);
 		frontSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "F.png");
 		backSprite = new ImageIcon(BASE_RESOURCE_PATH + "BattleSprites\\" + fae.spriteBaseArray.get(varietyNumber) + "B.png");
 	}
@@ -376,6 +376,14 @@ public class Member {
 			index++;
 		}
 		//System.out.println(basicAttributes);
+	}
+	
+	public void setCurrentHealth(int currentHealth) {
+		this.currentHealth = currentHealth;
+	}
+	
+	public void setCurrentEnergy(int currentEnergy) {
+		this.currentEnergy = currentEnergy;
 	}
 	
 	public void setMainCharacter() {
