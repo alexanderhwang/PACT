@@ -116,6 +116,12 @@ public class Board extends JFrame implements KeyListener{
 			new JLabel("<html>Energy</html>")));
 	private final ArrayList<JLabel> shownBasicAttributeDataArray1 = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>1</html>"), new JLabel("<html>1 / 1</html>"), 
 			new JLabel("<html>1 / 1</html>")));
+	private final ArrayList<JLabel> aspectSkillIndicators = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>Aspects</html>"), new JLabel("<html>Skills</html>")));
+	private final ArrayList<JLabel> aspectDataArray = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html> </html>"), new JLabel("<html> </html>"), 
+			new JLabel("<html> </html>"), new JLabel("<html> </html>")));
+	private final ArrayList<JLabel> skillDataArray = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html> </html>"), new JLabel("<html> </html>"), 
+			new JLabel("<html> </html>"), new JLabel("<html> </html>"), new JLabel("<html> </html>"), new JLabel("<html> </html>"), 
+			new JLabel("<html> </html>"), new JLabel("<html> </html>")));
 	
 	private String icon = BASE_RESOURCE_PATH + "Objects\\Rock1.png"; //TODO change
 	private Character character = new Character("?", "Marx", "DOWN", ML*1, ML*1, 1);
@@ -228,13 +234,13 @@ public class Board extends JFrame implements KeyListener{
     		nameData.add(nameDataArray1.get(i));
     	}
     	for (int i = 0; i < attributeDataArray0.size(); i++) {
-    		attributeDataArray0.get(i).setBounds(580, 15 + i * 20, 140, 18);
+    		attributeDataArray0.get(i).setBounds(580, 20 + i * 20, 140, 18);
     		attributeDataArray0.get(i).setFont(new Font("Arial", Font.PLAIN, 14));
     		attributeDataArray0.get(i).setForeground(new Color(212, 212, 212));
     		nameData.add(attributeDataArray0.get(i));
     	}
     	for (int i = 0; i < attributeDataArray1.size(); i++) {
-    		attributeDataArray1.get(i).setBounds(680, 15 + i * 20, 140, 18);
+    		attributeDataArray1.get(i).setBounds(680, 20 + i * 20, 140, 18);
     		attributeDataArray1.get(i).setFont(new Font("Arial", Font.PLAIN, 14));
     		attributeDataArray1.get(i).setForeground(Color.WHITE);
     		nameData.add(attributeDataArray1.get(i));
@@ -252,6 +258,27 @@ public class Board extends JFrame implements KeyListener{
     		shownBasicAttributeDataArray1.get(i).setForeground(Color.WHITE);
     		nameData.add(shownBasicAttributeDataArray1.get(i));
     		shownBasicAttributeDataArray1.get(i).setVisible(false);
+    	}
+    	for (int i = 0; i < aspectSkillIndicators.size(); i++) {
+    		aspectSkillIndicators.get(i).setBounds(25, 25 + i * 150, 140, 18);
+    		aspectSkillIndicators.get(i).setFont(new Font("Arial", Font.PLAIN, 16));
+    		aspectSkillIndicators.get(i).setForeground(Color.WHITE);
+    		nameData.add(aspectSkillIndicators.get(i));
+    		aspectSkillIndicators.get(i).setVisible(false);
+    	}
+    	for (int i = 0; i < aspectDataArray.size(); i++) {
+    		aspectDataArray.get(i).setBounds(50, 50 + i * 25, 140, 18);
+    		aspectDataArray.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+    		aspectDataArray.get(i).setForeground(Color.WHITE);
+    		nameData.add(aspectDataArray.get(i));
+    		aspectDataArray.get(i).setVisible(false);
+    	}
+    	for (int i = 0; i < skillDataArray.size(); i++) {
+    		skillDataArray.get(i).setBounds(50, 200 + i * 25, 140, 18);
+    		skillDataArray.get(i).setFont(new Font("Arial", Font.PLAIN, 15));
+    		skillDataArray.get(i).setForeground(Color.WHITE);
+    		nameData.add(skillDataArray.get(i));
+    		skillDataArray.get(i).setVisible(false);
     	}
 		descriptionData.setBounds(340, 240, 440, 340);
 		descriptionData.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -1040,6 +1067,12 @@ public class Board extends JFrame implements KeyListener{
 	        		int attr = currentMember.attributes.get(i);
 	        		attributeDataArray1.get(i).setText("<html>" + attr + "</html>");
 	        		attributeDataArray1.get(i).setForeground(attributeDistributionColor(attr));
+	        	}
+	        	for (int i = 0; i < currentMember.aspectArray.size(); i++) {
+	        		aspectDataArray.get(i).setText("<html>" + currentMember.aspectArray.get(i).name + "</html>");
+	        	}
+	        	for (int i = 0; i < currentMember.skillArray.size(); i++) {
+	        		skillDataArray.get(i).setText("<html>" + currentMember.skillArray.get(i).name + "</html>");
 	        	}
 	        	shownBasicAttributeDataArray1.get(0).setText("<html>" + currentMember.level + "</html>");
 	        	int healthPercent = (int)(((double)currentMember.currentHealth / currentMember.basicAttributes.get(0)) * 255);
@@ -1956,6 +1989,15 @@ public class Board extends JFrame implements KeyListener{
 	    	for (int i = 0; i < 3; i++) {
 	    		shownBasicAttributeDataArray0.get(i).setVisible(true);
 	    		shownBasicAttributeDataArray1.get(i).setVisible(true);
+	    	}
+	    	for (int i = 0; i < aspectSkillIndicators.size(); i++) {
+	    		aspectSkillIndicators.get(i).setVisible(true);
+	    	}
+	    	for (int i = 0; i < aspectDataArray.size(); i++) {
+	    		aspectDataArray.get(i).setVisible(true);
+	    	}
+	    	for (int i = 0; i < skillDataArray.size(); i++) {
+	    		skillDataArray.get(i).setVisible(true);
 	    	}
 			partyMemberArray.set(0, new Member(new Fae(menuButton), nameString, 0, 1)); //TODO expand upon?
 			partyMemberArray.get(0).setMainCharacter();
