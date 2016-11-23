@@ -117,11 +117,11 @@ public class Board extends JFrame implements KeyListener{
 	private final ArrayList<JLabel> shownBasicAttributeDataArray1 = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>1</html>"), new JLabel("<html>1 / 1</html>"), 
 			new JLabel("<html>1 / 1</html>")));
 	private final ArrayList<JLabel> aspectSkillIndicators = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html>Aspects</html>"), new JLabel("<html>Skills</html>")));
-	private final ArrayList<JLabel> aspectDataArray = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html> </html>"), new JLabel("<html> </html>"), 
-			new JLabel("<html> </html>"), new JLabel("<html> </html>")));
-	private final ArrayList<JLabel> skillDataArray = new ArrayList<JLabel>(Arrays.asList(new JLabel("<html> </html>"), new JLabel("<html> </html>"), 
-			new JLabel("<html> </html>"), new JLabel("<html> </html>"), new JLabel("<html> </html>"), new JLabel("<html> </html>"), 
-			new JLabel("<html> </html>"), new JLabel("<html> </html>")));
+	private final ArrayList<JLabel> aspectDataArray = new ArrayList<JLabel>(Arrays.asList(new JLabel(""), new JLabel(""), 
+			new JLabel(""), new JLabel("")));
+	private final ArrayList<JLabel> skillDataArray = new ArrayList<JLabel>(Arrays.asList(new JLabel(""), new JLabel(""), 
+			new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), 
+			new JLabel(""), new JLabel("")));
 	
 	private String icon = BASE_RESOURCE_PATH + "Objects\\Rock1.png"; //TODO change
 	private Character character = new Character("?", "Marx", "DOWN", ML*1, ML*1, 1);
@@ -152,6 +152,7 @@ public class Board extends JFrame implements KeyListener{
 	private Boolean autosave = false;
 	private String currentFileName = "";
 	
+	private int currentMemberID = 0;
 	private int valueSkip = 10;
 	private int timerRun = 80;
 	private int timerStep = 0;
@@ -521,6 +522,55 @@ public class Board extends JFrame implements KeyListener{
     	    			}
     		   			menuSet();
     	    		}
+    	    	}
+    	    });
+    	}
+
+    	//TODO determine if more generalized versions needed
+    	for (int i = 0; i < aspectDataArray.size(); i++) {
+    		aspectDataArray.get(i).addMouseListener(new MegaMouseAdapter(i) {
+    	    	public void mouseClicked(MouseEvent c) {
+    	    		int buttonIndex = getSavedValue();
+	    			if (((JLabel) c.getComponent()).getText() != "" && menuButton >= 11 && menuButton <= 17) {
+	    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
+	    				//TODO finish
+	    			}
+    	    	}
+    	    });
+    	}
+
+    	for (int i = 0; i < skillDataArray.size(); i++) {
+    		skillDataArray.get(i).addMouseListener(new MegaMouseAdapter(i) {
+    	    	public void mouseClicked(MouseEvent c) {
+    	    		int buttonIndex = getSavedValue();
+	    			if (((JLabel) c.getComponent()).getText() != "" && menuButton >= 11 && menuButton <= 17) {
+	    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
+	    				//TODO fix
+	    				Skill concernedSkill = partyMemberArray.get(currentMemberID).skillArray.get(buttonIndex);
+	    				path = new GeneralPath();
+	    				speech = new JLabel("<html><b>" + concernedSkill.name + 
+	    						"</b><br>Cost: <font color=rgb(255,0,100)>" + concernedSkill.healthCost + 
+	    						"</font>, <font color=rgb(100,255,0)>" + concernedSkill.energyCost + 
+	    						"</font><br>Target: " + concernedSkill.parseTarget() + "<br>" + 
+	    						"Type: " + concernedSkill.parseTypes() + 
+	    	    				//TODO finish
+	    						"</html>");
+	    		    	speech.setFont(new Font("Arial", Font.PLAIN, 16));
+	    		    	speech.setForeground(Color.WHITE);
+    					speech.setBounds(50, 450 + (buttonIndex * 25), 250, 150);
+						path.moveTo(0, 0);
+						path.lineTo(250, 0);
+						path.lineTo(250, 150);
+						path.lineTo(0, 150);
+						path.lineTo(0, 0);
+						speechBox = new SpeechBox(path, new Color(2, 2, 2, 234), Color.WHITE);
+		    			speechBox.setBounds(50, 450 + (buttonIndex * 25), 250, 150);
+		    	    	speech.setVerticalAlignment(JLabel.TOP);
+		    	    	mainPanel.setLayer(speechBox, 3);
+		    	    	mainPanel.setLayer(speech, 4);
+		    			mainPanel.add(speechBox);
+		    			mainPanel.add(speech);
+	    			}
     	    	}
     	    });
     	}
@@ -1048,8 +1098,9 @@ public class Board extends JFrame implements KeyListener{
 		case 14:
 		case 15:
 		case 16:
-			if (partyMemberArray.get(menuButton - 11) != null) {
-				Member currentMember = partyMemberArray.get(menuButton - 11);
+			currentMemberID = menuButton - 11;
+			if (partyMemberArray.get(currentMemberID) != null) {
+				Member currentMember = partyMemberArray.get(currentMemberID);
 				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
 				superPaused = true;
 				//TODO finish member window
@@ -1638,7 +1689,7 @@ public class Board extends JFrame implements KeyListener{
 				path.lineTo(ML*5, speechLines*5);
 				path.lineTo(0, speechLines*5);
 				path.lineTo(0, 0);
-				speechBox = new SpeechBox(path);
+				speechBox = new SpeechBox(path, new Color(252, 252, 252, 234), new Color(3, 3, 3));
     			speechBox.setBounds(nowThing.x + ML, nowThing.y - ML/4 + (-speechLines+2)*4, ML*6, ML+speechLines*4);
 			}
 			else {
@@ -1653,7 +1704,7 @@ public class Board extends JFrame implements KeyListener{
 				path.lineTo(ML, 6);
 				path.curveTo(ML, 6, ML + 3, 3, ML + 6, 0);
 				path.lineTo(ML + 6, 0);
-				speechBox = new SpeechBox(path);
+				speechBox = new SpeechBox(path, new Color(252, 252, 252, 234), new Color(3, 3, 3));
     			speechBox.setBounds(nowThing.x, nowThing.y - ML/4 + (-speechLines+2)*4, ML*6, ML+speechLines*4);
 			}
 		}
@@ -1665,7 +1716,7 @@ public class Board extends JFrame implements KeyListener{
 				path.lineTo(ML*5, ML+speechLines*5);
 				path.lineTo(0, ML+speechLines*5);
 				path.lineTo(0, ML);
-				speechBox = new SpeechBox(path);
+				speechBox = new SpeechBox(path, new Color(252, 252, 252, 234), new Color(3, 3, 3));
     			speechBox.setBounds(nowThing.x + ML, nowThing.y, ML*6, ML+speechLines*5);
 			}
 			else {
@@ -1680,7 +1731,7 @@ public class Board extends JFrame implements KeyListener{
 				path.lineTo(ML - 6, ML - 6);
 				path.lineTo(ML + 3, ML);
 				path.lineTo(ML + 6, ML);
-				speechBox = new SpeechBox(path);
+				speechBox = new SpeechBox(path, new Color(252, 252, 252, 234), new Color(3, 3, 3));
     			speechBox.setBounds(nowThing.x, nowThing.y, ML*6, ML+speechLines*5);
 			}
 		}
@@ -1692,7 +1743,7 @@ public class Board extends JFrame implements KeyListener{
 				path.lineTo(ML*5, ML+speechLines*5);
 				path.lineTo(0, ML+speechLines*5);
 				path.lineTo(0, ML);
-				speechBox = new SpeechBox(path);
+				speechBox = new SpeechBox(path, new Color(252, 252, 252, 234), new Color(3, 3, 3));
     			speechBox.setBounds(nowThing.x - ML*5, nowThing.y, ML*6, ML+speechLines*5);
 			}
 			else {
@@ -1707,7 +1758,7 @@ public class Board extends JFrame implements KeyListener{
 				path.lineTo(0, ML + 6);
 				path.curveTo(0, ML + 6, 3, ML + 3, 6, ML);
 				path.lineTo(6, ML);
-				speechBox = new SpeechBox(path);
+				speechBox = new SpeechBox(path, new Color(252, 252, 252, 234), new Color(3, 3, 3));
     			speechBox.setBounds(nowThing.x - ML*5, nowThing.y, ML*6, ML+speechLines*5);
 			}
 		}
@@ -1719,7 +1770,7 @@ public class Board extends JFrame implements KeyListener{
 				path.lineTo(ML*5, speechLines*5);
 				path.lineTo(0, speechLines*5);
 				path.lineTo(0, 0);
-				speechBox = new SpeechBox(path);
+				speechBox = new SpeechBox(path, new Color(252, 252, 252, 234), new Color(3, 3, 3));
     			speechBox.setBounds(nowThing.x - ML*5, nowThing.y - ML/4 + (-speechLines+2)*4, ML*6, ML+speechLines*4);
 			}
 			else {
@@ -1734,7 +1785,7 @@ public class Board extends JFrame implements KeyListener{
 				path.lineTo(ML, 6);
 				path.curveTo(ML, 6, ML + 3, 3, ML + 6, 0);
 				path.lineTo(ML + 6, 0);
-				speechBox = new SpeechBox(path);
+				speechBox = new SpeechBox(path, new Color(252, 252, 252, 234), new Color(3, 3, 3));
     			speechBox.setBounds(nowThing.x - ML*6, nowThing.y - ML/4 + (-speechLines+2)*4, ML*7, ML*2+speechLines*4);
 			}
 		}

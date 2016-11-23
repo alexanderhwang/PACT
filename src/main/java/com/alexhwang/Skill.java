@@ -17,7 +17,7 @@ public class Skill {
 	int energyCost;
 	int target;	//0: 1 front enemy (100%), 1: 1 enemy (90%), 2: 2 front/back enemies (75%), 3: front enemy line (50%), 4: enemy line (45%), 5: enemy party (33%),
 				//6: 1 ally (100%), 7: ally line (50%), 8: ally party (30%), 9: 1 enemy or ally (95%), 10: enemy or ally line (48%), 11: enemy or ally party (32%),
-				//12: random enemy (120%), 13: random ally (125%), 14: random enemy or ally (150%), 15: 2-5 random enemies (40%), 15: everyone (100%)
+				//12: random enemy (120%), 13: random ally (125%), 14: random enemy or ally (150%), 15: 2-5 random enemies (40%), 16: everyone (100%)
 	ArrayList<Integer> skillTypes; //0: impact, 1: cutting, 2: piercing, 3: magic, 4: psychic, 5: holy, 6: evil, 7: special (no/pure damage)
 	ArrayList<String> skillElements; //neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, blood, emotion, mind, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
 	ArrayList<Integer> basicAttributePercentages; //health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
@@ -46,6 +46,100 @@ public class Skill {
 	
 	public Skill(final String id) { //Basic skill creation
 		readAspect(id);
+	}
+	
+	public String parseTarget() {
+		//TODO finish (if applicable)
+		String targetString = "";
+		switch (target) {
+		case 0:
+			targetString = "<font color=rgb(225,125,0)>1 enemy in the front row";
+			break;
+		case 1:
+			targetString = "<font color=rgb(225,75,0)>1 enemy";
+			break;
+		case 2:
+			targetString = "<font color=rgb(225,25,25>1 enemy in the front row and the one behind it";
+			break;
+		case 3:
+			targetString = "<font color=rgb(225,125,75)>enemies in the front row";
+			break;
+		case 4:
+			targetString = "<font color=rgb(225,75,75)>enemies in a row";
+			break;
+		case 5:
+			targetString = "<font color=rgb(255,0,0)>all enemies";
+			break;
+		case 6:
+			targetString = "<font color=rgb(0,75,225)>1 ally";
+			break;
+		case 7:
+			targetString = "<font color=rgb(75,75,225)>allies in a row";
+			break;
+		case 8:
+			targetString = "<font color=rgb(0,0,255)>all allies";
+			break;
+		case 9:
+			targetString = "<font color=rgb(225,75,225)>1 enemy or ally";
+			break;
+		case 10:
+			targetString = "<font color=rgb(255,75,255)>enemies or allies in a row";
+			break;
+		case 11:
+			targetString = "<font color=rgb(255,0,255)>all enemies or allies";
+			break;
+		case 12:
+			targetString = "<font color=rgb(225,175,0)>1 random enemy";
+			break;
+		case 13:
+			targetString = "<font color=rgb(0,175,225)>1 random ally";
+			break;
+		case 14:
+			targetString = "<font color=rgb(225,175,225)>1 random enemy or ally";
+			break;
+		case 15:
+			targetString = "<font color=rgb(225,225,0)>random enemies";
+			break;
+		case 16:
+			targetString = "<font color=rgb(255,0,255)>everyone";
+			break;
+		}
+		return targetString + "</font>";
+	}
+	
+	public String parseTypes() {
+		String typeString = "";
+		for (int i = 0; i < skillTypes.size(); i++) {
+			switch (skillTypes.get(i)) {
+			case 0:
+				typeString += "<font color=rgb(175,175,125)>Impact</font>";
+				break;
+			case 1:
+				typeString += "<font color=rgb(255,175,25)>Cutting</font>";
+				break;
+			case 2:
+				typeString += "<font color=rgb(175,255,25)>Piercing</font>";
+				break;
+			case 3:
+				typeString += "<font color=rgb(0,255,125)>Magic</font>";
+				break;
+			case 4:
+				typeString += "<font color=rgb(125,0,255)>Psychic</font>";
+				break;
+			case 5:
+				typeString += "<font color=rgb(255,225,255)>Holy</font>";
+				break;
+			case 6:
+				typeString += "<font color=rgb(125,75,125)>Evil</font>";
+				break;
+			default:
+				break;
+			}
+			if (i != skillTypes.size() - 1 && skillTypes.get(i) != 7) {
+				typeString += "/";
+			}
+		}
+		return typeString;
 	}
 	
 	public void readAspect(final String id) {
