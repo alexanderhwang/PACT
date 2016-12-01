@@ -526,6 +526,27 @@ public class Board extends JFrame implements KeyListener{
     	    });
     	}
 
+		nameDataName.addMouseListener(new MegaMouseAdapter(0) {
+	    	public void mouseClicked(MouseEvent c) {
+    			if (menuButton >= 11 && menuButton <= 17) {
+    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
+    				Object nameInput = JOptionPane.showInputDialog(frame, "Change name:", "Character", JOptionPane.PLAIN_MESSAGE, null, null, partyMemberArray.get(menuButton - 11).chosenName);
+    				
+    				if (nameInput == null) {
+    					playSound(BASE_RESOURCE_PATH + "Sounds\\MenuBack.wav");
+    				}
+    				else {
+    					String nameString = (String) nameInput;
+    					playSound(BASE_RESOURCE_PATH + "Sounds\\MenuSelect.wav");
+    					partyMemberArray.get(menuButton - 11).setName(nameString);
+    					menuArray1.get(menuButton - 10).setText(nameString);
+    					nameDataName.setText(nameString);
+    					character.setName(nameString);
+    				}
+    			}
+	    	}
+	    });
+		
     	//TODO determine if more generalized versions needed
     	for (int i = 0; i < aspectDataArray.size(); i++) {
     		aspectDataArray.get(i).addMouseListener(new MegaMouseAdapter(i) {
@@ -543,16 +564,36 @@ public class Board extends JFrame implements KeyListener{
     		skillDataArray.get(i).addMouseListener(new MegaMouseAdapter(i) {
     	    	public void mouseClicked(MouseEvent c) {
     	    		int buttonIndex = getSavedValue();
-	    			if (((JLabel) c.getComponent()).getText() != "" && menuButton >= 11 && menuButton <= 17) {
+    	    		if (talk >= 1) {
+	    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
+    	    			mainPanel.remove(speechBox);
+    	    			mainPanel.remove(speech);
+    	    			mainPanel.revalidate();
+    	    			mainPanel.repaint();
+    	    			talk--;
+    	    		}
+    	    		else if (((JLabel) c.getComponent()).getText() != "" && menuButton >= 11 && menuButton <= 17) {
 	    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
 	    				//TODO fix
-	    				Skill concernedSkill = partyMemberArray.get(currentMemberID).skillArray.get(buttonIndex);
+	    				Member concernedMember = partyMemberArray.get(currentMemberID);
+	    				Skill concernedSkill = concernedMember.skillArray.get(buttonIndex);
 	    				path = new GeneralPath();
+	    				int cHealth = concernedMember.basicAttributes.get(0);
+	    				int cEnergy = concernedMember.basicAttributes.get(1);
 	    				speech = new JLabel("<html><b>" + concernedSkill.name + 
-	    						"</b><br>Cost: <font color=rgb(255,0,100)>" + concernedSkill.healthCost + 
-	    						"</font>, <font color=rgb(100,255,0)>" + concernedSkill.energyCost + 
+	    						"</b><br>Cost: <font color=rgb(" + 
+	    						(255 * (cHealth / (cHealth - concernedSkill.healthCost))) + "," + 
+	    						(255 * (cHealth / (cHealth + (concernedSkill.healthCost * 4)))) + "," + 
+	    						(255 * (cHealth / (cHealth + (concernedSkill.healthCost * 2)))) + ")>" + 
+	    						concernedSkill.healthCost + "</font>, <font color=rgb(" + 
+	    						(255 * (cEnergy / (cEnergy + (concernedSkill.energyCost * 2)))) + "," + 
+	    						(255 * (cEnergy / (cEnergy + (concernedSkill.energyCost * 4)))) + "," + 
+	    						(255 * (cEnergy / (cEnergy - concernedSkill.energyCost))) + ")>" + concernedSkill.energyCost + 
 	    						"</font><br>Target: " + concernedSkill.parseTarget() + "<br>" + 
-	    						"Type: " + concernedSkill.parseTypes() + 
+	    						"Type: " + concernedSkill.parseTypes() + "<br>" + 
+	    						"Element: " + concernedSkill.parseElements() + "<br>" + 
+	    						"Charge/Recharge: " + concernedSkill.returnChargeString(concernedMember.basicAttributes.get(11)) + 
+	    						"/" + concernedSkill.returnRechargeString(concernedMember.basicAttributes.get(9)) + "<br>" + 
 	    	    				//TODO finish
 	    						"</html>");
 	    		    	speech.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -570,6 +611,7 @@ public class Board extends JFrame implements KeyListener{
 		    	    	mainPanel.setLayer(speech, 4);
 		    			mainPanel.add(speechBox);
 		    			mainPanel.add(speech);
+		    			talk++;
 	    			}
     	    	}
     	    });

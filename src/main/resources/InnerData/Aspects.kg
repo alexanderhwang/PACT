@@ -11,9 +11,9 @@
 	00010;	Aura of Fortune;	2;	1;	luck;	10;	0;	9+3;	Adds 10% of your luck to allies.;	
 	00011;	Impotence;	-1;	0;	health;	-10;	0;	1+2,2+2,3+2,4+1,5+2,6+2,7+2,8+2,9+2;	Reduces health by 10%.;	
 	00012;	Ignorance;	-1;	0;	energy;	-10;	0;	0+2,2+2,3+2,4+1,5+2,6+2,7+2,8+2,9+2;	Reduces energy by 10%.;	
-	00013;	Weakness;	-1;	0;	offense;	-10;	0;	0+3,1+3,3+3,4+3,5+3,6+3,7+3,8+3,9+3;	Reduces physical offense by 10%.;	
-	00014;	Fatuity;	-1;	0;	focus;	-10;	0;	0+3,1+3,2+3,4+3,5+3,6+3,7+3,8+3,9+3;	Reduces magical focus by 10%.;	
-	00015;	Fragility;	-1;	0;	defense;	-10;	0;	1+1,3+1,4+1,5+1,6+1,8+1,9+1;	Reduces physical defense by 10%.;	
-	00016;	Feebleness;	-1;	0;	resistance;	-10;	0;	0+1,2+1,4+1,6+1,7+1,8+1,9+1;	Reduces magical resistance by 10%.;	
+	00013;	Weakness;	-1;	0;	offense;	-10;	0;	0+3,1+3,3+3,4+3,5+3,6+3,7+3,8+3,9+3;	Reduces offense by 10%.;	
+	00014;	Fatuity;	-1;	0;	focus;	-10;	0;	0+3,1+3,2+3,4+3,5+3,6+3,7+3,8+3,9+3;	Reduces focus by 10%.;	
+	00015;	Fragility;	-1;	0;	defense;	-10;	0;	1+1,3+1,4+1,5+1,6+1,8+1,9+1;	Reduces defense by 10%.;	
+	00016;	Feebleness;	-1;	0;	resistance;	-10;	0;	0+1,2+1,4+1,6+1,7+1,8+1,9+1;	Reduces resistance by 10%.;	
 	00017;	Enervation;	-1;	0;	tolerance;	-10;	0;	0+2,1+2,2+2,3+2,4+1,5+2,6+2,8+2,9+2;	Reduces tolerance by 10%.;	
 	00018;	Ineptitude;	-1;	0;	accuracy;	-10;	0;	0+2,1+2,2+2,3+2,4+2,6+2,7+2,8+2,9+1;	Reduces accuracy by 10%.;	

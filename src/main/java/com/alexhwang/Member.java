@@ -27,7 +27,9 @@ public class Member {
 
 	ArrayList<Integer> preferences; //vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck
 	ArrayList<Integer> attributes = new ArrayList<Integer>(Arrays.asList(vitality, wisdom, strength, intelligence, stamina, dexterity, passion, resolve, agility, luck));
+	//0: vitality, 1: wisdom, 2: strength, 3: intelligence, 4: stamina, 5: dexterity, 6: passion, 7: resolve, 8: agility, 9: luck
 	ArrayList<Integer> basicAttributes = new ArrayList<Integer>(Arrays.asList(health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, criticalRate, castRate));
+	//0: health, 1: energy, 2: offense, 3: focus, 4: defense, 5: resistance, 6: tolerance, 7: accuracy, 8: evasion, 9: speed, 10: criticalRate, 11: castRate
 
 	int allowedAspects; //determined by rank+1 by default, unless transformed
 	int rankValue;
@@ -384,6 +386,10 @@ public class Member {
 	
 	public void setCurrentEnergy(int currentEnergy) {
 		this.currentEnergy = currentEnergy;
+	}
+	
+	public void setName(String chosenName) {
+		this.chosenName = chosenName;
 	}
 	
 	public void setMainCharacter() {

@@ -19,13 +19,15 @@ public class Skill {
 				//6: 1 ally (100%), 7: ally line (50%), 8: ally party (30%), 9: 1 enemy or ally (95%), 10: enemy or ally line (48%), 11: enemy or ally party (32%),
 				//12: random enemy (120%), 13: random ally (125%), 14: random enemy or ally (150%), 15: 2-5 random enemies (40%), 16: everyone (100%)
 	ArrayList<Integer> skillTypes; //0: impact, 1: cutting, 2: piercing, 3: magic, 4: psychic, 5: holy, 6: evil, 7: special (no/pure damage)
-	ArrayList<String> skillElements; //neutral, earth, air, water, fire, ice, power, force, wood, poison, metal, bone, blood, emotion, mind, spirit, light, darkness, arcanum, heaven, hell, chaos, almighty, void
+	ArrayList<Integer> skillElements; //0: neutral, 1: earth, 2: air, 3: water, 4: fire, 5: ice, 6: power, 7: force, 8: wood, 9: poison, 10: metal, 11: bone, 12: blood, 
+		//13: emotion, 14: mind, 15: spirit, 16: light, 17: darkness, 18: arcanum, 19: heaven, 20: hell, 21: chaos, 22: almighty, 23: void, 24: special (no/pure damage)
 	ArrayList<Integer> basicAttributePercentages; //health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
-	int chargeValue;
-	int rechargeValue;
-	int damage;
+	int chargeValue; //[charge * (1000 / 1000 + cast rate)]
+	int rechargeValue; //[recharge * (2000 / 2000 + speed)]
+	int baseDamage;
 	int accuracyFormula; //0: 100%, 1: 100% (modified by accuracy, determined by target evasion), 2: 100% (modified by 90% accuracy, determined by target evasion),
-	//3: 90%
+	//3: 90% 
+	//TODO determine further accuracies? maybe re-add accuracy segment
 	int damageFormula; //0: no reduction, 1: reduced by 100% defense, 2: reduced by 100% resistance
 	ArrayList<String> statusEffects; //effect+percentage
 	//death, wound, petrification, dampness, burn, freeze, shock, pressure, poisoning, confusion, silence, sleep
@@ -132,14 +134,126 @@ public class Skill {
 			case 6:
 				typeString += "<font color=rgb(125,75,125)>Evil</font>";
 				break;
+			case 7:
+				typeString += "-";
+				break;
 			default:
 				break;
 			}
-			if (i != skillTypes.size() - 1 && skillTypes.get(i) != 7) {
+			if (i != skillTypes.size() - 1) {
 				typeString += "/";
 			}
 		}
 		return typeString;
+	}
+	
+	public String parseElements() {
+		String elementString = "";
+		for (int i = 0; i < skillElements.size(); i++) {
+			switch (skillElements.get(i)) {
+			case 0:
+				elementString += "<font color=rgb(225,225,225)>Neutral</font>";
+				break;
+			case 1:
+				elementString += "<font color=rgb(150,75,25)>Earth</font>";
+				break;
+			case 2:
+				elementString += "<font color=rgb(200,225,200)>Air</font>";
+				break;
+			case 3:
+				elementString += "<font color=rgb(0,0,255)>Water</font>";
+				break;
+			case 4:
+				elementString += "<font color=rgb(255,0,0)>Fire</font>";
+				break;
+			case 5:
+				elementString += "<font color=rgb(0,255,255)>Ice</font>";
+				break;
+			case 6:
+				elementString += "<font color=rgb(255,255,0)>Power</font>";
+				break;
+			case 7:
+				elementString += "<font color=rgb(25,10,125)>Force</font>";
+				break;
+			case 8:
+				elementString += "<font color=rgb(150,175,50)>Wood</font>";
+				break;
+			case 9:
+				elementString += "<font color=rgb(100,0,200)>Poison</font>";
+				break;
+			case 10:
+				elementString += "<font color=rgb(125,125,125)>Metal</font>";
+				break;
+			case 11:
+				elementString += "<font color=rgb(225,225,220)>Bone</font>";
+				break;
+			case 12:
+				elementString += "<font color=rgb(175,0,10)>Blood</font>";
+				break;
+			case 13:
+				elementString += "<font color=rgb(255,100,175)>Emotion</font>";
+				break;
+			case 14:
+				elementString += "<font color=rgb(225,150,255)>Mind</font>";
+				break;
+			case 15:
+				elementString += "<font color=rgb(150,255,225)>Spirit</font>";
+				break;
+			case 16:
+				elementString += "<font color=rgb(255,255,205)>Light</font>";
+				break;
+			case 17:
+				elementString += "<font color=rgb(0,0,75)>Darkness</font>";
+				break;
+			case 18:
+				elementString += "<font color=rgb(255,100,50)>Arcanum</font>";
+				break;
+			case 19:
+				elementString += "<font color=rgb(255,225,150)>Heaven</font>";
+				break;
+			case 20:
+				elementString += "<font color=rgb(100,0,0)>Hell</font>";
+				break;
+			case 21:
+				elementString += "<font color=rgb(255,125,0)>Chaos</font>";
+				break;
+			case 22:
+				elementString += "<font color=rgb(255,0,200)>Almighty</font>";
+				break;
+			case 23:
+				elementString += "<font color=rgb(0,75,25)>Void</font>";
+				break;
+			case 24:
+				elementString += "-";
+				break;
+			default:
+				break;
+			}
+			if (i != skillElements.size() - 1) {
+				elementString += "/";
+			}
+		}
+		return elementString;
+	}
+	
+	public int returnCharge(final int castRate) {
+		return (int) (chargeValue * (1000.0 / (1000.0 + castRate)));
+	}
+
+	public int returnRecharge(final int speed) {
+		return (int) (rechargeValue * (2000.0 / (2000.0 + speed)));
+	}
+	
+	public String returnChargeString(final int castRate) {
+		int trueCharge = returnCharge(castRate);
+		int shavedColor = (int) (255.0 * ((double) trueCharge / (double) chargeValue));
+		return "<font color=rgb(" + shavedColor + ",255," + shavedColor + ")>" + trueCharge + "</font>";
+	}
+
+	public String returnRechargeString(final int speed) {
+		int trueRecharge = returnRecharge(speed);
+		int shavedColor = (int) (255.0 * ((double) trueRecharge / (double) rechargeValue));
+		return "<font color=rgb(" + shavedColor + ",255," + shavedColor + ")>" + trueRecharge + "</font>";
 	}
 	
 	public void readAspect(final String id) {
@@ -185,14 +299,18 @@ public class Skill {
     					target = Integer.parseInt(dataString);
     					break;
     				case 5:
-						final ArrayList<String> tempArray1 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						final ArrayList<String> tempArray0 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
 						skillTypes = new ArrayList<Integer>();
-    					for (String element : tempArray1) {
+    					for (String element : tempArray0) {
     						skillTypes.add((int) Integer.parseInt(element));
     					}
     					break;
     				case 6:
-    					skillElements = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						final ArrayList<String> tempArray1 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+						skillElements = new ArrayList<Integer>();
+    					for (String element : tempArray1) {
+    						skillElements.add((int) Integer.parseInt(element));
+    					}
     					break;
     				case 7:
 						final ArrayList<String> tempArray2 = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
@@ -211,7 +329,7 @@ public class Skill {
     					rechargeValue = Integer.parseInt(dataString);
     					break;
     				case 10:
-    					damage = Integer.parseInt(dataString);
+    					baseDamage = Integer.parseInt(dataString);
     					break;
     				case 11:
     					accuracyFormula = Integer.parseInt(dataString);
