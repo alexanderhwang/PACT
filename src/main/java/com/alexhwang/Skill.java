@@ -24,10 +24,9 @@ public class Skill {
 	ArrayList<Integer> basicAttributePercentages; //health, energy, offense, focus, defense, resistance, tolerance, accuracy, evasion, speed, critical rate, cast rate
 	int chargeValue; //[charge * (1000 / 1000 + cast rate)]
 	int rechargeValue; //[recharge * (2000 / 2000 + speed)]
+	int baseAccuracy;
 	int baseDamage;
-	int accuracyFormula; //0: 100%, 1: 100% (modified by accuracy, determined by target evasion), 2: 100% (modified by 90% accuracy, determined by target evasion),
-	//3: 90% 
-	//TODO determine further accuracies? maybe re-add accuracy segment
+	int accuracyFormula; //0: x%, 1: x% (modified by accuracy, determined by target evasion)
 	int damageFormula; //0: no reduction, 1: reduced by 100% defense, 2: reduced by 100% resistance
 	ArrayList<String> statusEffects; //effect+percentage
 	//death, wound, petrification, dampness, burn, freeze, shock, pressure, poisoning, confusion, silence, sleep
@@ -55,16 +54,16 @@ public class Skill {
 		String targetString = "";
 		switch (target) {
 		case 0:
-			targetString = "<font color=rgb(225,125,0)>1 enemy in the front row";
+			targetString = "<font color=rgb(225,125,0)>1 enemy, front";
 			break;
 		case 1:
 			targetString = "<font color=rgb(225,75,0)>1 enemy";
 			break;
 		case 2:
-			targetString = "<font color=rgb(225,25,25>1 enemy in the front row and the one behind it";
+			targetString = "<font color=rgb(225,25,25>2 enemies, front and behind";
 			break;
 		case 3:
-			targetString = "<font color=rgb(225,125,75)>enemies in the front row";
+			targetString = "<font color=rgb(225,125,75)>enemies in front row";
 			break;
 		case 4:
 			targetString = "<font color=rgb(225,75,75)>enemies in a row";
@@ -329,27 +328,30 @@ public class Skill {
     					rechargeValue = Integer.parseInt(dataString);
     					break;
     				case 10:
-    					baseDamage = Integer.parseInt(dataString);
+    					baseAccuracy = Integer.parseInt(dataString);
     					break;
     				case 11:
-    					accuracyFormula = Integer.parseInt(dataString);
+    					baseDamage = Integer.parseInt(dataString);
     					break;
     				case 12:
-    					damageFormula = Integer.parseInt(dataString);
+    					accuracyFormula = Integer.parseInt(dataString);
     					break;
     				case 13:
-    					statusEffects = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					damageFormula = Integer.parseInt(dataString);
     					break;
     				case 14:
-    					userAnimation = dataString;
+    					statusEffects = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
     					break;
     				case 15:
-    					targetAnimation = dataString;
+    					userAnimation = dataString;
     					break;
     				case 16:
-    					preferences = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					targetAnimation = dataString;
     					break;
     				case 17:
+    					preferences = new ArrayList<String>(Arrays.asList(dataString.split("\\s*,\\s*")));
+    					break;
+    				case 18:
     					description = dataString;
     					break;
     				}

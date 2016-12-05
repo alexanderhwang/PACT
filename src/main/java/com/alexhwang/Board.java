@@ -582,30 +582,42 @@ public class Board extends JFrame implements KeyListener{
 	    				int cEnergy = concernedMember.basicAttributes.get(1);
 	    				speech = new JLabel("<html><b>" + concernedSkill.name + 
 	    						"</b><br>Cost: <font color=rgb(" + 
-	    						(255 * (cHealth / (cHealth - concernedSkill.healthCost))) + "," + 
-	    						(255 * (cHealth / (cHealth + (concernedSkill.healthCost * 4)))) + "," + 
-	    						(255 * (cHealth / (cHealth + (concernedSkill.healthCost * 2)))) + ")>" + 
+	    						(int) (255 * ((double) cHealth / (double) (cHealth - concernedSkill.healthCost))) + "," + 
+	    						(int) (255 * ((double) cHealth / (double) (cHealth + (concernedSkill.healthCost * 4)))) + "," + 
+	    						(int) (255 * ((double) cHealth / (double) (cHealth + (concernedSkill.healthCost * 2)))) + ")>" + 
 	    						concernedSkill.healthCost + "</font>, <font color=rgb(" + 
-	    						(255 * (cEnergy / (cEnergy + (concernedSkill.energyCost * 2)))) + "," + 
-	    						(255 * (cEnergy / (cEnergy + (concernedSkill.energyCost * 4)))) + "," + 
-	    						(255 * (cEnergy / (cEnergy - concernedSkill.energyCost))) + ")>" + concernedSkill.energyCost + 
+	    						(int) (255 * ((double) cEnergy / (double) (cEnergy + (concernedSkill.energyCost * 2)))) + "," + 
+	    						(int) (255 * ((double) cEnergy / (double) (cEnergy + (concernedSkill.energyCost * 4)))) + "," + 
+	    						(int) (255 * ((double) cEnergy / (double) (cEnergy - concernedSkill.energyCost))) + ")>" + concernedSkill.energyCost + 
 	    						"</font><br>Target: " + concernedSkill.parseTarget() + "<br>" + 
 	    						"Type: " + concernedSkill.parseTypes() + "<br>" + 
 	    						"Element: " + concernedSkill.parseElements() + "<br>" + 
 	    						"Charge/Recharge: " + concernedSkill.returnChargeString(concernedMember.basicAttributes.get(11)) + 
 	    						"/" + concernedSkill.returnRechargeString(concernedMember.basicAttributes.get(9)) + "<br>" + 
-	    	    				//TODO finish
+	    						//TODO check if in battle
+	    						//"Accuracy: " + ((inBattle == true) ? "" : "<font color=rgb()") + "<br>" + 
+	    						"Accuracy: <font color=rgb(255," + ((concernedSkill.accuracyFormula == 1) ?
+	    						((int) ((255 * ((double) concernedSkill.baseAccuracy / 50.0))) + "," + 
+	    						(int) ((255 * ((double) concernedSkill.baseAccuracy / 100.0))) + ")>") :
+		    					((int) ((255 * ((double) concernedSkill.baseAccuracy / 100.0))) + "," + 
+		    	    			(int) ((255 * ((double) concernedSkill.baseAccuracy / 100.0))) + ")>"))	+ 
+	    						concernedSkill.baseAccuracy + "</font><br>" + 
+		    	    			"Damage: " + ((concernedSkill.damageFormula == 0) ? concernedSkill.baseDamage : 
+		    	    			("<font color=rgb(" + ((concernedSkill.damageFormula == 1) ? 
+		    	    			"255,190,0" : "0,190,255") + ")>" + concernedSkill.baseDamage + "</font>")) + 
+		    	    			concernedSkill.description + 
+	    	    				//TODO check completion
 	    						"</html>");
 	    		    	speech.setFont(new Font("Arial", Font.PLAIN, 16));
 	    		    	speech.setForeground(Color.WHITE);
-    					speech.setBounds(50, 450 + (buttonIndex * 25), 250, 150);
+    					speech.setBounds(50, 450 + (buttonIndex * 25), 250, 220);
 						path.moveTo(0, 0);
 						path.lineTo(250, 0);
-						path.lineTo(250, 150);
-						path.lineTo(0, 150);
+						path.lineTo(250, 220);
+						path.lineTo(0, 220);
 						path.lineTo(0, 0);
 						speechBox = new SpeechBox(path, new Color(2, 2, 2, 234), Color.WHITE);
-		    			speechBox.setBounds(50, 450 + (buttonIndex * 25), 250, 150);
+		    			speechBox.setBounds(50, 450 + (buttonIndex * 25), 250, 220);
 		    	    	speech.setVerticalAlignment(JLabel.TOP);
 		    	    	mainPanel.setLayer(speechBox, 3);
 		    	    	mainPanel.setLayer(speech, 4);
