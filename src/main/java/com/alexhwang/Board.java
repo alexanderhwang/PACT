@@ -552,9 +552,39 @@ public class Board extends JFrame implements KeyListener{
     		aspectDataArray.get(i).addMouseListener(new MegaMouseAdapter(i) {
     	    	public void mouseClicked(MouseEvent c) {
     	    		int buttonIndex = getSavedValue();
-	    			if (((JLabel) c.getComponent()).getText() != "" && menuButton >= 11 && menuButton <= 17) {
+    	    		if (talk >= 1) {
 	    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
-	    				//TODO finish
+    	    			mainPanel.remove(speechBox);
+    	    			mainPanel.remove(speech);
+    	    			mainPanel.revalidate();
+    	    			mainPanel.repaint();
+    	    			talk--;
+    	    		}
+    	    		else if (((JLabel) c.getComponent()).getText() != "" && menuButton >= 11 && menuButton <= 17) {
+	    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
+	    				Member concernedMember = partyMemberArray.get(currentMemberID);
+	    				Aspect concernedAspect = concernedMember.aspectArray.get(buttonIndex);
+	    				path = new GeneralPath();
+	    				speech = new JLabel("<html><b>" + concernedAspect.name +
+	    						"</b><br>" + concernedAspect.description + 
+	    						"</html>");
+	    				//TODO check completion
+	    		    	speech.setFont(new Font("Arial", Font.PLAIN, 16));
+	    		    	speech.setForeground(Color.WHITE);
+    					speech.setBounds(50, 300 + (buttonIndex * 25), 250, 100);
+						path.moveTo(0, 0);
+						path.lineTo(250, 0);
+						path.lineTo(250, 100);
+						path.lineTo(0, 100);
+						path.lineTo(0, 0);
+						speechBox = new SpeechBox(path, new Color(2, 2, 2, 234), Color.WHITE);
+		    			speechBox.setBounds(50, 300 + (buttonIndex * 25), 250, 100);
+		    	    	speech.setVerticalAlignment(JLabel.TOP);
+		    	    	mainPanel.setLayer(speechBox, 3);
+		    	    	mainPanel.setLayer(speech, 4);
+		    			mainPanel.add(speechBox);
+		    			mainPanel.add(speech);
+		    			talk++;
 	    			}
     	    	}
     	    });
@@ -574,7 +604,6 @@ public class Board extends JFrame implements KeyListener{
     	    		}
     	    		else if (((JLabel) c.getComponent()).getText() != "" && menuButton >= 11 && menuButton <= 17) {
 	    				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
-	    				//TODO fix
 	    				Member concernedMember = partyMemberArray.get(currentMemberID);
 	    				Skill concernedSkill = concernedMember.skillArray.get(buttonIndex);
 	    				path = new GeneralPath();
@@ -604,20 +633,20 @@ public class Board extends JFrame implements KeyListener{
 	    						concernedSkill.baseAccuracy + "</font><br>" + 
 		    	    			"Damage: " + ((concernedSkill.damageFormula == 0) ? concernedSkill.baseDamage : 
 		    	    			("<font color=rgb(" + ((concernedSkill.damageFormula == 1) ? 
-		    	    			"255,190,0" : "0,190,255") + ")>" + concernedSkill.baseDamage + "</font>")) + 
+		    	    			"255,190,0" : "0,190,255") + ")>" + concernedSkill.baseDamage + "</font>")) + "<br>" + 
 		    	    			concernedSkill.description + 
 	    	    				//TODO check completion
 	    						"</html>");
 	    		    	speech.setFont(new Font("Arial", Font.PLAIN, 16));
 	    		    	speech.setForeground(Color.WHITE);
-    					speech.setBounds(50, 450 + (buttonIndex * 25), 250, 220);
+    					speech.setBounds(50, 450 + (buttonIndex * 25), 250, 175);
 						path.moveTo(0, 0);
 						path.lineTo(250, 0);
-						path.lineTo(250, 220);
-						path.lineTo(0, 220);
+						path.lineTo(250, 175);
+						path.lineTo(0, 175);
 						path.lineTo(0, 0);
 						speechBox = new SpeechBox(path, new Color(2, 2, 2, 234), Color.WHITE);
-		    			speechBox.setBounds(50, 450 + (buttonIndex * 25), 250, 220);
+		    			speechBox.setBounds(50, 450 + (buttonIndex * 25), 250, 175);
 		    	    	speech.setVerticalAlignment(JLabel.TOP);
 		    	    	mainPanel.setLayer(speechBox, 3);
 		    	    	mainPanel.setLayer(speech, 4);
@@ -1382,12 +1411,22 @@ public class Board extends JFrame implements KeyListener{
 			if (k.getKeyCode() == keyArray.get(12) || k.getKeyCode() == keyArray.get(13) || k.getKeyCode() == keyArray.get(14) ||
 					k.getKeyCode() == keyArray.get(30) || k.getKeyCode() == keyArray.get(31) || k.getKeyCode() == keyArray.get(32) ||
 					k.getKeyCode() == keyArray.get(33) || k.getKeyCode() == keyArray.get(34) || k.getKeyCode() == keyArray.get(35)) {
-				playSound(BASE_RESOURCE_PATH + "Sounds\\MenuBack.wav");
-				superPaused = false;
-	        	mainPanel.remove(dataPanel);
-	        	mainPanel.repaint();
+				if (talk >= 1) {
+					playSound(BASE_RESOURCE_PATH + "Sounds\\MenuMove.wav");
+		        	mainPanel.remove(speechBox);
+		        	mainPanel.remove(speech);
+		        	mainPanel.repaint();
+					talk--;
+				}
+				else {
+					playSound(BASE_RESOURCE_PATH + "Sounds\\MenuBack.wav");
+					superPaused = false;
+		        	mainPanel.remove(dataPanel);
+		        	mainPanel.repaint();
+				}
 			}
-			//TODO add switching
+			//TODO add switching, add temp. member
+			
 		}
 		else if (!keyPaused && !superPaused) {
 			//MENU

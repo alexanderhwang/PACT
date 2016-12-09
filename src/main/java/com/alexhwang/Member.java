@@ -76,8 +76,8 @@ public class Member {
 						aspectArray.add(potentialAspect);
 						for (String preferenceModule : potentialAspect.preferences) {
 							if (preferenceModule.length() >= 1) {
-								int consideredPreferenceIndex = Integer.parseInt(preferenceModule.substring(0, preferenceModule.indexOf('+') - 1));
-								int consideredPreferenceIncrement = Integer.parseInt(preferenceModule.substring(preferenceModule.indexOf('+'), preferenceModule.length() - 1));
+								int consideredPreferenceIndex = Integer.parseInt(preferenceModule.substring(0, preferenceModule.indexOf('+')));
+								int consideredPreferenceIncrement = Integer.parseInt(preferenceModule.substring(preferenceModule.indexOf('+') + 1, preferenceModule.length()));
 								preferences.set(consideredPreferenceIndex, preferences.get(consideredPreferenceIndex) + consideredPreferenceIncrement);
 							}
 						}
@@ -109,8 +109,8 @@ public class Member {
 						skillArray.add(potentialSkill);
 						for (String preferenceModule : potentialSkill.preferences) {
 							if (preferenceModule.length() >= 1) {
-								int consideredPreferenceIndex = Integer.parseInt(preferenceModule.substring(0, preferenceModule.indexOf('+') - 1));
-								int consideredPreferenceIncrement = Integer.parseInt(preferenceModule.substring(preferenceModule.indexOf('+'), preferenceModule.length() - 1));
+								int consideredPreferenceIndex = Integer.parseInt(preferenceModule.substring(0, preferenceModule.indexOf('+')));
+								int consideredPreferenceIncrement = Integer.parseInt(preferenceModule.substring(preferenceModule.indexOf('+') + 1, preferenceModule.length()));
 								preferences.set(consideredPreferenceIndex, preferences.get(consideredPreferenceIndex) + consideredPreferenceIncrement);
 							}
 						}
