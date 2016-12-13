@@ -1726,13 +1726,18 @@ public class Board extends JFrame implements KeyListener{
 							    	mainPanel.repaint();
 							    	talk = nowThing.misc.size();
 							    	if (talk > 0) {
-							    		drawSpeechBox(nowThing);
+							    		if (nowThing.misc.get(0).startsWith("**")) { //TODO set specifics, test
+							    			
+							    		}
+							    		else {
+								    		drawSpeechBox(nowThing);
+							    		}
 							    		ArrayList<String> nowThingMiscClone = new ArrayList<String>();
 							    		nowThingMiscClone.addAll(nowThing.misc);
 							    		savedThing = new Thing(nowThing.name, nowThing.type, nowThing.direction, nowThing.x, nowThing.y, nowThing.step, nowThing.action, nowThingMiscClone, true);
 							    		
 							    		nowThing.setFlag(nowThing.flag + 1);
-							    	}
+							    	} //TODO insert event when alerted by specific text (such as new member)
 									break;
 								} //TODO finish adding cases
 							}
@@ -1748,7 +1753,7 @@ public class Board extends JFrame implements KeyListener{
 					    	savedThing = null;
 							paused = false;
 						}
-						else {
+						else { //TODO copy above
 							savedThing.misc.remove(0);
 							drawSpeechBox(savedThing);
 						}
@@ -2144,8 +2149,8 @@ public class Board extends JFrame implements KeyListener{
 	    		skillDataArray.get(i).setVisible(true);
 	    	}
 			partyMemberArray.set(0, new Member(new Fae(menuButton), nameString, 0, 1)); //TODO expand upon?
-			partyMemberArray.get(0).setMainCharacter();
 			menu11.setText(partyMemberArray.get(0).chosenName);
+			partyMemberArray.get(0).setMainCharacter();
 			icon = "" + character.imageIcon;
 	    	frame.setIconImage(new ImageIcon(icon).getImage());
 			menuButton = 1;

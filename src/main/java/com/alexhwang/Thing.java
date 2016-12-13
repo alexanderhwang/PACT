@@ -12,7 +12,7 @@ public class Thing{
 	int y;
 	int step; //Used for sprite
 	int action; //0 = nothing, 1 = generic thing, 2 = generic person, 3 = zone change (zone, x, y)
-	ArrayList<String> misc;
+	ArrayList<String> misc; //TODO insert checks for custom special characters
 	Boolean trueness;
 	ImageIcon imageIcon;
 	
